@@ -1,0 +1,174 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format %>
+<% from srjvkk.lib.base import stringornone %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/zone/add-refer.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+    <script type="text/javascript">
+    	function sameAddressClick(elm) {
+    		var addrNo = '';
+        	var moo = '';
+        	var tambon = '';
+        	var ampur = '';
+        	var province = '';
+        	if (elm.checked) {
+	        	addrNo = '${stringornone(c.address.ad_ban)}';
+	        	moo = '${stringornone(c.address.ad_moo)}';
+	        	tambon = '${stringornone(c.address.ad_tambol)}';
+	        	ampur = '${stringornone(c.address.ad_ampher)}';
+	        	province = '${stringornone(c.address.ad_province)}';
+        	}
+
+        	document.getElementById('addr_no').value = addrNo;
+        	document.getElementById('moo').value = moo;
+        	document.getElementById('tambon').value = tambon;
+        	document.getElementById('ampur').value = ampur;
+        	document.getElementById('province').value = province;
+    	}
+    </script>
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane" id="toolbar_pane">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+                %if c.refer:
+                <input type="button" id="btnPrint" value="พิมพ์">
+                %endif
+            </div>
+            <div style="height:40px"></div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="id" name="id" value="${c.refer_id if c.refer_id else -1}">
+            	<input type="hidden" id="networks" name="networks" />
+            	<input type="hidden" id="del_networks" name="del_networks" />
+            	<input type="hidden" id="tools" name="tools" />
+            	<input type="hidden" id="del_tools" name="del_tools" />
+            	<h3>ใบส่งต่อผู้ป่วยจิตเวชเพื่อการดูแลต่อเนื่องในชุมชน</h3>            	
+            	<div><input type="checkbox" name="is_municipality" value="1" ${'checked="checked"' if c.refer and c.refer.is_municipality else ''}><span class="indent"><span class="indent">บ้านผู้ป่วยมีสถานที่ใกล้เคียงคือ </span><input type="text" name="landmark" value="${c.refer.landmark if c.refer else ''}" /></span></div>
+            	<div>ประเภทที่ต้องเฝ้าระวัง</div><br />
+            	<div class="indent">
+            	%for m in c.monitors:
+            		<span class="indent"><span class="indent"><input type="radio" name="monitor" id="monitor" value="${m.id}" ${'checked="checked"' if c.refer and c.refer.monitor_id == m.id else ''} ></input>${m.description}</span></span><br />
+            	%endfor
+            	
+            	</div><br />
+				<div>ยินยอมให้เยี่ยมบ้าน
+            	<span class="indent"><input name="is_permitted" type="radio" value="1" ${'checked="checked"' if c.refer and c.refer.is_permitted else ''}><span class="indent">ยินยอม</span></input></span>
+            	<span class="indent"><input name="is_permitted" type="radio" value="0" ${'checked="checked"' if c.refer and c.refer.is_permitted == False else ''}><span class="indent">ไม่ยินยอม</span></input></span>
+            	</div>
+				<div><label>2. ชื่อญาติผู้ดูแล</label><input name="relative" type="text" value="${c.refer.relative.name if c.refer else ''}"></input>เกี่ยวข้องเป็น<input name="relationship" type="text" value="${c.refer.relative.relationship if c.refer else ''}"></input>ที่อยู่ <input name="is_same" type="checkbox" value="1" ${'checked="checked"' if c.refer and c.refer.relative.is_same else ''} onclick="sameAddressClick(this);"> ที่เดียวกัน</input></div>
+				<div>อยู่คนละบ้าน เลขที่<input id="addr_no" name="addr_no" type="text" value="${c.refer.relative.addr_no if c.refer else ''}"></input>หมู่ที่<input id="moo" name="moo" type="text" value="${c.refer.relative.moo if c.refer else ''}"></input>บ้าน<input id="village" name="village" type="text" value="${c.refer.relative.village if c.refer else ''}"></input>ตำบล<input id="tambon" name="tambon" type="text" value="${c.refer.relative.tambon if c.refer else ''}"></input></div>
+				<div>อำเภอ<input id="ampur" name="ampur" type="text" value="${c.refer.relative.ampur if c.refer else ''}"></input>จังหวัด<input id="province" name="province" type="text" value="${c.refer.relative.province if c.refer else ''}"></input>เบอร์โทรศัพท์<input name="tel" type="text" value="${c.refer.relative.tel if c.refer else ''}"></input></div>
+				
+				<div><!-- <label>ชื่อเครือข่ายผู้ปฏิบัติงานสุขภาพจิตที่ส่งต่อ</label><input id="network_name" name="network_name" type="text" value="" /> -->
+				
+				</div>
+				<div><b>3. ชื่อเครือข่ายผู้ปฏิบัติงานสุขภาพจิตที่ส่งต่อ</b><input id="network_name" name="network_name" type="text" value="${c.refer.network_name if c.refer else ''}" style="width: 200px;"></input></div>
+				<div>ชื่อหน่วยงานที่ส่งต่อ<input id="network_unit" name="network_unit" type="text" value="${c.refer.network_unit if c.refer else ''}"></input>
+				อำเภอ<input id="network_ampur" name="network_ampur" type="text" value="${c.refer.network_ampur if c.refer else ''}"></input>
+				จังหวัด<input id="network_province" name="network_province" type="text" value="${c.refer.network_province if c.refer else ''}"></input><br />
+				เบอร์โทร<input id="network_tel" name="network_tel" type="text" value="${c.refer.network_tel if c.refer else ''}"></input>
+				</div>
+				<div>
+				ว.ด.ป.ที่ส่งต่อ<input id="refer_date" name="refer_date" type="text" value="" readonly="readonly"></input>
+				<button type="button" id="btnReferDate" title="Show Calendar">
+           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+           		</button>
+				<div id="conReferDate" class="container">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calReferDate" class="calendar"></div>
+				    </div>
+				</div>
+				<input type="button" id="btnAddNetwork" value="เพิ่ม"></div>
+				<div id="network-table"></div>
+				
+				<div><label>4. ข้อมูลที่เกี่ยวข้องกับการบำบัด รักษาในโรงพยาบาลจิตเวชขอนแก่นราชนครินทร์</label></div>
+				<div class="indent">4.1 ผู้ป่วยนอก (งาน OPD)</div>
+				<div class="indent"><span class="indent">4.1.1 ว.ด.ป.ที่มารับบริการเป็นผู้ป่วยนอก</span>
+				<input class="textbox" type="text" id="last_visit_date" name="last_visit_date" value="${c.du.toShortFormatDate(c.refer.last_visit_date) if c.refer and c.refer.last_visit_date else c.du.toShortFormatDate(c.last_visit.time_add)}" readonly="readonly" />
+           		<button type="button" id="btnLastVisitDate" title="Show Calendar">
+           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+           		</button>
+				<div id="conLastVisitDate" class="container">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calLastVisitDate" class="calendar"></div>
+				    </div>
+				</div>
+				</div>
+				
+				<div class="indent">
+					<div>4.2 อาการสำคัญที่มาโรงพยาบาล</div><br>
+            		<textarea rows="5" cols="70" id="symptom" name="symptom">${c.refer.symptom if c.refer else c.patient.background.important_symptom if c.patient.background else ''}</textarea><br>
+            	</div>
+            	<div class="indent"><span>4.3 การวินิจฉัยโรค</span><br />
+            	<% 
+            		icd10 = ''
+            		if c.icd10s:
+	    	        	for i in c.icd10s:
+	    	        		if icd10 == '':
+	    	        			icd10 = i.code + ':' + i.icd10.name
+	    	        		else:
+	    	        			icd10 = icd10 + ', ' + i.code + ':' + i.icd10.name
+	    	        
+            	%>
+            	<textarea rows="5" cols="70" id="diag" name="diag">${c.refer.diag if c.refer else icd10}</textarea>
+            	<div class="indent">
+					<span>4.4 ยาที่ให้ไปรับประทานต่อที่บ้าน จำนวน</span><input name="homemed_month" type="text" value="${c.refer.homemed_month if c.refer and c.refer.homemed_month else ''}" /><label>เดือน</label><br />
+            		<textarea rows="5" cols="70" id="homemed" name="homemed">
+%if c.refer and c.refer.homemed:
+${c.refer.homemed}
+%else:            		
+%for it in c.items:
+${it.initial_name} ${it.dose} จำนวน ${number_format(it.qty, 0)} ${it.pay_unit_name},
+%endfor
+%endif
+</textarea><br>
+            	</div>
+            	<div class="indent">
+					<span>4.5 ข้อมูลที่เกี่ยวกับการช่วยเหลือ/การพยาบาลที่ผู้ป่วยได้รับ</span><br>
+					<span class="indent">ผู้ป่วยนอก (งาน OPD)</span><br>
+					<textarea rows="5" cols="70" id="help_opd" name="help_opd">${c.refer.help if c.refer else ''}</textarea><br>
+            	</div>
+            	<div class="indent">4.6 คะแนนประเมิน จากแบบประเมินโรคซึมเศร้า DS8/แบบประเมินการฆ่าตัวตาย (8Q)<br />
+            	<span>เครื่องมือ</span><select id="select-tool">
+%for t in c.tools:
+<option value="${t.id}">${t.description}</option>
+%endfor            	
+            	</select>
+            	<span>คะแนนวันที่รับรักษา</span><input type="text" id="tool-before"></input>
+            	<input type="button" id="btnAddTool" value="เพิ่มเครื่องมือ"></div>
+            	<div id="tool-table"></div>
+            	<div class="indent">4.7 วันที่นัดหมายให้ไปรับยาที่โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์<input id="remed_date" name="remed_date" type="text" value="${c.du.toShortFormatDate(c.refer.remed_date) if c.refer and c.refer.remed_date else ''}" readonly="readonly" />
+           		<button type="button" id="btnRemedDate" title="Show Calendar">
+           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+           		</button>
+				<div id="conRemedDate" class="container">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calRemedDate" class="calendar"></div>
+				    </div>
+				</div>
+            	</div>
+            	<div class="indent">4.8 สำหรับผู้ป่วยรายนี้มีข้อเสนอแนะในการดูแลเป็นพิเศษเรื่อง<input name="suggestion" type="text" value="${c.refer.suggestion if c.refer else ''}" style="width:200px;" /></div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

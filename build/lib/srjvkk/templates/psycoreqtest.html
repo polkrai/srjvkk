@@ -1,0 +1,83 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>จิตวิทยา</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/psyco/reqtest.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+	        <input type="hidden" id="qcalled" name="qcalled" value="${c.qcalled}" >
+	        <input type="hidden" id="req_id" name="req_id" value="">
+	        <input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}" >
+	        <input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}" >
+	        <input type="hidden" id="vn" name="vn" value="${c.vn}" >
+	        <input type="hidden" id="order-done" name="order-done" value="false">
+	        <input type="hidden" id="done_tests" name="done_tests">
+	        <input type="hidden" id="tests" name="tests">
+	        <input type="hidden" id="del_tests" name="del_tests">
+	        <input type="hidden" id="remark" name="remark">
+	        <input type="hidden" id="order_date" name="order_date">
+        </form>
+            <div id="toolbar_pane" class="toolbar_pane">
+                <input type="button" id="btnAdd" value="เพิ่ม">
+                <input type="button" id="btnEdit" value="แก้ไข">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+            </div>
+            
+            <div style="height:40px"></div>
+            
+            <div id="data">                
+                
+                <div >
+                    <div id="req_test" style="margin: 10px">
+                    </div>
+                    <!--  <div id="dlgReqTest">
+                        <div class="hd">ใบส่งตรวจทางจิตวิืทยา</div>
+                        <div class="bd"><label>เหตุส่งตรวจ</label><input type="text" id="remark"></div>
+                    </div>
+                    -->
+                </div>
+                <div >
+	                <div style="float:left;width:100%">
+				        <div style="margin: 5px">
+				        
+						<input onkeypress="checkEnter(event)" type="text" id="txtAddTest" style="position:static;width:200px;vertical-align:middle;">
+						<input id="btnAddTest" type="button" value="เพิ่ม"><br>
+				   		<div id="ctTest" style="width:200px;left:0px;"></div>
+				        <div id="req_test_item" style="margin: 10px"></div>
+				    </div>
+                </div>
+            </div>
+        
+    </div>
+    <div id="footer">
+    </div>
+    <!-- 
+    <div id="lookupPsycoTest" style="float:left">
+        <div class="hd">ตรวจทางจิตวิทยา</div>
+        <div class="bd">
+            <label>รายการ: </label><select id="select_test" onchange="getItemDetail(event.target.options[event.target.selectedIndex].id)">
+                    <option id="-1" value="">เลือก</option>
+                %for i in c.item_tests:
+                    <option id="${i.id}" value="${i.item_code}">${i.name}</option>
+                %endfor
+            </select><br><br><label>หน่วย:</label><label id="unit"></label><br><br>
+            <input type="hidden" id="unit_id" value="">
+            <label>จำนวน:</label><input type="text" id="qty" value="1"><br><br>
+            <label>ราคา:</label><input type="text" id="price">
+        </div>
+    </div>
+     -->
+    <div id="container"></div>
+</body>
+</html>

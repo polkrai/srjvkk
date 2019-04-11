@@ -1,0 +1,56 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/xray/add-ekg.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+            </div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="id" name="id" value="${c.id}">
+            	<div>เลขที่คลื่นหัวใจ<input type="text" name="ekg_no" value="${c.ekg.ekg_no if c.ekg and c.ekg.ekg_no else ''}"></input></div>
+            	<div>อาการและการตรวจอย่างย่อ</div>
+            	<div><textarea name="symptom">${c.ekg.symptom if c.ekg and c.ekg.symptom else ''}</textarea></div>
+            	<div>การวินิจฉัย</div>
+            	<div><textarea name="diag">${c.ekg.diag if c.ekg and c.ekg.diag else ''}</textarea></div>
+            	<div>ผลการตรวจ</div>
+            	<div><textarea name="result">${c.ekg.result if c.ekg and c.ekg.result else ''}</textarea></div>
+            	<div>แพทย์ผู้ส่งตรวจ
+            	<input type="text" id="doctor_send" name="doctor_send" value="${c.ekg.doctor_send if c.ekg else ''}" style="position:static;width:200px;vertical-align:middle;">
+				<div id="ctDoctorSend" style="width:200px;left:0px;"></div>
+				</div>
+            	<div>
+            	%if c.ekg and c.ekg.is_done:
+            	<img src="/img/paid.png"></img>
+            	%else:
+            	<input type="checkbox" name="is_done"  />
+            	%endif
+            	ตรวจแล้ว</div>
+            	<div>วันที่ตรวจ ${c.du.toShortFormatDate(c.ekg.done_date) if c.ekg else ''}</div>
+            	<div>แพทย์ผู้่อ่านผล
+            	<input type="text" id="doctor_read" name="doctor_read" value="${c.eeg.doctor_read if c.eeg else ''}" style="position:static;width:200px;vertical-align:middle;">
+				<div id="ctDoctorRead" style="width:200px;left:0px;"></div>
+				</div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

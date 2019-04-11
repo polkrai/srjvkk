@@ -1,0 +1,189 @@
+﻿# -*- coding: utf-8 -*- 
+<% from math import ceil %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:white">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+    <style>
+    	body {
+    		font-family: "sans serif";
+    		font-size: 16px;
+    	}
+    	
+    	th, td {
+		    border: 1px solid #000000;
+		    padding: 0.5em;
+		    vertical-align: top;
+		}
+		.full-width {
+			width: 85%;
+		}
+    </style>    
+</head>
+<body style="width:21cm;height:29.7cm;background-color:white;" onload="window.print()">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div id="form-data">
+            	<h3 style="text-align:center;">แบบฟอร์มขอติดตามเยี่ยม</h3>            	
+            	<input name="is_permitted" type="radio" value="0" ${'checked="checked"' if c.request and c.request.is_permitted == False else ''}><span class="indent">ไม่ยินยอม</span>
+            	<input name="is_permitted" type="radio" value="1" ${'checked="checked"' if c.request and c.request.is_permitted else ''}><span class="indent">ยินยอม</span><br />
+            	<div class="indent">
+            		%for cd in c.conditions:
+            			<input type="checkbox" name="conditions" value="${cd.id}"
+            				%if c.request:
+            					%for cond in c.request.conditions:
+            						%if cond.condition_id == cd.id:
+            							checked="checked"
+            						%endif
+            					%endfor
+            				%endif
+            			>${cd.description}<br>
+            		%endfor
+            		
+            	</div>
+            	
+            	<input name="officer_limit" type="radio" value="1" ${'checked="checked"' if c.request and c.request.officer_limit else ''} /><span class="indent">จำกัดจำนวนเจ้าหน้าที่ที่ติดตามเยี่ยม${c.hu.singleLineAnswer(c.request.cond_remark if c.request else '')}คน</span>
+            	<input name="officer_limit" type="radio" value="0" ${'checked="checked"' if c.request and c.request.officer_limit == False else ''}><span class="indent">ไม่จำกัดจำนวน</span><br />
+            	<div>ปัญหาที่ต้องการให้ติดตามเยี่ยม</div>
+            	<div class="indent">
+            		%for p in c.new_problems:
+            			<input type="checkbox" name="problems" value="${p.id}"
+            				%if c.request:
+            					%for prob in c.request.new_problems:
+            						%if prob.problem_id == p.id:
+            							checked="checked"
+            						%endif
+            					%endfor
+            				%endif
+            			>${p.description}<br>
+            		%endfor
+            		
+            	</div>
+            	
+            	<label>ส่วนที่ 1 ข้อมูลทั่วไปของผู้ป่วย</label><br />
+            	<label>1. ชื่อผู้ป่วยที่ส่งต่อ</label><span class="answer-space">${c.request.patient.name}</span>อายุ<span class="answer-space">${c.request.patient.age}</span>ปี เบอร์โทรศัพท์<span class="answer-space">${c.request.patient.pa_patient_phone}</span><br />
+            	ที่อยู่<span class="answer-space">${c.address.ad_ban}</span>หมู่ที่<span class="answer-space">${c.address.ad_moo}</span>ตำบล<span class="answer-space">${c.address.ad_tambol}</span>อำเภอ<span class="answer-space">${c.address.ad_ampher}</span>จังหวัด<span class="answer-space">${c.address.ad_province}</span>
+				<div>
+				<label>2. ชื่อผู้ดูแล</label>${c.hu.singleLineAnswer(c.request.relative_name if c.request else '')}
+            	เกี่ยวข้องเป็น${c.hu.singleLineAnswer(c.request.relationship if c.request else '')}
+            	ที่อยู่ <input name="is_same" type="radio" value="1" ${'checked="checked"' if c.request and c.request.is_same else ''}"><span class="indent">ที่เดียวกัน</span></div>
+            	<div><input name="is_same" type="radio" value="0" ${'checked="checked"' if c.request and c.request.is_same == False else ''}><span class="indent">อยู่คนละบ้าน</span>
+				เลขที่${c.hu.singleLineAnswer(c.request.addr_no if c.request else '')}หมู่ที่${c.hu.singleLineAnswer(c.request.moo if c.request else '')}บ้าน${c.hu.singleLineAnswer(c.request.village if c.request else '')}ตำบล${c.hu.singleLineAnswer(c.request.tambon if c.request else '')}</div>
+				<div>อำเภอ${c.hu.singleLineAnswer(c.request.ampur if c.request else '')}จังหวัด${c.hu.singleLineAnswer(c.request.province if c.request else '')}เบอร์โทรศัพท์${c.hu.singleLineAnswer(c.request.tel if c.request else '')}
+				</div>
+            	
+            	<div>
+					<label>ชื่อหน่วยงานที่ส่งต่อ</label>${c.hu.singleLineAnswer(c.request.network_name if c.request else '')}
+					<label>อำเภอ</label>${c.hu.singleLineAnswer(c.request.ampur if c.request else '')}
+					<label>จังหวัด</label>${c.hu.singleLineAnswer(c.request.network_province if c.request else '')}
+					<label>เบอร์โทรศัพท์</label>${c.hu.singleLineAnswer(c.request.network_tel if c.request else '')}				
+				</div>
+            	
+            	<label>3. อาการสำคัญ</label><br>
+            	${c.hu.multiLineAnswer(c.request.symptom if c.request else c.imain.detail.symptoms_important if c.imain else '')}<br>
+            	<label>คะแนนประเมิน</label><br />
+				<span class="indent">
+วันที่รับรักษา 
+%for t in c.request.tools:
+${t.tool.description} ${'('+t.remark+')' if t.remark else ''} ${c.hu.singleLineAnswer(t.before)}
+%endfor				
+				</span><br />
+				<span class="indent">
+				วันที่จำหน่าย 
+%for t in c.request.tools:
+${t.tool.description} ${'('+t.remark+')' if t.remark else ''} ${c.hu.singleLineAnswer(t.after)}
+%endfor				
+				</span><br />
+				<label>วันที่เข้ารับการรักษา</label>
+            	${c.hu.singleLineAnswer(c.du.toShortFormatDate(c.request.last_admit_date) if c.request else c.du.toShortFormatDate(c.imain.admit_date) if c.imain else '')}
+            	<label>วันที่จำหน่าย/HV </label>
+            	${c.hu.singleLineAnswer(c.du.toShortFormatDate(c.request.last_discharge_date) if c.request else c.du.toShortFormatDate(c.imain.dc_date) if c.imain and c.imain.dc_date else '')}<br />
+            	
+            	
+            	<label>การวินิจฉัยโรค</label><br />
+    	        <% 
+    	        	icd10 = ''
+    	        	for i in c.icd10s:
+    	        		if icd10 == '':
+    	        			icd10 = i.code + ':' + i.icd10.name
+    	        		else:
+    	        			icd10 = icd10 + ', ' + i.code + ':' + i.icd10.name
+            	%>
+            	${c.hu.multiLineAnswer(c.request.diag if c.request else icd10)}<br />
+            	<label>4. ผลการตรวจทางห้องปฏิบัติการที่ผิดปกติ (ยกเว้น HIV ไม่ต้องลง)</label><br>
+            	${c.hu.multiLineAnswer(c.request.lab_result if c.request else '')}<br>
+            	<label>5. ยาที่แพทย์ให้การรักษาผู้ป่วยในปัจจุบัน</label><br>
+            	${c.hu.multiLineAnswer(c.request.med)}
+            	<label>6. ข้อมูลที่เป็นประโยชน์ในการติดตามเยี่ยม เช่น</label><br>
+            	<label>6.1 ผู้ป่วยเคยทำร้ายตัวเองมาแล้ว</label>
+            	${c.hu.singleLineAnswer(c.request.self_harm if c.request else '')}
+            	<label>ครั้ง/วิธีการทำร้ายตนเอง ได้แก่</label><br />
+            	${c.hu.multiLineAnswer(c.request.self_harm_method if c.request else '')}<br />
+            	<!-- <label>อาการวันจำหน่าย</label><br />
+            	<textarea rows="5" cols="70" id="discharge_symptom" name="discharge_symptom">${c.request.discharge_symptom if c.request else ''}</textarea><br /> -->
+            	<label class="indent">ขณะนี้มีความคิดทำร้ายตนเองหรือไม่</label>${c.hu.singleLineAnswer(c.request.want_self_harm if c.request else '')}<br />
+            	<!-- <label class="indent">วันจำหน่ายคะแนน 8Q= </label>
+            	<input type="text" name="last_8q" id="last_8q" value="${c.request.last_8q if c.request else ''}"></input>
+            	<label>9Q= </label>
+            	<input type="text" name="last_9q" id="last_9q" value="${c.request.last_9q if c.request else ''}"></input><br /> -->
+            	<label>6.2 ปัญหาซับซ้อน (ระบุ)</label>
+            	${c.hu.singleLineAnswer(c.request.complicated_problem if c.request else '')}<br />            	
+            	<label>7. ข้อเสนอแนะพิเศษในการดูแลสำหรับผู้ป่วยรายนี้เรื่อง</label>
+            	${c.hu.singleLineAnswer(c.request.suggestion if c.request else '')}<br />
+            	<label>ส่วนที่ 2 สรุปปัญหา อาการ พฤติกรรม ความต้องการของผู้ป่วยและครอบครัวขณะอยู่รักษาในโรงพยาบาล</label><br>
+            	<table border="0" cellpadding="0" cellspacing="0" width="98%" id="tbl_problem" align="center">
+            		<tr id="problem_header">
+            			<th>ว/ด/ป</th>
+            			<th>สภาพปัญหาและความต้องการ</th>
+            			<th>เพิ่มเติม</th>
+            			<th>กิจกรรมที่ดำเนินการแล้ว</th>
+            			<th>ผลการดำเนินการ</th>
+            			<th>ผู้บันทึก/ตำแหน่ง</th>
+            		</tr>
+            		<% 	
+            			i=0 
+            			
+            		%>
+            		%for p in c.problems:
+            			<% reqProb = None %>
+            			%if c.request:
+            				%for pp in c.request.problems:
+            					%if pp.problem_id == p.id:
+            						<% reqProb = pp%>
+            					%endif
+            				%endfor
+            			%endif
+            		<tr>
+            			% if i == 0:
+            			<td rowspan="${len(c.problems)}" style="vertical-align:top;">
+            				${c.du.toShortFormatDate(c.request.problem_date) if c.request else ''}
+            			</td>
+            			% endif
+            			<td><input type="checkbox" name="problems" value="${p.id}" ${'checked="checked"' if reqProb and reqProb.problem_id==p.id else ''} /> ${p.description}</td>
+            			<td>
+            				${reqProb.remark if reqProb else ''}
+            			</td>
+            			<td>${reqProb.activity if reqProb else ''}</td>
+            			<td>${reqProb.result if reqProb else ''}</td>
+            			<td>${reqProb.employee if reqProb else ''}</td>
+            		</tr>
+            		<% i = i+1 %>
+            		%endfor
+            	</table>
+            	<label>ส่วนที่ 3 กรณีดำเนินการไม่ได้ตามเวลาที่กำหนดให้บันทึกเหตุผลความจำเป็นลงไป</label><br>
+            	${c.hu.multiLineAnswer(c.request.reason if c.request else '')}<br>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

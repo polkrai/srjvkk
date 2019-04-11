@@ -1,0 +1,98 @@
+﻿# -*- coding: utf-8 -*-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>แบบรายงานผลการบำบัดทางจิตวิทยาคลินิก</title>
+<link rel="stylesheet" type="text/css" href="/yui/grids/grids-min.css">
+<style type="text/css">
+.tablecell {
+	border: thin solid #000000;
+}
+div {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+</style>
+</head>
+<body style="width:21cm; height:29.7cm" onload="window.print()">
+<div id="doc3">					
+	<div id="hd">
+		<h3 align="center">แบบรายงานผลการบำบัดทางจิตวิทยาคลินิก</h3>
+	</div>
+	<div id="bd">		
+		<div class="yui-gc">
+			<div class="yui-u first">
+				<strong>ชื่อ-สกุล</strong>&nbsp;${c.test_result.order.patient.name}
+			</div>	
+			<div class="yui-u">
+				<div class="yui-gd">
+					<div class="yui-u first">
+						<strong>อายุ</strong>&nbsp;${c.test_result.order.patient.age}&nbsp;<strong>ปี</strong>
+					</div>
+					<div class="yui-u">
+						<strong>เพศ</strong>&nbsp;${u'ชาย' if c.test_result.order.patient.pa_sex=='1' else u'หญิง'}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="yui-gb">
+			<div class="yui-u first">
+				<strong>HN</strong>&nbsp;${c.test_result.order.patient.hn}
+			</div>
+			<div class="yui-u">
+				<strong>ประเภทผู้ป่วย</strong>&nbsp;${'IPD' if c.test_result.order.visit.an else 'OPD'}
+			</div>
+			<div class="yui-u">
+				<strong>ตึก</strong>&nbsp;${c.test_result.order.visit.ipd_main.ipdbuilding.building_name if c.test_result.order.visit.ipd_main else ''}
+			</div>
+		</div>
+		<div><strong>เหตุส่งบำบัด</strong></div>
+		<div>
+			<ul>
+			%for reason in c.req_reason:
+				<li>${reason.reason.name}</li>
+			%endfor
+			</ul>
+		</div>
+		<div class="yui-gc">
+			<div class="yui-u first">
+				<strong>ผู้ส่งบำบัด</strong>&nbsp;${c.test_result.order.user.name if c.test_result.order.user else ''} ${c.test_result.order.user.lastname if c.test_result.order.user else ''}
+			</div>
+			<div class="yui-u">
+				<strong>วันที่ส่งบำบัด</strong>&nbsp;${c.order_date}
+			</div>
+		</div>
+		<div><strong>เครื่องมื่อที่ใช้ในการบำบัด</strong></div>
+		<div>
+			<ul>
+			% for tool in c.test_result.usedtools:
+				%if not tool.deleted:
+				<li>${tool.tool.name}</li>
+				%endif
+			% endfor
+			</ul>
+		</div>
+		
+		<div><strong>ลักษณะทั่วไปและพฤติกรรมขณะบำบัด</strong></div>
+		<div>${h.util.html_escape(c.test_result.behaviour).replace('\n', '<br>').replace(' ', '&nbsp;') if c.test_result else ''}</div>
+		<div><strong>ผลการบำบัด</strong></div>
+		<div>${h.util.html_escape(c.test_result.result).replace('\n', '<br>').replace(' ', '&nbsp;') if c.test_result else ''}</div>
+		<div><strong>สรุปผลการบำบัด</strong></div>
+		<div>${h.util.html_escape(c.test_result.conclusion).replace('\n', '<br>').replace(' ', '&nbsp;') if c.test_result else ''}</div>
+		<div><strong>ข้อเสนอแนะ</strong></div>
+		<div>${h.util.html_escape(c.test_result.suggestion).replace('\n', '<br>').replace(' ', '&nbsp;') if c.test_result else ''}</div>
+	</div>
+	<div id="ft">
+		<div class="yui-g">
+			<div class="yui-u first"></div>
+			<div class="yui-u" style="text-align:center">
+				${c.psyco_user.fullname}<br>
+				 นักจิตวิทยาคลินิก<br />
+				${c.res_date}
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

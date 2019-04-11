@@ -1,0 +1,62 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>สังคมสงเคราะห์</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/social/support.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+    <link rel="stylesheet" type="text/css" href="/yui/grids/grids-min.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form_support" name="form_support" action="${h.url_for('/social/save_support')}" method="post">
+            <div id="toolbar_pane" class="toolbar_pane" style="text-align:left">
+                <input type="button" id="btnAdd" value="เพิ่ม">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+                <input type="button" id="btnPrint" value="พิมพ์">
+                
+            </div>
+            
+            <div style="height:40px"></div>
+            
+            <input type="hidden" id="cur_pa_id" name="cur_pa_id" value="${c.cur_pa_id}">
+            <input type="hidden" id="cur_vn_id" name="cur_vn_id" value="${c.cur_vn_id}">
+            <input type="hidden" id="qcalled" name="qcalled" value="${c.qcalled}">
+            <input type="hidden" id="request_no" name="request_no">
+            <input type="hidden" id="support_amount" name="support_amount">
+            <input type="hidden" id="canpay_amount" name="canpay_amount">
+            <input type="hidden" id="support_items" name="support_items">
+            <input type="hidden" id="delSupports" name="delSupports">
+            <div class="yui-g">
+                <div class="yui-u first" style="text-align:left">
+                    <div id="history_support_h" style="margin:5px"></div>
+                    <div id="history_support_d" style="margin:5px"></div>
+                </div>
+                <div class="yui-u" style="text-align:left">
+                    <label>ภูมิลำเนา:</label><input class="textbox" type="text" id="domicile" name="domicile" value=""><br><br>
+                    <label>การศึกษา:</label><input class="textbox" type="text" id="education" name="education" value=""><br><br>
+                    <label>สถานภาพสมรส:</label><input class="textbox" type="text" id="marriage_status" name="marriage_status" value=""><br><br>
+                    <label>อาชีพ:</label><input class="textbox" type="text" id="job" name="job" value=""><br><br>
+                    <label>รายได้:</label><input class="textbox" type="text" id="income" name="income" value=""><br><br>
+                    <label>ผู้ร้องขอ:</label><input class="textbox" type="text" id="request_person" name="request_person" value=""><br><br>
+                    <label>เกี่ยวข้องเป็น:</label><input class="textbox" type="text" id="request_relation" name="request_relation" value=""><br><br>
+                    <label>ประวัติครอบครัว:</label><textarea class="textarea" id="history_family" name="history_family" ></textarea><br><br>
+                    <label>ความสัมพันธ์ภายในครอบครัว:</label><textarea class="textarea" id="family_relationship" name="family_relationship" ></textarea><br><br>
+                    <label>สาเหตุที่ร้องขอ:</label><input class="textbox" type="text" id="request_reason" name="request_reason" value=""><br><br>
+                    <label>เหตุผลที่ให้การสงเคราะห์:</label><input class="textbox" type="text" id="support_reason" name="support_reason" value=""><br><br>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="container"></div>
+</body>
+</html>

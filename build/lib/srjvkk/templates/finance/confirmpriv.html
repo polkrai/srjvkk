@@ -1,0 +1,77 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>การเงิน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/finance/confirmpriv.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+    <style>
+        #conReferDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conReferDate .bd {padding:0;}
+        #calReferDate {border:none;padding:1em}
+
+        #conClaimDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conClaimDate .bd {padding:0;}
+        #calClaimDate {border:none;padding:1em}
+
+    </style>
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <div id="toolbar_pane" class="toolbar_pane">
+            <input type="button" id="btnEdit" value="แก้ไข">
+            <input type="button" id="btnSave" value="บันทึก">   
+            <input type="button" id="btnCancel" value="ยกเลิก">
+        </div>
+        <div style="height:40px"></div>
+        <br>
+        <label>บัตรประชาชน:</label><input class="textbox" type="text" id="people_number" name="people_number" readonly="readonly"><br><br><br>
+        </fieldset>
+		<form id="form" name="form" action="" method="post">
+            <div id="data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}" />
+           		<input type="hidden" id="qcalled" name="qcalled" value="${c.qcalled}" />
+           		<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}" />
+           		<label>วัน/เดือน/ปีเกิด:</label><input class="textbox" type="text" id="birthdate" name="birthdate"><br><br><br>
+           		<label>วันที่ admit</label><input class="textbox" type="text" id="admitdate" name="admitdate"><br><br><br>
+           		<label>สิทธิ์:</label>
+           		<select id="selectPriv" name="selectPriv">
+           			% for p in c.privileges:
+           				<option value="${p.id}">${p.name}</option>
+           			% endfor
+           		</select><br><br>
+           		<label>เลขที่บัตร:</label><input class="textbox" type="text" id="cardno" name="cardno"><br><br><br>
+                <label>เลขที่หนังสือส่งตัว / เลขที่หนังสือรับรองสิทธิ์:</label><input class="textbox" type="text" id="referno" name="referno"><br><br><br>
+                <label>วันที่ในหนังสือส่งตัว / วันที่หนังสือรับรองสิทธิ์:</label><input class="textbox" type="text" id="referdate" name="referdate">
+                <button type="button" id="btnReferDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+				<div id="conReferDate">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calReferDate"></div>
+				    </div>
+				</div><br><br>
+                <label>โรงพยาบาลหลัก:</label><input class="textbox" type="text" id="referhosp" name="referhosp"><br><br><br>
+                <label>เลขที่ Claim Code / เลขที่ใบแจ้งเลขที่อนุมัติ:</label><input class="textbox" type="text" id="claimcode" name="claimcode"><br><br><br>
+                <label>วันที่ขอ Claim Code / วันที่ออกหนังสืออนุมัติ:</label><input class="textbox" type="text" id="claimdate" name="claimdate">
+                <button type="button" id="btnClaimDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+				<div id="conClaimDate">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calClaimDate"></div>
+				    </div>
+				</div><br><br>
+                <label>ชื่อผู้ขอ Claim Code / ชื่อเจ้าหน้าที่ผู้ดำเนินการ:</label><input class="textbox" type="text" id="claimperson" name="claimperson"><br><br><br>
+                
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+</body>
+</html>

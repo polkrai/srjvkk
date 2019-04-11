@@ -1,0 +1,103 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>จิตวิทยา</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/psyco/cureresult.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+    <link rel="stylesheet" type="text/css" href="/yui/grids/grids-min.css">
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="${h.url_for('/psyco/save_reqtest')}" method="post">
+            <div id="toolbar_pane" class="toolbar_pane" 
+            %if not c.editable:
+            	style="display:none"
+            %endif
+            >
+            
+                <input type="button" id="btnEdit" value="แก้ไข">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+                <input type="button" id="btnPrint" value="พิมพ์">
+            
+            </div>
+            % if c.editable:
+            	<div style="height:40px"></div>
+            % endif  
+            <div id="data">
+                <input type="hidden" id="order_id" name="order_id" value="${c.order_id}">
+                <input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+                <input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+                <input type="hidden" id="vn" name="vn" value="${c.vn}">
+                <input type="hidden" id="tools" name="tools">
+                <input type="hidden" id="res_id" name="res_id" value="${c.test_result.id}">
+                <input type="hidden" id="del_tools" name="del_tools">
+                <input type="hidden" id="order_date" name="order_date">
+                <input type="hidden" id="order-done" name="order-done" value="false">
+                <input type="hidden" id="done-tests" name="done-tests">
+                <input type="hidden" id="reasons" name="reasons">
+	        	<input type="hidden" id="del_reasons" name="del_reasons">
+                <input type="hidden" id="result_type" name="result_type" value="${c.result_type}">
+                <input type="hidden" id="completed" name="completed" value="${c.test_result.completed}">
+                <input type="hidden" id="req_person_id" name="req_person_id">
+                <div style="text-align:left">
+                <label id="lbl-order">เลขที่ order: ${c.order_id}</label><br><br>
+                <label>lock ผลการบำบัด:</label>
+               	<div id="lock">
+                </div>
+                <br><br>
+                <div id="data" class="yui-g">                
+					<div class="yui-u first">
+                		<div style="float:left;width:100%;text-align:left">
+							<input onkeypress="checkEnter(event, 'reason')" type="text" id="txtAddReason" style="position:static;width:200px;vertical-align:middle;">
+							<input id="btnAddReason" type="button" value="เพิ่ม"><br>
+					   		<div id="ctReason" style="width:200px;left:0px;"></div>
+		                    <div id="reason-table" style="margin: 10px"></div>
+	                    </div>
+                	</div>
+					<div class="yui-u">
+                		<div id="req-item-table"></div>
+                	</div>                	
+                </div>
+                <br>
+                <div style="float:left;width:100%;text-align:left">
+	               	<label>ผู้ส่งบำบัด:</label>
+	               
+					<input type="text" id="req_person" name="req_person" value="${c.req_person}" style="position:static;width:200px;vertical-align:middle;">
+			   		<div id="ctPerson" style="width:200px;left:0px;"></div>
+                </div>
+                <!--  <label>ผู้ส่งบำบัด:</label><input class="textbox" type="textbox" id="req_person" name="req_person" value="${c.req_person}" /><br /><br />-->
+                <div style="float:left;width:100%;position:relative;z-index:0">
+			        <label>เครื่องมือที่ใช้ในการบำบัด:</label><br><br>
+			        % if c.editable:
+			        <div style="margin: 5px">
+					<input onkeypress="checkEnter(event, 'tool')" type="text" id="txtAddTool" style="position:static;width:200px;vertical-align:middle;">
+					<input id="btnAddTool" type="button" value="เพิ่ม" >
+			   		<div id="ctTool" style="width:200px;left:0px;">
+			        </div>
+			        % endif
+			        <div id="used-tool-table" style="margin: 5px;"></div>
+			    </div>
+                <label>ลักษณะทั่วไปและพฤติกรรมขณะบำบัด:</label><textarea class="textarea" id="behaviour" name="behaviour">${c.test_result.behaviour}</textarea><br />
+                <label>ผลการบำบัด:</label><textarea class="textarea" style="height:140px" id="result" name="result">${c.test_result.result}</textarea><br />
+                <label>สรุปผลการบำบัด:</label><textarea class="textarea" id="conclusion" name="conclusion">${c.test_result.conclusion}</textarea><br />
+                <label>ข้อเสนอแนะ:</label><textarea class="textarea" id="suggestion" name="suggestion">${c.test_result.suggestion}</textarea><br />
+                <div>
+                	<label>ผู้บันทึก:</label><label id="created_by"></label>
+                	<label>วันที่บันทึก:</label><label id="created_date"></label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <iframe id="frmprint" name="frmprint" height="0" frameborder="0"></iframe>
+</body>
+</html>

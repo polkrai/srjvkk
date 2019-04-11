@@ -1,0 +1,78 @@
+body {
+    background-color: #edf5ff;
+}
+
+.yui-skin-sam .yui-dt td.number
+{
+	text-align: right;
+	padding: 4px 10px;
+}
+
+.txt-number {
+	text-align: right;
+	max-width: 90px;
+}
+
+.yui-skin-sam .yui-dt td.dt-number
+{
+	text-align: right;
+}
+.yui-skin-sam .yui-dt tbody.over td,
+.yui-skin-sam .yui-dt tr.over	td {
+	background-color:#426FD9;
+	color:white;
+}
+.yellow {
+	background-color: yellow;
+}
+
+
+#workspace_pane {
+    margin-left: 285px;
+    margin-right: 0px;    
+    margin-top: 0px;
+    margin-bottom: 5px;
+    height: 500px;
+}
+
+#footer {
+    clear: both;
+    text-align: center;
+    background-color: lightblue;
+}
+
+label {   
+    float:left;
+    min-width:150px;
+    max-width:150px;
+    margin:5px;
+}
+
+.textbox {
+    float:left;
+    margin: 5px;
+    min-width:200px;
+    vertical-align: middle;
+}
+
+.textarea {
+    float:left;
+    min-width: 80%;
+    height: 70px;
+    margin: 5px;
+}
+
+.toolbar_pane {    
+    border-style: dashed;
+    border-width: 1px;
+    background-color: lightblue;
+    margin: 5px;
+    margin-top: 0px;
+    padding: 5px;
+    text-align:left;
+}
+
+.yui-button.yui-push-button.del-button {
+    background: url('/img/del.png') center center no-repeat;
+}
+

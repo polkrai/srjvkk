@@ -1,0 +1,2 @@
+recursive-include srjvkk/public *
+recursive-include srjvkk/templates *

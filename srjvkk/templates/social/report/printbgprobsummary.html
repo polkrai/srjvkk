@@ -1,0 +1,48 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>รายงานสรุปการวินิจฉัยทางสังคม</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<style>
+	<!--
+		.border {
+			border: 1px solid #000000;
+		}
+	-->
+    </style>
+</head>
+<body style="width:21cm; height:29.7cm;" 
+	%if c.type=='print':
+		onload="window.print();window.close()"
+	%endif
+>
+	<p align="center"><strong>รายงานสรุปการวินิจฉัยทางสังคม<br>
+    โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์ จ.ขอนแก่น<br>
+    จากวันที่ ${c.start_date} ถึงวันที่ ${c.end_date}<br></strong></p>
+
+<table width="30%" border="0" cellspacing="0" cellpadding="5" align="center">
+  <tr>
+    <td class="border"><div align="center"><strong>รหัส</strong></div></td>
+    <td class="border"><div align="center"><strong>จำนวนผู้ป่วย</strong></div></td>
+  </tr>
+  % for r in c.results:
+  <tr>
+  	<td class="border" style="height:1cm">${r['code']}</td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(r['count'], 0)}</div></td>
+  </tr>
+  % endfor
+  <tr>
+    <td style="border:none"><div align="right">รวม</div></td>
+    <td class="border"><div align="right">${number_format(c.total, 0)}</div></td>
+  </tr>
+</table>
+
+<script>
+		//window.print();
+		//window.close();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/zone/setup-visit-symptom.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+            	<input type="button" id="btnAdd" value="เพิ่ม">
+                <input type="button" id="btnEdit" value="แก้ไข">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+                <input type="button" id="btnBack" value="กลับหน้าหลัก">
+            </div>
+            <div id="data">
+            	<input type="hidden" id="symptoms" name="symptoms">
+            	<input type="hidden" id="del-symptoms" name="del-symptoms">
+            	<div id="symptom-table" style="margin: 5px"></div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

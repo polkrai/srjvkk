@@ -1,0 +1,51 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>การเงิน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/finance/payment-history.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+        	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}" />
+          	<input type="hidden" id="qcalled" name="qcalled" value="${c.qcalled}" />
+          	<input type="hidden" id="station_id" name="station_id" value="-1" />
+          	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}" />
+          	<input type="hidden" id="cancel-reason" name="cancel-reason" value="" />
+          	<input type="hidden" id="receipt-id" name="receipt-id" />
+        </form>
+        <div id="toolbar_pane" class="toolbar_pane">
+        	<input type="button" id="btnPrint" value="พิมพ์ใบเสร็จ"></input>
+        	<input type="button" id="btnCancelReceipt" value="ยกเลิกใบเสร็จ"></input>
+        </div>
+        <div style="height:40px"></div>
+        <div id="data">
+        	
+        	<p style="font-size:18px;font-weight:bold">ประวัติการชำระเงิน</p>
+        	<input id="txt-search" name="txt-search" type="text">
+        	<input id="btn-search" name="btn-search" type="button" value="ค้นหา">
+            <div id="payment_history" style="margin:5px"></div>
+                   
+            <p style="font-size:18px;font-weight:bold">รายการค่าใช้จ่าย</p>                      
+            <div id="payment_history_item" style="margin:5px"></div>
+        </div>   
+        <div id="dlg-input">
+    		<div id="dlg-inp-hd" class="hd"></div>
+      		<div class="bd">
+				<label id="dlg-inp-msg"></label>
+				<input id="dlg-inp-value" type="text">
+     		</div>
+		</div>
+    </div>
+    <div id="footer">
+    </div>
+</body>
+</html>

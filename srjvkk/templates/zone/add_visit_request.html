@@ -1,0 +1,244 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format %>
+<% from srjvkk.lib.base import stringornone %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/zone/add-visit-request.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+    <style type="text/css">
+		th, td {
+			border:1px solid;
+		}    	
+    </style>
+    <script type="text/javascript">
+    	function sameAddressClick(elm) {
+    		var addrNo = '';
+        	var moo = '';
+        	var tambon = '';
+        	var ampur = '';
+        	var province = '';
+        	if (elm.checked) {
+	        	addrNo = '${stringornone(c.address.ad_ban)}';
+	        	moo = '${stringornone(c.address.ad_moo)}';
+	        	tambon = '${stringornone(c.address.ad_tambol)}';
+	        	ampur = '${stringornone(c.address.ad_ampher)}';
+	        	province = '${stringornone(c.address.ad_province)}';
+        	}
+
+        	document.getElementById('addr_no').value = addrNo;
+        	document.getElementById('moo').value = moo;
+        	document.getElementById('tambon').value = tambon;
+        	document.getElementById('ampur').value = ampur;
+        	document.getElementById('province').value = province;
+    	}
+    </script>
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane" id="toolbar_pane">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+                %if c.request:
+                <input type="button" id="btnPrint" value="พิมพ์">
+                %endif
+            </div>
+            <div style="height:40px"></div>
+            <div id="form-data">
+            	<input type="hidden" id="id" name="id" value="${c.req_id}">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="problem_data" name="problem_data" value="">
+            	<input type="hidden" id="tools" name="tools" />
+            	<input type="hidden" id="del_tools" name="del_tools" />
+            	<input name="is_permitted" type="radio" value="0" ${'checked="checked"' if c.request and c.request.is_permitted == False else ''}><span class="indent">ไม่ยินยอม</span><br />
+            	<input name="is_permitted" type="radio" value="1" ${'checked="checked"' if c.request and c.request.is_permitted else ''}><span class="indent">ยินยอม</span><br />
+            	<div class="indent">
+            		%for cd in c.conditions:
+            			<input type="checkbox" name="conditions" value="${cd.id}"
+            				%if c.request:
+            					%for cond in c.request.conditions:
+            						%if cond.condition_id == cd.id:
+            							checked="checked"
+            						%endif
+            					%endfor
+            				%endif
+            			>${cd.description}<br>
+            		%endfor
+            		
+            	</div>
+            	
+            	<input name="officer_limit" type="radio" value="1" ${'checked="checked"' if c.request and c.request.officer_limit else ''} /><span class="indent">จำกัดจำนวนเจ้าหน้าที่ที่ติดตามเยี่ยม<input type="text" name="condition_remark" id="condition_remark" value="${c.request.cond_remark if c.request else ''}" />คน</span>
+            	<input name="officer_limit" type="radio" value="0" ${'checked="checked"' if c.request and c.request.officer_limit == False else ''}><span class="indent">ไม่จำกัดจำนวน</span><br />
+            	<div>ปัญหาที่ต้องการให้ติดตามเยี่ยม</div>
+            	<div class="indent">
+            		%for p in c.new_problems:
+            			<input type="checkbox" name="newproblems" value="${p.id}"
+            				%if c.request:
+            					%for prob in c.request.new_problems:
+            						%if prob.problem_id == p.id:
+            							checked="checked"
+            						%endif
+            					%endfor
+            				%endif
+            			>${p.description}<br>
+            		%endfor
+            		
+            	</div>
+            	<label>ส่วนที่ 1 ข้อมูลทั่วไปของผู้ป่วย</label><br>
+            	<label>เลขที่รับเรื่อง</label><input type="text" name="request_no" value="${c.request.request_no if c.request else ''}"><br>
+            	<div><label>2. ชื่อผู้ดูแล</label><input name="relative_name" type="text" value="${c.request.relative_name if c.request else ''}"></input>
+            	เกี่ยวข้องเป็น<input name="relationship" type="text" value="${c.request.relationship if c.request else ''}"></input>
+            	ที่อยู่ <input name="is_same" type="radio" value="1" ${'checked="checked"' if c.request and c.request.is_same else ''} onclick="sameAddressClick(this);"><span class="indent">ที่เดียวกัน</span></div>
+            	<div><input name="is_same" type="radio" value="0" ${'checked="checked"' if c.request and c.request.is_same == False else ''}><span class="indent">อยู่คนละบ้าน</span>
+				เลขที่<input id="addr_no" name="addr_no" type="text" value="${c.request.addr_no if c.request else ''}"></input>หมู่ที่<input id="moo" name="moo" type="text" value="${c.request.moo if c.request else ''}"></input>บ้าน<input id="village" name="village" type="text" value="${c.request.village if c.request else ''}"></input>ตำบล<input id="tambon" name="tambon" type="text" value="${c.request.tambon if c.request else ''}"></input></div>
+				<div>อำเภอ<input id="ampur" name="ampur" type="text" value="${c.request.ampur if c.request else ''}"></input>จังหวัด<input id="province" name="province" type="text" value="${c.request.province if c.request else ''}"></input>เบอร์โทรศัพท์<input name="tel" type="text" value="${c.request.tel if c.request else ''}"></input></div>
+				
+				<div>
+					<label>ชื่อหน่วยงานที่ส่งต่อ</label><input id="network_unit" name="network_unit" type="text" value="${c.request.network_name if c.request else ''}" />
+					<label>อำเภอ</label><input id="network_ampur" name="network_ampur" type="text" value="${c.request.ampur if c.request else ''}" />
+					<label>จังหวัด</label><input id="network_province" name="network_province" type="text" value="${c.request.network_province if c.request else ''}" />
+					<label>เบอร์โทรศัพท์</label><input id="network_tel" name="network_tel" type="text" value="${c.request.network_tel if c.request else ''}" />				
+				</div>
+            	
+            	<label>3. อาการสำคัญ</label><br>
+            	<textarea rows="5" cols="70" id="symptom" name="symptom">${c.request.symptom if c.request else c.imain.detail.symptoms_important if c.imain else ''}</textarea><br>
+            	<label>คะแนนประเมิน</label><br />
+            	<span>เครื่องมือ</span><select id="select-tool">
+%for t in c.tools:
+<option value="${t.id}">${t.description}</option>
+%endfor            	
+            	</select>
+            	<span>คะแนนวันที่รับรักษา</span><input type="text" id="tool-before"></input>
+            	<span>คะแนนวันที่จำหน่าย</span><input type="text" id="tool-after"></input>
+            	<input type="button" id="btnAddTool" value="เพิ่มเครื่องมือ"></div>
+            	<div id="tool-table"></div>
+            	<label>วันที่เข้ารับการรักษา</label>
+            	<input class="textbox" type="text" id="last_admit_date" name="last_admit_date" value="${c.du.toShortFormatDate(c.request.last_admit_date) if c.request else c.du.toShortFormatDate(c.imain.admit_date) if c.imain else ''}" readonly="readonly" />
+           		<button type="button" id="btnAdmitDate" title="Show Calendar">
+           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+           		</button>
+				<div id="conAdmitDate" class="container">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calAdmitDate" class="calendar"></div>
+				    </div>
+				</div>
+            	
+            	<label>วันที่จำหน่าย/HV </label>
+            	<input class="textbox" type="text" id="last_discharge_date" name="last_discharge_date" value="${c.du.toShortFormatDate(c.request.last_discharge_date) if c.request else c.du.toShortFormatDate(c.imain.dc_date) if c.imain and c.imain.dc_date else ''}" readonly="readonly" />
+           		<button type="button" id="btnDischargeDate" title="Show Calendar">
+           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+           		</button>
+				<div id="conDischargeDate" class="container">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calDischargeDate" class="calendar"></div>
+				    </div>
+				</div>
+            	<br>
+            	<label>การวินิจฉัยโรค</label><br />
+    	        <% 
+    	        	icd10 = ''
+    	        	for i in c.icd10s:
+    	        		if icd10 == '':
+    	        			icd10 = i.code + ':' + i.icd10.name
+    	        		else:
+    	        			icd10 = icd10 + ', ' + i.code + ':' + i.icd10.name
+            	%>
+            	<textarea rows="5" cols="70" id="diag" name="diag">${c.request.diag if c.request else icd10}</textarea><br />
+            	<label>4. ผลการตรวจทางห้องปฏิบัติการที่ผิดปกติ (ยกเว้น HIV ไม่ต้องลง)</label><br>
+            	<textarea rows="5" cols="70" id="lab_result" name="lab_result">${c.request.lab_result if c.request else ''}</textarea><br>
+            	<label>5. ยาที่แพทย์ให้การรักษาผู้ป่วยในปัจจุบัน</label><br>
+            	<textarea rows="5" cols="70" id="med" name="med">
+%if c.request:
+${c.request.med}
+%else:            	
+%for it in c.items:
+${it.initial_name} ${it.dose} จำนวน ${number_format(it.qty, 0)} ${it.pay_unit_name},
+%endfor
+%endif            	
+            	</textarea><br>
+            	<label>6. ข้อมูลที่เป็นประโยชน์ในการติดตามเยี่ยม เช่น</label><br>
+            	<label>6.1 ผู้ป่วยเคยทำร้ายตัวเองมาแล้ว</label>
+            	<input type="text" name="self_harm" id="self_harm" value="${c.request.self_harm if c.request else ''}"></input>
+            	<label>ครั้ง/วิธีการทำร้ายตนเอง ได้แก่</label><br />
+            	<textarea rows="5" cols="70" id="self_harm_method" name="self_harm_method">${c.request.self_harm_method if c.request else ''}</textarea><br />
+            	<!-- <label>อาการวันจำหน่าย</label><br />
+            	<textarea rows="5" cols="70" id="discharge_symptom" name="discharge_symptom">${c.request.discharge_symptom if c.request else ''}</textarea><br /> -->
+            	<label class="indent">ขณะนี้มีความคิดทำร้ายตนเองหรือไม่</label><input type="text" name="want_self_harm" id="want_self_harm" value="${c.request.want_self_harm if c.request else ''}"></input><br />
+            	<!-- <label class="indent">วันจำหน่ายคะแนน 8Q= </label>
+            	<input type="text" name="last_8q" id="last_8q" value="${c.request.last_8q if c.request else ''}"></input>
+            	<label>9Q= </label>
+            	<input type="text" name="last_9q" id="last_9q" value="${c.request.last_9q if c.request else ''}"></input><br /> -->
+            	<label>6.2 ปัญหาซับซ้อน (ระบุ)</label>
+            	<input type="text" name="complicated_problem" id="complicated_problem" value="${c.request.complicated_problem if c.request else ''}" style="width:300px"></input><br />            	
+            	<label>7. ข้อเสนอแนะพิเศษในการดูแลสำหรับผู้ป่วยรายนี้เรื่อง</label>
+            	<input type="text" name="suggestion" id="suggestion" value="${c.request.suggestion if c.request else ''}" style="width:300px"></input><br />
+            	<label>ส่วนที่ 2 สรุปปัญหา อาการ พฤติกรรม ความต้องการของผู้ป่วยและครอบครัวขณะอยู่รักษาในโรงพยาบาล</label><br>
+            	<table border="0" cellpadding="0" cellspacing="0" width="98%" id="tbl_problem" align="center">
+            		<tr id="problem_header">
+            			<th>ว/ด/ป</th>
+            			<th>สภาพปัญหาและความต้องการ</th>
+            			<th>เพิ่มเติม</th>
+            			<th>กิจกรรมที่ดำเนินการแล้ว</th>
+            			<th>ผลการดำเนินการ</th>
+            			<th>ผู้บันทึก/ตำแหน่ง</th>
+            		</tr>
+            		<% 	
+            			i=0 
+            			
+            		%>
+            		%for p in c.problems:
+            			<% reqProb = None %>
+            			%if c.request:
+            				%for pp in c.request.problems:
+            					%if pp.problem_id == p.id:
+            						<% reqProb = pp%>
+            					%endif
+            				%endfor
+            			%endif
+            		<tr>
+            			% if i == 0:
+            			<td rowspan="${len(c.problems)}" style="vertical-align:top;">
+            				<input style="width:75px" type="text" id="problem_date${i}" name="problem_date" value="${c.du.toShortFormatDate(c.request.problem_date) if c.request else ''}" readonly="readonly" />
+			           		<button type="button" id="btnProblemDate${i}" title="Show Calendar">
+			           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+			           		</button>
+							<div id="conProblemDate${i}" class="container">
+							    <div class="hd">เลือกวันที่</div>
+							    <div class="bd">
+							        <div id="calProblemDate${i}" class="calendar"></div>
+							    </div>
+							</div>
+            			</td>
+            			% endif
+            			<td><input type="checkbox" name="problems" value="${p.id}" ${'checked="checked"' if reqProb and reqProb.problem_id==p.id else ''} /> ${p.description}</td>
+            			<td>
+            				<textarea name="problem_remark" style="width: 100px">${reqProb.remark if reqProb else ''}</textarea>
+            			</td>
+            			<td><textarea name="activity" style="width: 100px">${reqProb.activity if reqProb else ''}</textarea></td>
+            			<td><textarea name="result" style="width: 100px">${reqProb.result if reqProb else ''}</textarea></td>
+            			<td><textarea name="employee" style="width: 100px">${reqProb.employee if reqProb else ''}</textarea></td>
+            		</tr>
+            		<% i = i+1 %>
+            		%endfor
+            	</table>
+            	<label>ส่วนที่ 3 กรณีดำเนินการไม่ได้ตามเวลาที่กำหนดให้บันทึกเหตุผลความจำเป็นลงไป</label><br>
+            	<textarea rows="5" cols="70" id="reason" name="reason">${c.request.reason if c.request else ''}</textarea><br>
+           	</div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

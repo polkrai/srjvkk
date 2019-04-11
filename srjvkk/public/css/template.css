@@ -1,0 +1,101 @@
+body {
+    background-image: url('/img/back_header.gif');
+    background-repeat: repeat-x;
+}
+
+#header_pane {
+        
+    height: 120px;
+}
+
+.top_info {
+    background-image:url('/img/module_left.png');
+    width: 280px;
+    height: 30px;
+}
+
+#top_info_text {
+    text-align:center;
+    padding: 5px;
+}
+
+#left_pane {
+    float: left;
+    width: 280px;
+    border-style: dashed;
+    border-color: gray;
+    border-width: 1px;
+    /* height: 800px; */
+    /* background-color:yellow; */
+    /*border-right: solid 2px green; */
+}
+
+#left_info_pane {    
+    height: 3em;
+    padding: 5px;
+    
+}
+
+#logout_button {
+    float: right;
+}
+
+#left_queue_pane {
+}
+
+#left_queue_done_pane {
+}
+
+#important_info_pane {    
+    height: 150px;
+    border-style: dashed;
+    border-color: gray;
+    border-width: 1px;  
+    margin-left: 285px;
+    margin-right: 0px;
+}
+
+#patient_picture_pane { 
+    float: left;
+    height: 100px;
+    width: 100px;    
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#patient_info {    
+    margin: 0px;
+    margin-left: 120px;
+    margin-right: 0px;
+    height: 150px;
+    padding-left: 10px;
+}
+
+#workspace_pane {
+    margin-left: 285px;
+    margin-right: 0px;    
+    margin-top: 0px;
+    margin-bottom: 5px;
+    height: 500px;
+}
+
+#visit_charge {
+    margin: 20px;
+}
+
+#paycharge_pane {
+    padding: 10px;
+    text-align: center;
+}
+
+#footer {
+    clear: both;
+    text-align: center;
+    background-color: lightblue;
+}
+
+#hn_span {
+    font-weight: bold;
+}
+
+label { display:block;float:left;width:45%;clear:left; }

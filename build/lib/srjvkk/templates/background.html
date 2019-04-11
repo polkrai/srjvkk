@@ -1,0 +1,114 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>สังคมสงเคราะห์</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/social/background.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form_background" name="form_background" action="${h.url_for('/social/save_background')}" method="post">
+            
+            <div id="toolbar_pane" class="toolbar_pane" 
+            % if not c.bg_editable:
+                style="display:none"
+            % endif
+            >
+            
+                <input type="button" id="btnEditBackground" value="แก้ไข">
+                <input type="button" id="btnSaveBackground" value="บันทึก">   
+                <input type="button" id="btnCancelBackground" value="ยกเลิก">
+                <input type="button" id="btnPrintBackground" value="พิมพ์">
+            
+            </div>
+            % if c.bg_editable:
+            	<div style="height:40px"></div>
+            % endif                        
+            <div id="social_data" class="yui-content">
+                <input type="hidden" id="background_id" name="background_id" value="${c.pt_bg.id}">
+                <input type="hidden" id="editable" name="editable" value="${c.bg_editable}">
+                <input type="hidden" id="qcalled" name="qcalled" value="${c.qcalled}" >
+                <input type="hidden" id="pa_id" name="pa_id" value="${c.bg_pa_id}" >
+                <input type="hidden" id="bg_problems" name="bg_problems" >
+                <input type="hidden" id="del_bg_problems" name="del_bg_problems" >
+                <input type="hidden" id="bg_helps" name="bg_helps" >
+                <input type="hidden" id="del_bg_helps" name="del_bg_helps" >
+                
+                <label>ผู้ให้ประวัติ:</label><input class="textbox" type="text" id="info_provider" name="info_provider" value="${c.pt_bg.info_provider}">
+                <label>เกี่ยวข้องเป็น:</label><input class="textbox" type="text" id="provider_relation" name="provider_relation" value="${c.pt_bg.provider_relation}"><br><br>
+                <label>อาการสำคัญ:</label><textarea class="textarea" id="important_symptom" name="important_symptom">${c.pt_bg.important_symptom}</textarea>
+                <label>เป็นมานาน :</label><input class="textbox" type="text" id="period" name="period" value="${c.pt_bg.period}" />
+                <label>รับการรักษา:</label>
+                <input id="inpHs" name="inpHs" type="text" style="position:static;width:200px;vertical-align:middle;" 
+                % if c.pt_bg.health_station:
+					value="${c.pt_bg.health_station}"
+                % endif
+                "> <span id="btnHs"></span>
+                <div id="ctHs" style=" width:200px;left:0px"></div><br><br>
+                <label>ประวัติการเจ็บป่วยในอดีต</label><br><br>
+                <label>-ทางกาย:</label><div style="float:left"><input type="radio" name="rdo-physical" id="physical-false" value="false" checked="checked">ไม่มี<input type="radio" name="rdo-physical" id="physical-true" value="true">มี</div><br>
+                <textarea class="textarea" id="history_physical" name="history_physical">${c.pt_bg.history_physical}</textarea><br>
+                <label>-ทางจิต:</label><textarea class="textarea" id="history_mental" name="history_mental">${c.pt_bg.history_mental}</textarea><br>
+                <label>-อุบัติเหตุ:</label><textarea class="textarea" id="history_accident" name="history_accident">${c.pt_bg.history_accident}</textarea><br>
+                <label>ประวัติการแพ้ยา:</label><textarea class="textarea" id="history_med_alergy" name="history_med_alergy">${c.pt_bg.history_med_alergy}</textarea><br>
+                <label>กรรมพันธุ์:</label><div style="float:left"><input type="radio" name="rdo-heredity" id="heredity-false" value="false" checked="checked">ไม่มี<input type="radio" name="rdo-heredity" id="heredity-true" value="true">มี</div><br>
+                <textarea class="textarea" id="heredity" name="heredity">${c.pt_bg.heredity}</textarea><br>
+                <label>บุคลิกภาพ:</label><textarea class="textarea" id="personality" name="personality">${c.pt_bg.personality}</textarea><br>
+                <label>สิ่งเสพติด:</label><div style="float:left"><input type="radio" name="rdo-drug" id="drug-false" value="false" checked="checked">ไม่เคย<input type="radio" name="rdo-drug" id="drug-true" value="true">เคย</div><br>
+                <textarea class="textarea" id="drug_usage" name="drug_usage">${c.pt_bg.drug_usage}</textarea><br>
+                <label>ประวัติครอบครัว:</label><textarea class="textarea" id="history_family" name="history_family">${c.pt_bg.history_family}</textarea><br>
+                
+                <!--  <label>วิเคราะห์:</label><textarea class="textarea" id="social_analysis_text" name="social_analysis_text">${c.pt_bg.social_analysis_text}</textarea><br>-->
+                <div style="float:left;width:100%">
+                	
+                    <label>การวินิจฉัยทางสังคม:</label><br><br>
+                    
+                    <div style="margin: 5px;" 
+                    % if c.bg_editable:
+                    	style="display:none"
+                    % endif
+                    >
+						<input onkeypress="checkEnter(event, 'prob')" type="text" id="txtAddProb" style="position:static;width:200px;vertical-align:middle;">
+						<input id="btnAddProb" type="button" value="เพิ่ม" >
+	                	<div id="ctProb" style="width:200px;left:0px;">
+                	</div>
+                    <div id="bg_social_problem" style="margin: 5px;"></div>
+                </div>
+                
+                <div style="float:left;width:100%">
+                    <label>การให้ความช่วยเหลือ:</label><br><br>
+                    
+                    <div style="margin: 5px;"
+                    % if c.bg_editable:
+                    	style="display:none"
+                    % endif
+                    >
+						<input onkeypress="checkEnter(event, 'help')" type="text" id="txtAddHelp" style="position:static;width:200px;vertical-align:middle;">
+						<input id="btnAddHelp" type="button" value="เพิ่ม" >
+	                	<div id="ctHelp" style="width:200px;left:0px;">
+                	</div>
+                    
+                    <div id="bg_social_help" style="margin: 5px;">                                
+                    </div>
+                </div><br>
+                <div>
+                	<label>ผู้ซักประวัติ:</label><label id="created_by"></label>
+                	<label>ตำแหน่ง:</label><label id="position"></label><br><br>
+                	<label>วันที่ซักประวัติ:</label><label id="created_date"></label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <iframe id="frmprint" name="frmprint" height="0" frameborder="0"></iframe>
+</body>
+</html>

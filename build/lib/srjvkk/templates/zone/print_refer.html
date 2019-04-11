@@ -1,0 +1,101 @@
+﻿# -*- coding: utf-8 -*- 
+<% from math import ceil %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:white">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+    <style>
+    	body {
+    		font-family: "sans serif";
+    		font-size: 16px;
+    	}
+    </style>    
+</head>
+<body style="width:21cm;height:29.7cm;background-color:white;" onload="window.print()">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div id="form-data">
+            	<h3 style="text-align:center;">ใบส่งต่อผู้ป่วยจิตเวชเพื่อการดูแลต่อเนื่องในชุมชน</h3>            	
+            	<div><input type="checkbox" name="is_municipality" value="1" ${'checked="checked"' if c.refer and c.refer.is_municipality else ''}><span class="indent"><span class="indent">บ้านผู้ป่วยมีสถานที่ใกล้เคียงคือ </span><span class="answer-space">${c.refer.landmark if c.refer else ''}</span></span></div>
+            	<div>ประเภทที่ต้องเฝ้าระวัง</div><br />
+            	<div class="indent">
+            	%for m in c.monitors:
+            		<span class="indent"><span class="indent"><input type="radio" name="monitor" id="monitor" value="${m.id}" ${'checked="checked"' if c.refer and c.refer.monitor_id == m.id else ''} ></input>${m.description}</span></span><br />
+            	%endfor
+            	<br />
+            	ชื่อโรค<span class="answer-space">${c.refer.monitor_remark if c.refer else ''}</span>
+            	</div><br />
+				<div>ยินยอมให้เยี่ยมบ้าน
+            	<span class="indent"><input name="is_permitted" type="radio" value="1" ${'checked="checked"' if c.refer and c.refer.is_permitted else ''}><span class="indent">ยินยอม</span></input></span>
+            	<span class="indent"><input name="is_permitted" type="radio" value="0" ${'checked="checked"' if c.refer and c.refer.is_permitted == False else ''}><span class="indent">ไม่ยินยอม</span></input></span>
+            	</div>
+            	<label>1. ชื่อผู้ป่วยที่ส่งต่อ</label><span class="answer-space">${c.refer.patient.name}</span>อายุ<span class="answer-space">${c.refer.patient.age}</span>ปี เบอร์โทรศัพท์<span class="answer-space">${c.refer.patient.pa_patient_phone}</span><br />
+            	ที่อยู่<span class="answer-space">${c.address.ad_ban}</span>หมู่ที่<span class="answer-space">${c.address.ad_moo}</span>ตำบล<span class="answer-space">${c.address.ad_tambol}</span>อำเภอ<span class="answer-space">${c.address.ad_ampher}</span>จังหวัด<span class="answer-space">${c.address.ad_province}</span>
+				<div><label>2. ชื่อญาติผู้ดูแล</label><span class="answer-space">${c.refer.relative.name if c.refer else ''}</span> เกี่ยวข้องเป็น<span class="answer-space">${c.refer.relative.relationship if c.refer else ''}</span>ที่อยู่ <input name="is_same" type="checkbox" value="1" ${'checked="checked"' if c.refer and c.refer.relative.is_same else ''} /> ที่เดียวกัน</div>
+				<div>อยู่คนละบ้าน เลขที่<span class="answer-space">${c.refer.relative.addr_no if c.refer else ''}</span>หมู่ที่<span class="answer-space">${c.refer.relative.moo if c.refer else ''}</span>บ้าน<span class="answer-space">${c.refer.relative.village if c.refer else ''}</span>ตำบล<span class="answer-space">${c.refer.relative.tambon if c.refer else ''}</span></div>
+				<div>อำเภอ<span class="answer-space">${c.refer.relative.ampur if c.refer else ''}</span>จังหวัด<span class="answer-space">${c.refer.relative.province if c.refer else ''}</span>เบอร์โทรศัพท์<span class="answer-space">${c.refer.relative.tel if c.refer else ''}</span></div>
+				
+				<div><b>ชื่อหน่วยงานที่ส่งต่อ</b><span class="answer-space">${c.refer.network_unit if c.refer and c.refer.network_unit else ''}</span>
+				อำเภอ<span class="answer-space">${c.refer.network_ampur if c.refer and c.refer.network_ampur else ''}</span>
+				จังหวัด<span class="answer-space">${c.refer.network_province if c.refer and c.refer.network_province else ''}</span><br />
+				เบอร์โทร<span class="answer-space">${c.refer.network_tel if c.refer and c.refer.network_tel else ''}</span>
+				</div>
+				
+				<div><label>ข้อมูลที่เกี่ยวข้องกับการบำบัด รักษาในโรงพยาบาลจิตเวชขอนแก่นราชนครินทร์</label></div>
+				<div class="indent">4.1 ผู้ป่วยนอก (งาน OPD)</div>
+				<div class="indent"><span class="indent">4.1.1 ว.ด.ป.ที่มารับบริการเป็นผู้ป่วยนอก</span>
+				<span class="answer-space">${c.du.toShortFormatDate(c.refer.last_visit_date) if c.refer and c.refer.last_visit_date else c.du.toShortFormatDate(c.last_visit.time_add)}</span>
+				</div>
+				
+				<div class="indent">
+					<span>4.2 อาการสำคัญที่มาโรงพยาบาล</span>
+					${c.hu.multiLineAnswer(c.refer.symptom)}
+            		<br>
+            	</div>
+            	<div class="indent"><span>4.3 การวินิจฉัยโรค</span><br />
+            	<% 
+            		icd10 = ''
+            		if c.icd10s:
+	    	        	for i in c.icd10s:
+	    	        		if icd10 == '':
+	    	        			icd10 = i.code + ':' + i.icd10.name
+	    	        		else:
+	    	        			icd10 = icd10 + ', ' + i.code + ':' + i.icd10.name
+	    	        
+            	%>
+            	${c.hu.multiLineAnswer(c.refer.diag if c.refer else icd10)}
+            	<div class="indent">
+					<span>4.4 ยาที่ให้ไปรับประทานต่อที่บ้าน จำนวน</span><span class="answer-space">${c.refer.homemed_month if c.refer and c.refer.homemed_month else ''}</span><span>เดือน</span><br />
+${c.hu.multiLineAnswer(c.refer.homemed)}					
+            	<br>
+            	</div>
+            	<div class="indent">
+					<span>4.5 ข้อมูลที่เกี่ยวกับการช่วยเหลือ/การพยาบาลที่ผู้ป่วยได้รับ</span><br>
+					<span class="indent">ผู้ป่วยนอก (งาน OPD)</span><br />
+					${c.hu.multiLineAnswer(c.refer.help_opd)}
+				<br />
+            	</div>
+            	<div class="indent"><span>4.6 คะแนนประเมิน จากแบบประเมินโรคซึมเศร้า DS8/แบบประเมินการฆ่าตัวตาย (8Q)</span><br />
+            	<span class="indent">วันที่รับรักษา 
+%for t in c.refer.tools:
+${t.tool.description} ${'('+t.remark+')' if t.remark else ''} ${c.hu.singleLineAnswer(t.before)}
+%endfor				
+				</span>	
+            	</div>
+            	<div class="indent"><span>4.7 วันที่นัดหมายให้ไปรับยาที่โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์</span>${c.hu.singleLineAnswer(c.du.toShortFormatDate(c.refer.remed_date))}</div>
+            	<div class="indent"><span>4.8 สำหรับผู้ป่วยรายนี้มีข้อเสนอแนะในการดูแลเป็นพิเศษเรื่อง</span>${c.hu.singleLineAnswer(c.refer.suggestion)}</div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

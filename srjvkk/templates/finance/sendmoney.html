@@ -1,0 +1,65 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>การเงิน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/finance/sendmoney.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+   	<style>
+        #conStartDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conStartDate .bd {padding:0;}
+        #calStartDate {border:none;padding:1em}
+
+        #conEndDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conEndDate .bd {padding:0;}
+        #calEndDate {border:none;padding:1em}
+
+    </style>
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+        	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}" />
+          	<input type="hidden" id="qcalled" name="qcalled" value="${c.qcalled}" />
+          	<input type="hidden" id="station_id" name="station_id" value="${c.station_id}" />
+          	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}" />
+          	<input type="hidden" id="cancel-reason" name="cancel-reason" value="" />
+          	<input type="hidden" id="receipt-id" name="receipt-id" />
+        </form>
+        <div id="toolbar_pane" class="toolbar_pane">
+        	<input type="button" id="btnSendMoney" value="นำส่งเงิน"></input>
+        	<input type="button" id="btnPrint" value="พิมพ์ใบนำส่งเงิน"></input>
+        </div>
+        <div style="height:40px"></div>
+        <div id="data">
+        	<p style="font-size:18px;font-weight:bold">ประวัติการนำส่งเงิน</p>
+        	<label>จากวันที่</label><input class="textbox" type="text" id="startDate" name="startDate" value="" /><button type="button" id="btnStartDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+			<div id="conStartDate">
+			    <div class="hd">เลือกวันที่</div>
+			    <div class="bd">
+			        <div id="calStartDate"></div>
+			    </div>
+			</div><br><br>
+			<label>ถึงวันที่</label><input class="textbox" type="text" id="endDate" name="endDate" value="" /><button type="button" id="btnEndDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+			<div id="conEndDate">
+			    <div class="hd">เลือกวันที่</div>
+			    <div class="bd">
+			        <div id="calEndDate"></div>
+			    </div>
+			</div>
+        	<input id="btnSearch" name="btnSearch" type="button" value="ค้นหา">
+            <div id="sendMoneyTable" style="margin:5px"></div>
+            <div id="sendMoneyItemTable" style="margin:5px"></div>
+        </div>   
+    </div>
+    <div id="footer">
+    </div>
+    <iframe id="frmprint" name="frmprint" height="0" frameborder="0"></iframe>
+</body>
+</html>

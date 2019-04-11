@@ -1,0 +1,80 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/ps/edit-assessment-result.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+                <a href="${h.url_for('/psychosocial/assessment')}?pa_id=${c.pa_id}&vn_id=${c.vn_id}">กลับ</a>
+            </div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="pa_as_id" name="pa_as_id" value="${c.pa_as_id}">
+            	<input type="hidden" id="time" name="time">
+            	<label>ผลการประเมินก่่อนเข้ารับบริการจิตสังคมบำบัด</label>
+            	<div class="indent">
+            		<input type="radio" name="is_ready" value="1"
+            		%if c.ar.is_ready:
+           				${'checked="checked"'}
+           			%endif
+            		><span class="indent">พร้อมเข้ารับการบำบัด</span>
+            		<input type="radio" name="is_ready" value="0"
+            		%if not c.ar.is_ready:
+            			${'checked="checked"'}
+            		%endif
+            		><span class="indent">ไม่พร้อมเข้ารับการบำบัด</span>
+            	</div>
+				<div id="detail" style="display:${'none' if not c.ar.is_ready else ''}">
+				<label>ประเภทของการบำบัด</label><br><br>
+				% for t in c.types:
+					<span class="indent"><input 
+					%if c.ar.type_id == t.id:
+						checked="checked"
+					%endif
+					type="radio" name="type" value="${t.id}">${t.description}</span>
+				% endfor
+				<br><br>
+				<label>รูปแบบของการบำบัด</label><br><br>
+				% for m in c.methods:
+					<span class="indent"><input 
+					%if c.ar.method_id == m.id:
+						checked="checked"
+					%endif
+					type="radio" name="method" value="${m.id}">${m.description}</span><br>
+				% endfor
+				<br><br>
+				<label>จำนวนครั้งที่เข้ารับการบำบัดตามโปรแกรมการบำบัด</label><br><br>
+				% for n in c.numbers:
+					<span class="indent"><input 
+					%if c.ar.number_id == n.id:
+						checked="checked"
+					%endif
+					type="radio" name="number" value="${n.id}">${n.number} ครั้ง</span>
+				% endfor
+				<br><br>		
+				</div>	
+				<label for="result">ผลการประเมิน</label><br />
+				<textarea name="result" rows="30" cols="60">${c.ar.result}</textarea><br />
+				<label for="conclusion">สรุปความเห็นจากการประเมิน</label><br />
+				<textarea name="conclusion" rows="30" cols="60">${c.ar.conclusion}</textarea><br />
+				<!--  <label for="appointdate">วันนัดหมาย</label><input type="text" value="${c.du.toShortFormatDate(c.ar.appoint_date)}" readonly="readonly">-->	
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

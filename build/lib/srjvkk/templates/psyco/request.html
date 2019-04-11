@@ -1,0 +1,482 @@
+# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>จิตวิทยา แจ้งขอ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-beta-min.js" ></script>
+    <script type="text/javascript" src="/js/psyco/request.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/psyco.css" >
+    <style type="text/css">
+        <!--
+        .style1 {color: #FFFFFF}
+        #apDiv1 {
+        	position:absolute;
+        	left:402px;
+        	top:111px;
+        	width:45%;
+        	height:353px;
+        	z-index:1;
+        }
+        #apDiv2 {
+        	position:absolute;
+        	left:22px;
+        	top:111px;
+        	width:45%;
+        	height:419px;
+        	z-index:2;
+        }
+        #apDiv3{
+        	position:absolute;
+        	left:10px;
+        	top:111px;
+        	width:95%;
+        	height:339px;
+        	z-index:1;
+        }
+        -->
+    </style>
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+        <div id="logo_div">
+            <img src="/img/logo7_2.png" />
+        </div>
+    </div>
+    <div id="main_bd">
+        <div id="left_pane">
+            <div class="top_info"><div id="top_info_text">JVKK Information System</div></div>
+            <div id="left_info_pane">
+                <form method="post" action="/srutil/logout">
+                    <b>ผู้ใช้: </b>${c.user.name} ${c.user.lastname}<br>
+                    <input id="logout_button" type="submit" name="logout" value="Log out"></input>
+                </form>
+            </div>
+            <div class="top_info"><div id="top_info_text">รายการใบคำขอที่ยังไม่ส่ง</div></div>
+            <div id="button_working_pane">
+                <input type="button" id="btnCreateReq" value="สร้างใบใหม่" />
+                <input type="button" id="btnEditReq" value="แก้ไข" />
+                <input type="button" id="btnSendReq" value="ส่งต่อ" />
+            </div>
+            <div id="left_scrath_pane">
+            </div>
+            <div class="top_info"><div id="top_info_text">รายการที่อยู่ระหว่างดำเนินการ</div></div>
+            <div id="left_inprogress_pane">
+            </div>
+            <div class="top_info"><div id="top_info_text">รายการที่ทดสอบ/บำบัดเสร็จสิ้นแล้ว</div></div>
+            <div id="left_completed_pane">
+            </div>
+        </div>
+        <div id="important_info_pane">
+            <div id="patient_picture_pane">
+                <img id="patient_picture" src="/noname.png" width="100px" height="100px" />
+                <span id="hn_span">HN:</span>
+            </div>
+            
+            <div id="patient_info"><b>ข้อมูลสำคัญ</b>
+            </div>
+        </div>
+        <div id="common_menu_pane">
+            <img id="patient_info_menu" src="/img/topmenu/top_menu1_normal.png" width="150px" height="40px" />
+            <img id="treatment_info_menu" src="/img/topmenu/top_menu2_normal.png" width="150px" height="40px" />
+            <img id="lab_info_menu" src="/img/topmenu/top_menu3_normal.png" width="150px" height="40px" />
+            <img id="psyco_info_menu" src="/img/topmenu/top_menu4_normal.png" width="150px" height="40px" />
+        </div>
+        <div id="workspace_pane">            
+            <div id="demo" class="yui-navset"> 
+                <ul class="yui-nav"> 
+                    <li class="selected"><a href="#tab1"><em>ซักประวัติ</em></a></li> 
+                    <li><a href="#tab2"><em>สงเคราะห์</em></a></li> 
+                    <li><a href="#tab3"><em>นิติจิตเวช</em></a></li> 
+                </ul>             
+                <div class="yui-content"> 
+                    <div id="social_page">
+                        <form id="form_background" name="form_background" action="/social/save_background" method="post">
+                            <div class="toolbar_pane">
+                                <input type="button" id="btnEditBackground" value="แก้ไข" />
+                                <input type="button" id="btnSaveBackground" value="บันทึก" />   
+                                <input type="button" id="btnCancelBackground" value="ยกเลิก" />
+                                <input type="button" id="btnPrint" value="พิมพ์" />
+                                
+                            </div>
+                                                    
+                            <div id="social_data">
+                                <input type="hidden" id="background_id" name="background_id" />
+                                <input type="hidden" id="pa_id" name="pa_id" />
+                                <input type="hidden" id="bg_problems" name="bg_problems" />
+                                <input type="hidden" id="bg_helps" name="bg_helps" />
+                                <label>ผู้ให้ประวัติ:</label><input size="50" class="textbox" type="text" id="info_provider" name="info_provider" value="${c.pt_bg.info_provider}" />
+                                <label>เกี่ยวข้องเป็น:</label><input class="textbox" type="text" id="provider_relation" name="provider_relation" value="${c.pt_bg.provider_relation}" /><br /><br />
+                                <label>อาการสำคัญ:</label><textarea class="textarea" id="important_symptom" name="important_symptom">${c.pt_bg.important_symptom}</textarea><br />
+                                <label>เป็นมานาน (วัน):</label><input class="textbox" type="text" id="period" name="period" value="${c.pt_bg.period}" />
+                                <label>รับการรักษา:</label><div class="textbox"><input type="text" id="health_station_name" name="health_station_name" value="" />
+                                <div id="health_stations"></div></div><br /><br />
+                                <input type="hidden" id="health_station_id" name="health_station_id" value="${c.pt_bg.health_station_id}" />
+                                <span>ประวัติการเจ็บป่วยในอดีต</span><br /><br />
+                                <label>-ทางกาย:</label><textarea class="textarea" id="history_physical" name="history_physical">${c.pt_bg.history_physical}</textarea><br />
+                                <label>-ทางใจ:</label><textarea class="textarea" id="history_mental" name="history_mental">${c.pt_bg.history_mental}</textarea><br />
+                                <label>-อุบัติเหตุ:</label><textarea class="textarea" id="history_accident" name="history_accident">${c.pt_bg.history_accident}</textarea><br />
+                                <label>ประวัติการแพ้ยา:</label><textarea class="textarea" id="history_med_alergy" name="history_med_alergy">${c.pt_bg.history_med_alergy}</textarea><br />
+                                <label>กรรมพันธุ์:</label><textarea class="textarea" id="heredity" name="heredity">${c.pt_bg.heredity}</textarea><br />
+                                <label>บุคลิกภาพ:</label><textarea class="textarea" id="personality" name="personality">${c.pt_bg.personality}</textarea><br />
+                                <label>สิ่งเสพติด:</label><textarea class="textarea" id="drug_usage" name="drug_usage">${c.pt_bg.drug_usage}</textarea><br />
+                                <label>ประวัติครอบครัว:</label><textarea class="textarea" id="history_family" name="history_family">${c.pt_bg.history_family}</textarea><br />
+                                <label>วิเคราะห์:</label><textarea class="textarea" id="social_analysis_text" name="social_analysis_text">${c.pt_bg.social_analysis_text}</textarea><br />
+                                <label>ปัญหาสังคม:</label><br /><br />
+                                <input id="btnAddProb" type="button" value="เพิ่ม" /><br />
+                                <div id="bg_social_problem">
+                                
+                                </div>
+                                <label>การให้ความช่วยเหลือ:</label><br /><br /><br />
+                                <input id="btnAddHelp" type="button" value="เพิ่ม" /><br />
+                                <div id="bg_social_help">                                
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="socialhelp_page">
+                        <div class="toolbar_pane">
+                            <input type="button" id="btnApprove" value="อนุมัติ" />
+                            <input type="button" id="btnDisapprove" value="ไม่อนุมัติ" />   
+                            <input type="button" id="btnPrintHelp" value="พิมพ์" />
+                        </div>
+                    <div id="apDiv1">
+                      <table width="100%" border="0">
+                        <tr>
+                          <td width="41%">ภูมิลำเนา</td>
+                          <td width="59%"><select name="select5" size="1" id="select5" style="width:75%">
+                            <option>ขอนแก่น</option>
+                          </select></td>
+                        </tr>
+                        <tr>
+                          <td>การศึกษา</td>
+                          <td><select name="select4" size="1" id="select4" style="width:75%">
+                            <option>มัธยมศึกษาตอนปลาย</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                          <td>สถานภาพสมรส</td>
+                          <td><select name="select3" size="1" id="select3" style="width:75%">
+                            <option>สมรส</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                          <td>อาชีพ</td>
+                          <td><select name="select2" size="1" id="select2" style="width:75%">
+                            <option>ค้าขาย</option>
+                                </select></td>
+                        </tr>
+                        <tr>
+                          <td>รายได้</td>
+                          <td><input style="width:75%" type="text" name="textfield8" id="textfield8" /></td>
+                        </tr>
+                        <tr>
+                          <td>ผู้ร้องขอ</td>
+                          <td><input style="width:75%" type="text" name="textfield9" id="textfield9" /></td>
+                        </tr>
+                        <tr>
+                          <td>เกี่ยวข้องเป็น</td>
+                          <td><select name="select" size="1" id="select" style="width:75%">
+                            <option selected="selected">บิดา</option>
+                            <option>มารดา</option>
+                            </select></td>
+                        </tr>
+                        <tr>
+                          <td valign="top">ประวัติครอบครัว      </td>
+                          <td><label>
+                          <textarea style="width:75%" name="textarea" rows="5" id="textarea" ></textarea>
+                          </label></td>
+                        </tr>
+                        <tr>
+                          <td valign="top">ความสัมพันธ์ภายในครอบครัว</td>
+                          <td><textarea style="width:75%" name="textarea2" rows="5" id="textarea2" ></textarea></td>
+                        </tr>
+                        <tr>
+                          <td valign="top">สาเหตุที่ร้องขอ</td>
+                          <td><select name="select6" size="1" id="select6" style="width:75%">
+                          </select></td>
+                        </tr>
+                        <tr>
+                          <td valign="top">เหตุผลที่ให้การสงเคราะห์</td>
+                          <td><select name="select7" size="1" id="select7" style="width:75%">
+                          </select></td>
+                        </tr>
+                      </table>
+                    </div>
+                        <div id="apDiv2">
+                          <p style="font-size:18px;font-weight:bold">ประวัติการสงเคราะห์</p>
+                          <table width="100%" border="0">
+                            <tr>
+                              <th width="59" bgcolor="#003399" scope="col"><span class="style1">ครั้งที่</span></th>
+                              <th width="59" bgcolor="#003399" scope="col"><span class="style1">วันที่</span></th>
+                              <th width="136" bgcolor="#003399" scope="col"><span class="style1">จำนวนเงิน</span></th>
+                              <th width="136" bgcolor="#003399" scope="col"><span class="style1">สถานะ</span></th>
+                            </tr>
+                            <tr>
+                              <td bgcolor="#FFFFCC">1</td>
+                              <td bgcolor="#FFFFCC">09/01/2550</td>
+                              <td align="right" bgcolor="#FFFFCC">500.00</td>
+                              <td bgcolor="#FFFFCC">อนุมัติ</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>12/07/2550</td>
+                              <td align="right">1,120.00</td>
+                              <td>อนุมัติ</td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td>02/02/2551</td>
+                              <td align="right">200.00</td>
+                              <td>รออนุมัติ</td>
+                            </tr>
+                          </table>
+                          <p style="font-size:18px;font-weight:bold">ประเภทการสงเคราะห์</p>
+                          <table width="100%" border="0">
+                            <tr>
+                              <td width="40%">จำนวนเงินทั้งหมด (บาท)</td>
+                              <td width="60%"><input style="text-align:right" name="textfield" type="text" id="textfield" value="1,820.00" /></td>
+                            </tr>
+                            <tr>
+                              <td>ชำระได้ (บาท)</td>
+                              <td><input style="text-align:right"  name="textfield2" type="text" id="textfield2" value="0.00" /></td>
+                            </tr>
+                            <tr>
+                              <td>จำนวนเงินสงเคราะห์(บาท)</td>
+                              <td><input style="text-align:right" name="textfield3" type="text" id="textfield3" value="1,820.00" /></td>
+                            </tr>
+                          </table>
+                          <table width="100%" border="1">
+                            <tr>
+                              <th width="161" bgcolor="#003399" scope="col"><span class="style1">ประเภท</span></th>
+                              <th width="97" bgcolor="#003399" scope="col"><span class="style1">จำนวนเงิน</span></th>
+                              <th width="98" bgcolor="#003399" scope="col"><span class="style1">ชำระได้</span></th>
+                              <th width="108" bgcolor="#003399" scope="col"><span class="style1">สงเคราะห์</span></th>
+                            </tr>
+                            <tr>
+                              <td>ค่ายา</td>
+                              <td align="right">200.00</td>
+                              <td align="right">0.00</td>
+                              <td align="right">200.00</td>
+                            </tr>
+                            <tr>
+                              <td>ค่าตรวจทางจิตวิทยา</td>
+                              <td align="right">150.00</td>
+                              <td align="right">0.00</td>
+                              <td align="right">150.00</td>
+                            </tr>
+                            <tr>
+                              <td>อื่นๆ</td>
+                              <td align="right">150.00</td>
+                              <td align="right">0.00</td>
+                              <td align="right">150.00</td>
+                            </tr>
+                          </table>
+                        </div>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    </div> 
+                    
+                    
+                    <div id="niti_page">
+                        <div class="toolbar_pane">
+                            <input type="button" id="btnAddNiti" value="เพิ่ม" />
+                            <input type="button" id="btnEditNiti" value="แก้ไข" />
+                            <input type="button" id="btnSaveNiti" value="บันทึก" />   
+                            <input type="button" id="btnCancelNiti" value="ยกเลิก" />
+                            <input type="button" id="btnPrintNiti" value="พิมพ์" />
+                        </div>
+                        <div id="apDiv3">
+                          <p style="font-size:18px;font-weight:bold">ประวัติคดี</p>
+                          <div id="niti_crime_table"></div>
+                          <table width="100%" >
+                            <tr>
+                              <td colspan="2" valign="top">คดี</td>
+                              <td valign="top"><input style="text-align:right;width:75%" name="textfield" type="text" id="textfield" /></td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" valign="top">วันที่เกิดเหตุ</td>
+                              <td valign="top"><select name="select3" size="1" id="select3">
+                                <option>15/08/2550</option>
+                                          </select></td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" valign="top">วันที่มอบตัว</td>
+                              <td valign="top"><select name="select" size="1" id="select" >
+                                <option>18/09/2550</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" valign="top">วันที่ส่งมาโรงพยาบาล</td>
+                              <td valign="top"><select name="select2" size="1" id="select2" >
+                                <option>27/11/2550</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" valign="top">เหตุนำส่ง</td>
+                              <td valign="top"><label>
+                              <textarea  style="width:75%" name="textarea" id="textarea" cols="45" rows="5"></textarea>
+                              </label></td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" valign="top">ประวัติในอดีตของผู้ป่วย</td>
+                              <td valign="top">&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td width="2%" valign="top">&nbsp; </td>
+                              <td width="24%" valign="top">- อุปนิสัยปกติจากผู้ป่วย</td>
+                              <td valign="top"><textarea  style="width:75%" name="textarea2" id="textarea2" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- อุปนิสัยปกติจากผู้ป่วย</td>
+                              <td valign="top"><textarea  style="width:75%" name="textarea3" id="textarea3" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- ประวัติการเจ็บป่วยทางกาย</td>
+                              <td valign="top"><textarea  style="width:75%" name="textarea4" id="textarea4" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- ประวัติการเจ็บป่วยทางจิต</td>
+                              <td valign="top"><textarea  style="width:75%" name="textarea5" id="textarea5" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- ประวัติการต้องโทษ</td>
+                              <td valign="top"><textarea  style="width:75%" name="textarea6" id="textarea6" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- สารเสพติด</td>
+                              <td valign="top"><textarea  style="width:75%" name="textarea7" id="textarea7" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- อุบัติเหตุ</td>
+                              <td valign="top"><textarea  style="width:75%" name="textarea8" id="textarea8" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- ประสบการณ์ทางเพศ</td>
+                              <td valign="top"><textarea style="width:75%"  name="textarea9" id="textarea9" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- กรรมพันธุ์</td>
+                              <td valign="top"><textarea style="width:75%"  name="textarea10" id="textarea10" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td valign="top">&nbsp;</td>
+                              <td valign="top">- ประวัติครอบครัว</td>
+                              <td valign="top"><textarea style="width:75%" name="textarea11" id="textarea11" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" valign="top">วิเคราะห์</td>
+                              <td valign="top"><textarea style="width:75%" name="textarea12" id="textarea12" cols="45" rows="5"></textarea></td>
+                            </tr>
+                            <tr>
+                              <td colspan="2" valign="top">ปัญหาทางสังคม</td>
+                              <td valign="top">
+                        		<input id="btnAddProbNiti" type="button" value="เพิ่ม" />
+                                <table width="75%" border="1">
+                                    <tr>
+                                      <th width="136" bgcolor="#003399" scope="col"><span class="style1">รหัส</span></th>
+                                      <th width="440" bgcolor="#003399" scope="col"><span class="style1">คำอธิบาย</span></th>
+                                      <th></th>
+                                      </tr>
+                                    <tr>
+                                      <td>01</td>
+                                      <td>xxx</td>
+                                      <td><img src="/img/del.png" /></td>
+                                      </tr>
+                                    <tr>
+                                      <td>02</td>
+                                      <td>yyy</td>
+                                      <td><img src="/img/del.png" /></td>
+                                    </tr>
+                                </table>
+                                </tr>
+                                <tr>
+                                <td colspan="2" valign="top">ปัญหาทางสังคม</td>
+                                <td valign="top">
+                                <input id="btnAddHelpNiti" type="button" value="เพิ่ม" />
+                                <table width="75%" border="1">
+                                    <tr>
+                                      <th width="136" bgcolor="#003399" scope="col"><span class="style1">รหัส</span></th>
+                                      <th width="440" bgcolor="#003399" scope="col"><span class="style1">คำอธิบาย</span></th>
+                                      <th></th>
+                                      </tr>
+                                    <tr>
+                                      <td>01</td>
+                                      <td>aaa</td>
+                                      <td><img src="/img/del.png" /></td>
+                                      </tr>
+                                    <tr>
+                                      <td>02</td>
+                                      <td>bbb</td>
+                                      <td><img src="/img/del.png" /></td>
+                                    </tr>
+                                </table></td>
+                            </tr>
+                          </table>
+</div>
+                                            
+                    
+                    </div> 
+                </div> 
+            </div>
+            
+            <div id="paycharge_pane">
+                
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        footer
+    </div>
+    <div id="dlgSendQueue">
+        <div class="hd">ส่งต่อ</div>
+        <div class="bd">
+            <form method="POST" action="/srutil/transfer">
+                    <input type="hidden" id="q_id" name="q_id" />
+                    <input type="hidden" id="src" name="src" />
+                    <label>เลือกกิจกรรม: </label><select id="select_action">
+                        %for act in c.actions:
+                            <option value="${act['m_id']}">${act['cname']} - ${act['mname']}</option>
+                        %endfor
+                    </select>
+            </form>
+        </div>
+    </div>
+    <div id="lookupSocialProblem">
+        <div class="hd">ปัญหาสังคม</div>
+        <div class="bd">
+            <label>เลือกปัญหา: </label><select id="select_problem">
+                %for p in c.problems:
+                    <option id="${p['id']}" value="${p['code']}">${p['description']}</option>
+                %endfor
+            </select>
+        </div>
+    </div>
+    <div id="lookupSocialHelp">
+    <div class="hd">ความช่วยเหลือ</div>
+        <div class="bd">
+        <label>เลือกความช่วยเหลือ: </label><select id="select_help">
+                %for p in c.helps:
+                    <option id="${p['id']}" value="${p['code']}">${p['description']}</option>
+                %endfor
+            </select>
+
+        </div>
+    </div>
+    <div id="container"></div>
+</body>
+</html>
