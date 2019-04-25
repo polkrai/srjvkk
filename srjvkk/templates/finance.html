@@ -8,8 +8,9 @@
     <link rel="stylesheet" type="text/css" href="/css/finance.css" >
     <link rel="stylesheet" type="text/css" href="/yui/grids/grids-min.css" >
     <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js"></script>
-    <!-- <script type="text/javascript" src="/js/jquery/jquery-1.12.4.min.js"></script> -->
+
     <script type="text/javascript" src="${h.url_for('/js/finance/main.js')}"></script>
+    <script type="text/javascript" src="${h.url_for('/js/jquery/jquery-1.12.4.min.js')}"></script>
 </head>
 <body class="yui-skin-sam" style="text-align:left; overflow: hidden;">
     <div id="header_pane">
@@ -188,5 +189,33 @@
             </form>
         </div>
     </div>
+    <script>
+    /*$(document).ready(function() {
+
+        /*$.ajax({
+            url: 'http://localhost:5000/srutil/callapi',
+            dataType: 'json',
+            type: 'POST',
+            contentType: 'application/json',
+            data: {g:'8'},//$(this).serialize(),
+            success: function(response, textStatus, jQxhr){
+
+                //var result = YAHOO.lang.JSON.parse(responseText);
+                //var result = jQuery.parseJSON(response);
+
+                alert(response.queue);
+                    
+            },
+            error: function(jqXhr, textStatus, errorThrown){
+
+                console.log(errorThrown);
+            }
+        });*/
+
+        alert(1);
+
+        callQ4u(1);
+    });*/
+    </script>
 </body>
 </html>

@@ -40,8 +40,6 @@ class FinanceController(BaseController):
         c.sendcoms = model.Component.sendcoms(s)
         c.station = model.Station.getStation(s, session['sr_client_ip'])
         c.com_id = model.Component.FinanceId
-        #c.ip_server_q4u = config['ip_server_q4u']
-        #c.token = config['token']
         return render('/finance.html')
 
     def check_payment(self):
@@ -221,7 +219,7 @@ class FinanceController(BaseController):
                 'item':rd.item.name,
                 'code':rd.item.item_code,
                 'amount':float(rd.total_amount),#ceil(float(rd.qty) * float(rd.price)),
-                'subsidy':ceil(rd.subsidy_amount)
+                'subsidy':float(rd.subsidy_amount)
             })
 #        item_names = []
 #        for rd in rds:

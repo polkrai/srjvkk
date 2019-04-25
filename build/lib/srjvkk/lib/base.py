@@ -68,7 +68,6 @@ def check_session(request, websession, dbsession):
     websession['sr_user_id'] = sess.session_user_id
     websession['sr_session_id'] = sess.id_sess
     websession['sr_client_ip'] = sess.session_ip_address
-    #websession['sr_client_id'] = sess.session_ip_address
     websession.save()
     
     return True

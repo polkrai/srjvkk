@@ -135,10 +135,7 @@ class SrutilController(BaseController):
                 'com_id3':pq.com_id3 if type(pq) is model.PatientQueue and pq.com_id3 else '',
                 'com3':pq.com3o.com_name if type(pq) is model.PatientQueue and pq.com3o else '',
                 'action_id3':pq.action_id3 if type(pq) is model.PatientQueue and pq.action_id3 else '',
-                'action3':pq.action3 if type(pq) is model.PatientQueue and pq.action3 else '',
-                'id_station':model.Station.getStation(s, session['sr_client_ip']).id,
-                'q4u_ip':model.Q4utoken.getQ4utoken(s).q4u_ip,
-                'token':model.Q4utoken.getQ4utoken(s).token
+                'action3':pq.action3 if type(pq) is model.PatientQueue and pq.action3 else ''
             })
         results['Queue'] = queues
         return simplejson.dumps({'QueueResult':results})

@@ -486,4 +486,7 @@ class SrutilController(BaseController):
     
     def test(self):
         return model.NeuralRecord.unpaid_records_by_orders([1,2])
-    
+
+    def callapi(self):
+        response.headers['content-type'] = 'text/plain'
+        return simplejson.dumps({'queue':999, 'statusCode': 500, 'message': 'Error'})

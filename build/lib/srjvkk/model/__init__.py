@@ -342,7 +342,6 @@ def init_model(config, bind):
 
     orm.mapper(Privilege, privilege_tb)
     orm.mapper(Station, station_tb)
-    orm.mapper(Q4utoken, q4u_token_tb)
 
     orm.mapper(ReceiptH, receipt_h_tb, properties = {
         'visit':orm.relation(Visit, uselist=False, backref='receipts'),
@@ -744,7 +743,6 @@ dSch = config['jvkk.drug_schema']
 zSch = config['jvkk.zone_schema']
 psSch = config['jvkk.ps_schema']
 xSch = config['jvkk.xray_schema']
-puSch = config['jvkk.public_schema']
 
 def ss(str):
     return sch + '.' + str
@@ -1656,7 +1654,7 @@ class ReceiptH(object):
             receiptd = ReceiptD()
             receiptd.receipth = receipth
             receiptd.item_id = o.item_id
-            receiptd.qty = ceil(o.qty)
+            receiptd.qty = float(o.qty)
             receiptd.price = float(o.price)
             receiptd.total_amount = float(receiptd.qty * receiptd.price)
             receiptd.subsidy_amount = subsidy_amount
@@ -1874,24 +1872,6 @@ station_tb = Table('sr_station', meta,
                         Column('deleted_date', t.DATETIME()),
                         Column('deleted', t.Boolean(), default=False),
                         schema=fnSch)
-
-class Q4utoken(object):
-    @staticmethod
-    def all(session):
-        return session.query(Q4utoken).filter_by(deleted=False).\
-            order_by(q4u_token_tb.c.id).all()
-
-    @staticmethod
-    def getQ4utoken(session):
-        return session.query(Q4utoken).filter_by(deleted=False).first()
-q4u_token_tb = Table('q4u_token', meta,
-                        Column('id', t.Integer(),
-                            sa.Sequence('q4u_token_id_seq', optional=True),
-                            primary_key=True),
-                        Column('token', t.String(512)),
-                        Column('q4u_ip', t.String(30)),
-                        Column('deleted', t.Boolean(), default=False),
-                        schema=puSch)
 
 # --------------------------
 # Psyco Section

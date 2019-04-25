@@ -18,8 +18,7 @@ var loader = new YAHOO.util.YUILoader({
         YAHOO.util.Event.onDOMReady(initComponents);
     },
     onFailure: function(){
-        showMessageDialog("Error", "ไม่สามารถดึงโปรแกรมจาก server ได้สำเร็จ กรุณาลองใหม่อีกครั้ง",
-        		YAHOO.widget.SimpleDialog.ICON_BLOCK);
+        showMessageDialog("Error", "ไม่สามารถดึงโปรแกรมจาก server ได้สำเร็จ กรุณาลองใหม่อีกครั้ง", YAHOO.widget.SimpleDialog.ICON_BLOCK);
     }
 });
 
@@ -180,16 +179,14 @@ function initSendQueueDialog() {
                 refreshQueue();
                 Dom.setStyle('span-com3', 'display', 'none');
                 SR.workingWithCurrentQ = false;
-                showMessageDialog("Info", "ส่ง: " + result.Success.name + " เวลา : " + 
-                		result.Success.time, YAHOO.widget.SimpleDialog.ICON_INFO);
+                showMessageDialog("Info", "ส่ง: " + result.Success.name + " เวลา : " + result.Success.time, YAHOO.widget.SimpleDialog.ICON_INFO);
                 SR.btnCallQueue.set("disabled", false);
                 SR.btnSendQueue.set("disabled", true);
                 SR.btnSendBack.set("disabled", true);
                 loadImportantInfo(-1);
             },
             failure: function(o) {
-                showMessageDialog("Error", "ไม่สามารถส่งคิวได้: " + o.statusText,
-                		YAHOO.widget.SimpleDialog.ICON_BLOCK);
+                showMessageDialog("Error", "ไม่สามารถส่งคิวได้: " + o.statusText, YAHOO.widget.SimpleDialog.ICON_BLOCK);
             }
         };
         var comid = $('select_com').options[$('select_com').selectedIndex].value;
@@ -212,8 +209,7 @@ function initSendQueueDialog() {
         var response = o.responseText;        
     };
     var handleFailure = function(o) {
-        showMessageDialog("Error", "Submission failed: " + o.status,
-        		YAHOO.widget.SimpleDialog.ICON_BLOCK);
+        showMessageDialog("Error", "Submission failed: " + o.status, YAHOO.widget.SimpleDialog.ICON_BLOCK);
     };
 
     // Instantiate the Dialog
@@ -223,8 +219,7 @@ function initSendQueueDialog() {
         fixedcenter : true,
         visible : false, 
         constraintoviewport : true,
-        buttons : [ { text:"ส่ง", handler:handleSubmit, isDefault:true },
-              { text:"ยกเลิก", handler:handleCancel } ]
+        buttons : [ { text:"ส่ง", handler:handleSubmit, isDefault:true },{ text:"ยกเลิก", handler:handleCancel } ]
     });
 
     // Validate the entries in the form to require that both first and last name are entered
@@ -256,8 +251,7 @@ function getPermmod(comid) {
         },
 
         handleFailure:function(o){
-            showMessageDialog("Error", 'ไม่สามารถเชื่อมต่อกับ Server ได้ : ' + o.statusText,
-            		YAHOO.widget.SimpleDialog.ICON_BLOCK);
+            showMessageDialog("Error", 'ไม่สามารถเชื่อมต่อกับ Server ได้ : ' + o.statusText, YAHOO.widget.SimpleDialog.ICON_BLOCK);
         },
 
         processResult:function(o){
@@ -344,7 +338,8 @@ function handleCom3Clicked(e) {
 
 function callQueue(callback) {
 	
-	var paId = SR.leftPane.waitQ.currentPaId;
+    var paId = SR.leftPane.waitQ.currentPaId;
+    
     if (paId == -1) {
         showMessageDialog("Warn", "กรุณาเลือกผู้ป่วยก่อน", YAHOO.widget.SimpleDialog.ICON_WARN);
         return;
@@ -406,6 +401,90 @@ function searchQ() {
 		qtb.selectRow(recs[i]);
 		tb = qtb.getBdContainerEl()
         tb.scrollTop = qtb.getTrEl(recs[i]).offsetTop
+	}
+}
+
+function callQ4u(callbackq4u) {
+
+    //alert(callbackq4u);
+	
+	//alert(SR.leftPane.waitQ.currentOitype);
+	
+	//if (SR.leftPane.waitQ.currentOitype == "out") {		
+				
+    //var q4uurl = "http://" + SR.leftPane.waitQ.currentQ4uip + "/api/v1/api/call";
+    var q4uurl = "http://localhost:5000/srutil/callapi";
+    
+    //var params = "queueId=" + SR.leftPane.waitQ.currentQId + "&hn=" + SR.leftPane.waitQ.currentHN + "&roomId=" + SR.leftPane.waitQ.currentStation + "&servicePointId=13&token=" + SR.leftPane.waitQ.currentToken;
+    
+    $.ajax({
+        url: q4uurl,
+        dataType: 'json',
+        type: 'POST',
+        contentType: 'application/json',
+        data: {g:'8'},//$(this).serialize(),
+        success: function(response, textStatus, jQxhr){
+
+            //var result = YAHOO.lang.JSON.parse(responseText);
+            //var result = JSON.parse(responseText);
+
+            alert(response.queue);
+
+            alert(response.statusCode);
+
+            if (response.statusCode == 500) {
+
+                showMessageDialog("Error", "ไม่สามารถเรียกคิว Q4U ได้ : " + response.message, null);
+                
+                showMessageDialog("Error", "ไม่สามารถเรียกคิว Q4U ได้ : " + response.message, null);
+                
+                return;
+            }
+		        
+        },
+        error: function(jqXhr, textStatus, errorThrown){
+
+            console.log(errorThrown);
+            /*if (result.statusCod == "500") {
+                
+                showMessageDialog("Error", "ไม่สามารถเรียกคิว Q4U ได้ : " + result.message, YAHOO.widget.SimpleDialog.ICON_ERROR);
+                
+                return;
+            }*/
+        }
+    });
+
+	    //YAHOO.util.Connect.asyncRequest('POST', q4uurl, callbackq4u, params);
+    //}
+  
+}
+
+function pendingQ4u() {
+	
+	if (SR.leftPane.waitQ.currentOitype == "out") {
+	
+		var callback = {
+	        success: function (o) {
+		        
+		        var result = YAHOO.lang.JSON.parse(o.responseText);
+		        
+		        if (result["statusCode"] == 500) {
+			        
+			        showMessageDialog("Error", "ไม่สามารถเรียกคิว Q4U ได้ : " + result["Error"], YAHOO.widget.SimpleDialog.ICON_ERROR);
+					return;
+		        }
+		        
+	        },
+	        failure: function(o) {
+		        
+	            //showMessageDialog("Error", "ไม่สามารถส่งต่อได้: " + o.statusText, YAHOO.widget.SimpleDialog.ICON_BLOCK);
+	        }
+	    };
+		
+		var q4uurl = "http://" + SR.leftPane.waitQ.currentQ4uip + "/api/v1/api/pending";
+		var params = "queueId=" + SR.leftPane.waitQ.currentQId + "&roomId=" + SR.leftPane.waitQ.currentStation + "&servicePointId=13&token=" + SR.leftPane.waitQ.currentToken;
+		
+	    YAHOO.util.Connect.asyncRequest('POST', q4uurl, callback, params);
 	}
 }
 
@@ -482,8 +561,7 @@ function initButtons() {
 	SR.btnPatientInfo = new YAHOO.widget.Button("btn-patient-info");
 	SR.btnPatientInfo.addListener("click", function(e) {
 		if (SR.hn == "") {
-            showMessageDialog("Warn", "กรุณาเลือกผู้ป่วยก่อน",
-            		YAHOO.widget.SimpleDialog.ICON_WARN);
+            showMessageDialog("Warn", "กรุณาเลือกผู้ป่วยก่อน", YAHOO.widget.SimpleDialog.ICON_WARN);
             return;
         }
 		var frame = $('frame-patient-info');
@@ -516,17 +594,23 @@ function initButtons() {
     SR.btnCallQueue = new YAHOO.widget.Button("btnCallQueue");
     
     SR.btnCallQueue.addListener("click", function(e) {
+
     	var callback = {
+
             success: function (o) {
                 //alert(o.responseText);
-        		SR.dlgWait.hide();
+                SR.dlgWait.hide();
+                
                 var result = YAHOO.lang.JSON.parse(o.responseText); 
+
                 if (result["Error"] != undefined) {
+
                     showMessageDialog("Error", "ไม่สามารถเรียกคิวได้ : " + result["Error"], YAHOO.widget.SimpleDialog.ICON_ERROR);
                     return;
                 }
                 
                 SR.workingWithCurrentQ = true;
+
                 showMessageDialog("Info", "เรียก: " + result.Success.name + " เวลา : " + result.Success.time, YAHOO.widget.SimpleDialog.ICON_INFO);
                 
                 SR.btnCallQueue.set("disabled", true);
@@ -551,7 +635,7 @@ function initButtons() {
         
         callQueue(callback);
         
-        var callbackq4u = {
+        /*var callbackq4u = {
 	        success: function (o) {
 		        
 		        /*alert(o.statusText);
@@ -565,11 +649,8 @@ function initButtons() {
 					return;
 		        }*/
 		        
-	        },
+	        /*},
 	        failure: function(o) {
-		        
-	            //alert(o.statusText);
-		        //alert(o.responseText);
 		        
 		        var result = YAHOO.lang.JSON.parse(o.responseText);
 		        
@@ -579,9 +660,10 @@ function initButtons() {
 			        showMessageDialog("Error", "ไม่สามารถเรียกคิว Q4U ได้ : " + result["message"], YAHOO.widget.SimpleDialog.ICON_ERROR);
 		        }
 	        }
-	    };
+        };*/
 
-        callQ4u(callbackq4u);
+        //callQ4u(callbackq4u);
+        callQ4u(true);
         
     });
     
@@ -857,8 +939,7 @@ function loadImportantInfo(paId) {
                 frmitem.reloadPage(info.id);
             } 
             catch (e) { 
-                showMessageDialog("Error", "Invalid data",
-                		YAHOO.widget.SimpleDialog.ICON_ERROR); 
+                showMessageDialog("Error", "Invalid data", YAHOO.widget.SimpleDialog.ICON_ERROR); 
             } 
         },
 
@@ -996,54 +1077,13 @@ function initAllowedSendQueueDialog() {
 }
 
 function showMessageDialog(header, msg, icon) {
+
 	messageDialog(header, msg, icon);
 }
 
 function confirmDialog(header, msg, handleYes, handleNo) {
+
 	confirmDialog(header, msg, handleYes, handleNo);
 }
-
-function callQ4u(callbackq4u) {
-	
-	//alert(SR.leftPane.waitQ.currentOitype);
-	
-	if (SR.leftPane.waitQ.currentOitype == "out") {		
-				
-		var q4uurl = "http://" + SR.leftPane.waitQ.currentQ4uip + "/api/v1/api/call";
-		var params = "queueId=" + SR.leftPane.waitQ.currentQId + "&hn=" + SR.leftPane.waitQ.currentHN + "&roomId=" + SR.leftPane.waitQ.currentStation + "&servicePointId=13&token=" + SR.leftPane.waitQ.currentToken;
-        
-	    YAHOO.util.Connect.asyncRequest('POST', q4uurl, callbackq4u, params);
-	}
-}
-
-function pendingQ4u() {
-	
-	if (SR.leftPane.waitQ.currentOitype == "out") {
-	
-		var callback = {
-	        success: function (o) {
-		        
-		        var result = YAHOO.lang.JSON.parse(o.responseText);
-		        
-		        if (result["statusCode"] == 500) {
-			        
-			        showMessageDialog("Error", "ไม่สามารถเรียกคิว Q4U ได้ : " + result["Error"], YAHOO.widget.SimpleDialog.ICON_ERROR);
-					return;
-		        }
-		        
-	        },
-	        failure: function(o) {
-		        
-	            //showMessageDialog("Error", "ไม่สามารถส่งต่อได้: " + o.statusText, YAHOO.widget.SimpleDialog.ICON_BLOCK);
-	        }
-	    };
-		
-		var q4uurl = "http://" + SR.leftPane.waitQ.currentQ4uip + "/api/v1/api/pending";
-		var params = "queueId=" + SR.leftPane.waitQ.currentQId + "&roomId=" + SR.leftPane.waitQ.currentStation + "&servicePointId=13&token=" + SR.leftPane.waitQ.currentToken;
-		
-	    YAHOO.util.Connect.asyncRequest('POST', q4uurl, callback, params);
-	}
-}
-
 
 loader.insert();
