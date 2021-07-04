@@ -1,0 +1,28 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>การเงิน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <ul>
+   			<li><a href="${h.url_for('/finance/setup_item_group')}">ข้อมูลหมวดการรักษา</a></li>
+   			<li><a href="${h.url_for('/finance/setup_item_unit')}">ข้อมูลหน่วยนับ</a></li>
+   			<li><a href="${h.url_for('/finance/setup_item')}">ข้อมูลรายการค่ารักษา</a></li>
+   			<li><a href="${h.url_for('/finance/setup_privilege')}">ข้อมูลสิทธิ์</a></li>
+   			<li><a href="${h.url_for('/finance/setup_station')}">ข้อมูลเครื่องเก็บเงิน</a></li>
+   		</ul>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlgDelete"></div>
+</body>
+</html>

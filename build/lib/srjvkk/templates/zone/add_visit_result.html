@@ -1,0 +1,195 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/zone/add-visit-result.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+    <style type="text/css">
+		th, td {
+			border:1px solid;
+		}    	
+    </style>
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane" id="toolbar_pane">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+            </div>
+            <div style="height:40px"></div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="req_id" name="req_id" value="${c.req_id}">
+            	<input type="hidden" id="id" name="id" value="${c.id}">
+            	
+            	<input type="hidden" id="visitors" name="visitors" />
+            	<input type="hidden" id="del_visitors" name="del_visitors" />
+            	<input type="hidden" id="relatives" name="relatives" />
+            	<input type="hidden" id="del_relatives" name="del_relatives" />
+            	<input type="hidden" id="leaders" name="leaders" />
+            	<input type="hidden" id="del_leaders" name="del_leaders" />
+            	<input type="hidden" id="helps" name="helps" />
+            	<input type="hidden" id="del_helps" name="del_helps" />
+            	<h3>รายงานการติดตามเยี่ยม</h3>
+            	<label>ครั้งที่</label><input type="text" name="no" id="no" value="${c.result.no if c.result else c.no}" /><br />
+            	<label>ส่วนที่ 1 ข้อมูลพื้นฐานในการติดตามเยี่ยมผู้ป่วย</label><br>
+            	<label>วันที่ติดตามเยี่ยม</label>
+           		<input class="textbox" type="text" id="visit_date" name="visit_date" value="${c.du.toShortFormatDate(c.result.visit_date) if c.result else ''}" readonly="readonly" />
+           		<button type="button" id="btnVisitDate" title="Show Calendar">
+           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+           		</button>
+				<div id="conVisitDate" class="container">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calVisitDate" class="calendar"></div>
+				    </div>
+				</div>
+				<label>เยี่ยมตามเลขที่รับเรื่อง ${c.request.request_no}</label><br>
+				<label>เวลาในการติดตามเยี่ยม</label><input type="text" name="from_time" id="from_time" value="${c.result.from_time if c.result else ''}"></input><label>น. ถึง</label><input type="text" name="to_time" id="to_time" value="${c.result.to_time if c.result else ''}"><label>น.</label><br>
+            	<label>ประเมินความพึงพอใจในการติดตามเยี่ยม</label><input type="radio" name="is_rated" value="1" ${'"checked"' if c.result and c.result.is_rated else ''}><label>ประเมินแล้ว</label><input type="radio" name="is_rated" value="0" ${'"checked"' if c.result and c.result.is_rated == False else ''}><label>ยังไม่ประเมิน</label><br>
+            	<br>
+            	<label>คณะติดตามเยี่ยม</label><br />
+            	<div class="indent" id="visitor_div">
+	            	ชื่อ-สกุล: <input type="text" id="text-visitor"> 
+	            	ตำแหน่ง: <input type="text" id="text-position"> 
+	            	สถานที่ปฏิบัติงาน: <input type="text" id="text-workplace">
+	            	<input type="button" id="btnAddVisitor" value="เพิ่ม">
+            		<div id="visitor-table"></div>
+            	</div>
+            	<label>สาเหตุการติดตามเยี่ยม</label><br>
+            	<div class="indent">
+            		%for r in c.reasons:
+            			<input type="checkbox" name="reasons" value="${r.id}"
+            				%if c.result:
+            					%for reason in c.result.reasons:
+            						%if reason.reason_id == r.id:
+            							"checked"
+            						%endif
+            					%endfor
+            				%endif
+            			><label>${r.description}</label><br>
+            		%endfor
+            		<input type="text" name="reason_remark" id="reason_remark" value="${c.result.reason_remark if c.result else ''}"></input>
+            	</div>
+            	<label>วัตถุประสงค์การติดตามเยี่ยม</label><br>
+            	<div class="indent">
+            		%for o in c.objectives:
+            			<input type="checkbox" name="objectives" value="${o.id}"
+            				%if c.result:
+            					%for obj in c.result.objectives:
+            						%if obj.objective_id == o.id:
+            							"checked"
+            						%endif
+            					%endfor
+            				%endif
+            			><label>${o.description}</label><br>
+            		%endfor
+            		<input type="text" name="objective_remark" id="objective_remark" value="${c.result.objective_remark if c.result else ''}"></input>
+            	</div>
+            	<label>ผู้ให้ข้อมูล</label><input type="text" name="informant" id="informant" value="${c.result.informant if c.result else ''}"></input><label>ความสัมพันธ์กับผู้ป่วย</label><input type="text" name="relationship" id="relationship" value="${c.result.relationship if c.result else ''}"></input><br>
+            	<label>จำนวนสมาชิกในครอบครัวที่พบขณะติดตามเยี่ยม</label><br />
+            	<div class="indent" id="relative_div">
+            		ชื่อ-สกุล: <input type="text" id="text-relative"> 
+	            	เกี่ยวข้องเป็น: <input type="text" id="text-relationship">
+	            	<input type="button" id="btnAddRelative" value="เพิ่ม"> 
+            		<div id="relative-table"></div>
+            	</div>
+            	<label>จำนวนผู้นำชุมชนที่พบขณะติดตามเยี่ยม</label><br />
+            	<div class="indent" id="leader_div">
+            		ชื่อ-สกุล: <input type="text" id="text-leader">
+            		<input type="button" id="btnAddLeader" value="เพิ่ม">
+            		<div id="leader-table"></div>
+            	</div>
+            	<label>ลักษณะสภาพบ้านและสิ่งแวดล้อม</label><br>
+            	<textarea rows="5" cols="70" id="environment" name="environment">${c.result.environment if c.result else ''}</textarea><br>
+            	<label>ประวัติครอบครัว</label><br>
+            	<textarea rows="5" cols="70" id="history_family" name="history_family">${c.result.history_family if c.result else ''}</textarea><br>
+            	<label>กรรมพันธุ์</label><br>
+            	<textarea rows="5" cols="70" id="heredity" name="heredity">${c.result.heredity if c.result else ''}</textarea><br>
+            	<label>ความสัมพันธภาพภายในครอบครัว</label><br>
+            	<textarea rows="5" cols="70" id="family_relationship" name="family_relationship">${c.result.family_relationship if c.result else ''}</textarea><br>
+            	<label>ความสัมพันธ์ในชุมชนและการมีส่วนร่วมกิจกรรมในชุมชน</label><br>
+            	<textarea rows="5" cols="70" id="community_relationship" name="community_relationship">${c.result.community_relationship if c.result else ''}</textarea><br>
+            	<label>ประวัติส่วนตัว</label><br>
+            	<label class="indent">1. การปรับตัวและการทนต่อความเครียด</label><br>
+            	<span class="indent"><label class="indent">1.1 บุคคลิกภาพ</label></span><br>
+            	%for p in c.personalities:
+            		<span class="indent"><span class="indent"><label class="indent"><input type="checkbox" name="personalities" id="personalities" value="${p.id}"
+            			%if c.result:
+        					%for pp in c.result.personalities:
+        						%if pp.personality_id == p.id:
+        							"checked"
+        						%endif
+        					%endfor
+        				%endif
+            		></input>${p.description}</label></span></span><br>
+            	%endfor
+            	<span class="indent"><span class="indent"><input type="text" name="personality_remark" id="personality_remark" value="${c.result.personality_remark if c.result else ''}"></input></span></span><br>
+            	<span class="indent"><label class="indent">1.2 วิธีการจัดการต่อความเครียด</label></span><br>
+            	%for s in c.stresses:
+            		<span class="indent"><span class="indent"><label class="indent"><input type="checkbox" name="stresses" id="stresses" value="${s.id}"
+            		%if c.result:
+       					%for ss in c.result.stresses:
+       						%if ss.stress_id == s.id:
+       							"checked"
+       						%endif
+       					%endfor
+       				%endif
+            		></input>${s.description}</label></span></span><br>
+            	%endfor
+            	<span class="indent"><span class="indent"><input type="text" name="stress_remark" id="stress_remark" value="${c.result.stress_remark if c.result else ''}"></input></span></span><br>
+            	<label class="indent">2. ปัจจัยที่ทำให้อาการทางจิตกำเริบ</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="factor" id="factor">${c.result.factor if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">3. ประวัติการใช้สารเสพติด</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="drug_usage" id="drug_usage">${c.result.drug_usage if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">4. ประวัติการเจ็บป่วยทางจิตและการรักษา</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="history_mental" id="history_mental">${c.result.history_mental if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">5. โรคประจำตัวหรืออาการทางกายในปัจจุบัน/อุบัติเหตุ/การผ่าตัด</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="history_physical" id="history_physical">${c.result.history_physical if c.result else ''}</textarea> </span></span><br>
+            	<label>ส่วนที่ 2 อาการปัจจุบันขณะติดตามเยี่ยม</label><br>
+            	<label class="indent">1. อาการปัจจุบันและการรับประทานยา (การดูแลสุขอนามัยส่วนตัว/การช่วยเหลืองานบ้าน/ความสามารถในการประกอบอาชีพ)</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="current_symptom" id="current_symptom">${c.result.current_symptom if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">2. คะแนน 8Q</label>
+            	<span class="indent"><span class="indent"><input type="text" name="score_8q" value="${c.result.score_8q if c.result else ''}"></input> </span></span>
+            	<label class="indent"> คะแนน 9Q</label>
+            	<span class="indent"><span class="indent"><input type="text" name="score_9q" value="${c.result.score_9q if c.result else ''}"></input> </span></span><br>
+            	<label class="indent">3. ปัญหาที่พบ</label><br>
+            	<label class="indent">ด้านผู้ป่วย</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="problem_patient" id="problem_patient">${c.result.problem_patient if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">ด้านญาติ/ชุมชน</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="problem_relative" id="problem_relative">${c.result.problem_relative if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">ด้านอื่นๆ</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="problem_other" id="problem_other">${c.result.problem_other if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">4. แหล่งสนับสนุนทางสังคม</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="support" id="support">${c.result.support if c.result else ''}</textarea> </span></span><br>
+            	<label class="indent">5. อืนๆ ระบุ</label><br>
+            	<span class="indent"><span class="indent"><textarea rows="5" cols="70" name="remark" id="remark">${c.result.remark if c.result else ''}</textarea> </span></span><br>
+            	<label>ส่วนที่ 3 การรักษาและการช่วยเหลือทางจิตสังคม แก่ผู้ป่วยและครอบครัวในชุมชน</label><br>
+            	
+            	<div class="indent">
+            		ปัญหา: <input type="text" id="text-problem"> 
+	            	การรักษา: <input type="text" id="text-help"> 
+	            	การประเมินผล: <input type="text" id="text-assessment">
+	            	<input type="button" id="btnAddHelp" value="เพิ่ม"></input>
+            		<div id="help-table"></div>
+            	</div>
+            	
+            	<label>ส่วนที่ 4 ประเมินเพื่อยุติการเยี่ยม</label><br>
+            	<span class="indent"></span><input type="radio" name="is_stop" value="1" ${'"chceked"' if c.result and c.result.is_stop else ''}><label>ยุติ</label><input type="radio" name="is_stop" value="0" ${'"chceked"' if c.result and c.result.is_stop==False else ''}><label>ไม่ยุติ</label><br>
+           	</div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

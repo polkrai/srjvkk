@@ -1,0 +1,62 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+                <a href="${h.url_for('/psychosocial/assessment')}?pa_id=${c.pa_id}&vn_id=${c.vn_id}">กลับ</a>
+            </div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="ar_id" name="ar_id" value="${c.ar_id}">
+            	<label>ผลการบำบัด</label><br><br>
+            	<span class="indent"><input type="radio" name="result" value="1" 
+            	%if c.ar.is_complete:
+            		checked="checked"
+            	%endif
+            	>ครบโปรแกรม</span><br> 
+				<span class="indent"><input type="radio" name="result" value="0" 
+				%if not c.ar.is_complete:
+            		checked="checked"
+            	%endif
+				>ไม่ครบโปรแกรม</span><br>
+				<span class="indent"><label class="indent">สาเหตุ</label></span><br>
+				% for ca in c.cancels:
+					<span class="indent"><span class="indent"><span class="indent">
+					<input type="radio" name="cancel" value="${ca.id}"
+					%if c.ar.cancel_id==ca.id:
+						checked="checked"
+					%endif
+					>${ca.description}</span></span></span><br>
+				% endfor
+				
+				<span class="indent"><span class="indent"><span class="indent">
+					หมายเหตุ: <input type="text" id="cancel_remark" name="cancel_remark" style="width:300px" value="${c.ar.cancel_remark if c.ar.cancel_remark else ''}">
+				</span></span></span><br />
+				<div style="display:none">
+				<span class="indent">การติดตามผลการบำบัดรักษา<br />
+				% for p in c.ar.plans:
+					<span class="indent">เดือน ${p.month} พ.ศ. ${p.year}</span><br />
+				% endfor
+				</span>
+				</div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>รายการค่าใช้จ่ายผู้ป่วยใน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="/css/page.css" />
+    <style type="text/css">
+<!--
+body {
+	font-family: AngsanaUPC;
+	font-size: 20px;
+	margin: 0;
+	padding: 0;
+	background-color: white;
+}
+
+.row {
+	margin: 5px;
+}
+
+.right {
+	text-align: right;
+}
+
+.bl {
+	border-left: black solid thin;
+}
+.bt {
+	border-top: black solid thin;
+}
+.bb {
+	border-bottom: black solid thin;
+}
+.br {
+	border-right: black solid thin;
+}
+-->
+    </style>
+</head>
+<body onload="window.print();">
+	<div style="text-align:center;">
+		<strong>รายการค่าใช้จ่ายผู้ป่วยใน<br>
+		โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์ จ.ขอนแก่น</strong>
+	</div>
+	<div class="row">
+		HN<span class="answer-space">${c.visit.patient.hn}</span>
+		AN<span class="answer-space">${c.visit.an}</span>
+		ชื่อผู้ป่วย<span class="answer-space">${c.visit.patient.name}</span>
+	</div>
+	
+	<div class="row">
+	<table cellspacing="0" cellpadding="5">
+		<thead>
+			<tr>
+				<th class="bl bt bb">ประเภทรายการ</th>
+				<th class="bl bt bb">ชื่อรายการ</th>
+				<th class="bl bt bb">จำนวน</th>
+				<th class="bl bt bb">หน่วย</th>
+				<th class="bl bt bb br">จำนวนเงิน</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% totalprice = 0 %>
+			%for o in c.others:
+			<% totalprice += o.totalprice %>
+			<tr>
+				<td class="bl">${o.group_name}</td>
+				<td class="bl">${o.item_name}</td>
+				<td class="right bl">${number_format(o.qty, 0)}</td>
+				<td class="bl">${o.unit_name}</td>
+				<td class="right bl br">${number_format(o.totalprice, 2)}</td>
+			</tr>	
+			%endfor
+			<tr>
+				<td colspan="4" class="bl bt bb">รวม</td>
+				<td class="right bl bt bb br">${number_format(totalprice, 2)}</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>รายงานการให้่บริการ${u"ผู้ป่วยนอก" if c.patient_type == "opd" else u"ผู้ป่วยใน"}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<style>
+	<!--
+		.border {
+			border: 1px solid #000000;
+		}
+	-->
+    </style>
+</head>
+<body style="width:21cm; height:29.7cm;size: portrait;" onload="window.print();window.close()">
+	<p align="center"><strong>รายงานการให้บริการ${u"ผู้ป่วยนอก" if c.patient_type == "opd" else u"ผู้ป่วยใน"}<br>
+    โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์ จ.ขอนแก่น<br>
+ <br>
+    จากวันที่ ${c.start_date} ถึงวันที่ ${c.end_date}<br></strong></p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+    <td class="border"><div align="center"><strong>ลำดับที่</strong></div></td>
+    <td class="border"><div align="center"><strong>สิทธิบัตร</strong></div></td>
+    <td class="border"><div align="center"><strong>จำนวนราย</strong></div></td>
+    <td class="border"><div align="center"><strong>จ่ายเงินสด</strong></div></td>
+    <td class="border"><div align="center"><strong>จ่ายตรง/ส่งเบิก</strong></div></td>
+    <td class="border"><div align="center"><strong>สงเคราะห์</strong></div></td>
+    <td class="border"><div align="center"><strong>ส่วนลด</strong></div></td>
+    <td class="border"><div align="center"><strong>มัดจำ</strong></div></td>
+    <td class="border"><div align="center"><strong>รวม</strong></div></td>
+  </tr>
+<%
+  totalVisit = 0
+  totalReceive = 0
+  totalSubsidy = 0
+  totalSupport = 0
+  totalDeposit = 0
+  totalDiscount = 0
+  total = 0
+%>
+
+  % for result in c.results:
+	<%
+	 	totalVisit += result['visit_count']
+	 	totalReceive += result['receive']
+	 	totalSubsidy += result['subsidy']
+	 	totalSupport += result['support']
+	 	totalDeposit += result['deposit']
+	 	totalDiscount += result['discount']
+	 	total += result['subtotal']
+	%>
+  <tr>
+  	<td class="border" style="height:1cm;text-align: right;">${result['no']}</td>
+    <td class="border" style="height:1cm">${result['privilege_name']}</td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(result['visit_count'], 0)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(result['receive'], 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(result['subsidy'], 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(result['support'], 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(result['discount'], 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(result['deposit'], 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(result['subtotal'], 2)}</div></td>
+  </tr>
+  % endfor
+  <tr>
+    <td colspan="2" style="border:none;"><div align="right">รวม</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(totalVisit, 0)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(totalReceive, 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(totalSubsidy, 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(totalSupport, 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(totalDeposit, 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(totalDiscount, 2)}</div></td>
+    <td class="border" style="height:1cm"><div align="right">${number_format(total, 2)}</div></td>
+  </tr>
+</table>
+<br><br>
+<div align="center" style="width:10cm">
+  <p>ลงชื่อ.............................................................</p>
+</div>
+</body>
+</html>

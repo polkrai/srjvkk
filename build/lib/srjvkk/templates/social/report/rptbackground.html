@@ -1,0 +1,131 @@
+# -*- coding: utf-8 -*-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>การวินิจฉัยทางสังคม</title>
+<style type="text/css">
+.tablecell {
+	border: thin solid #000000;
+}
+
+</style>
+</head>
+
+<body onload="window.print()">
+<h3 align="center">แบบฟอร์มการวินิจฉัยทางสังคม<br />
+กลุ่มงานสังคมสงเคราะห์ โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์</h3>
+<table width="100%" border="0" cellpadding="10">
+  <tr>
+    <td width="170" valign="top"><strong>ชื่อผู้ป่วย</strong></td>
+    <td colspan="2" valign="top">${c.bg.patient.name}</td>
+    <td width="138" valign="top"><strong></strong><strong>อายุ&nbsp;</strong>${c.bg.patient.age}<strong>&nbsp;ปี</strong></td>
+    <td width="28" valign="top"><strong>HN</strong></td>
+    <td width="115" valign="top">${c.bg.patient.hn}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>ผู้ให้ประวัติ</strong></td>
+    <td width="230" valign="top">${c.bg.info_provider if c.bg.info_provider else ''}</td>
+    <td width="168" valign="top"><strong>เกี่ยวข้องเป็น</strong></td>
+    <td colspan="3" valign="top">${c.bg.provider_relation if c.bg.provider_relation else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>อาการสำคัญ</strong></td>
+    <td colspan="5" valign="top">${c.bg.important_symptom.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.important_symptom else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>เป็นมานาน</strong></td>
+    <td valign="top">${c.bg.period}</td>
+    <td valign="top"><strong>รับการรักษา</strong></td>
+    <td colspan="3" valign="top">${c.bg.health_station if c.bg.health_station else ''}</td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><strong>ประวัติการเจ็บป่วยในอดีต</strong></td>
+  </tr>
+  <tr>
+    <td valign="top"><span style="margin-left: 20px"><strong>- ทางกาย</strong></span></td>
+    <td colspan="5" valign="top">${c.bg.history_physical.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.history_physical else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><span style="margin-left: 20px"><strong>- ทางจิต</strong></span></td>
+    <td colspan="5" valign="top">${c.bg.history_mental.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.history_mental else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><span style="margin-left: 20px"><strong>- อุบัติเหตุ</strong></span></td>
+    <td colspan="5" valign="top">${c.bg.history_accident.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.history_accident else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>ประวัติการแพ้ยา</strong></td>
+    <td colspan="5" valign="top">${c.bg.history_med_alergy.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.history_med_alergy else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>กรรมพันธุ์</strong></td>
+    <td colspan="5" valign="top">${c.bg.heredity.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.heredity else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>บุคลิกภาพ</strong></td>
+    <td colspan="5" valign="top">${c.bg.personality.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.personality else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>สิ่งเสพติด</strong></td>
+    <td colspan="5" valign="top">${c.bg.drug_usage.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.drug_usage else ''}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>ประวัติครอบครัว</strong></td>
+    <td colspan="5" valign="top">${c.bg.history_family.replace('\n', '<br>').replace(' ', '&nbsp;') if c.bg.history_family else ''}</td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><strong>การวินิจฉัยทางสังคม</strong></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolor="#000000">
+      <tr>
+        <td width="10%"><div align="center"><strong>รหัส</strong></div></td>
+        <td width="45%"><div align="center"><strong>คำอธิบาย</strong></div></td>
+        <td width="45%"><div align="center"><strong>เพิ่มเติม</strong></div></td>
+      </tr>
+      % for p in c.bg.problems:
+		% if not p.deleted:
+  <tr>
+    <td>${p.problem.code}</td>
+    <td>${p.problem.description}</td>
+    <td>${p.more_problem_info}</td>
+  </tr>
+		% endif
+      % endfor
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><strong>การให้ความช่วยเหลือ</strong></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolor="#000000">
+      <tr>
+        <td width="10%"><div align="center"><strong>รหัส</strong></div></td>
+        <td width="45%"><div align="center"><strong>คำอธิบาย</strong></div></td>
+        <td width="45%"><div align="center"><strong>เพิ่มเติม</strong></div></td>
+      </tr>
+      % for p in c.bg.helps:
+		% if not p.deleted:
+  <tr>
+    <td>${p.help.code}</td>
+    <td>${p.help.description}</td>
+    <td>${p.more_help_info}</td>
+  </tr>
+		% endif
+      % endfor
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top">&nbsp;</td>
+    <td colspan="5" valign="top"><div align="center">${c.bg_user.name if c.bg_user else ''} ${c.bg_user.lastname if c.bg_user else ''}<br />
+      นักสังคมสงเคราะห์ / พยาบาลวิชาชีพ / พยาบาลเทคนิค<br />
+    ${c.bg_date}</div></td>
+  </tr>
+</table>
+</body>
+
+</html>

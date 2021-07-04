@@ -1,0 +1,167 @@
+# -*- coding: utf-8 -*-
+<% from srjvkk import model %>
+<% from srjvkk.lib.base import number_format %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>สรุปค่าใช้จ่ายในการตรวจรักษาผู้ป่วยใน</title>
+<link rel="stylesheet" type="text/css" href="/css/page.css" />
+<style type="text/css">
+.tablecell {
+	border: thin solid #000000;
+}
+
+.style1 {font-family: AngsanaUPC; font-size:20px}
+.answer-space {
+	min-width: 50px;
+}
+body, pre {
+	font-family: AngsanaUPC;
+	font-size: 20px;
+	margin: 0;
+	padding: 0;
+}
+.half {
+	float: left;
+	width: 49%;
+	text-align: center;
+}
+.row {
+	min-height: 30px;
+}
+</style>
+</head>
+
+<body style="background-color:white;" onload="window.print();">
+<h3 align="center" class="style1">โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์<br />
+สรุปค่าใช้จ่ายในการตรวจรักษาผู้ป่วยใน</h3>
+<div class="row">
+	<b>HN</b><span class="answer-space">${c.visit.patient.hn}</span>
+	<b>AN</b><span class="answer-space">${c.visit.an}</span>
+	<b>ชื่อผู้ป่วย</b><span class="answer-space">${c.visit.patient.name}</span>
+</div>
+<div class="row">
+	<b>เลขบัตรประชาชน</b><span class="answer-space">${c.visit.patient.pa_people_number}</span>
+	<b>วันเดือนปีเกิด</b><span class="answer-space">${model.DateUtil.toShortFormatDate(c.visit.patient.pa_birthdate)}</span>
+	<b>อายุ</b><span class="answer-space">${c.visit.patient.precise_age[0]}</span>ปี<span class="answer-space">${c.visit.patient.precise_age[1]}</span>เดือน	
+</div>
+<div class="row">
+	<b>สถานภาพ</b><span class="answer-space">${c.visit.patient.pa_status}</span>
+	<b>อาชีพ</b><span class="answer-space">${c.visit.patient.pa_job}</span>
+	<b>ตึกผู้ป่วย</b><span class="answer-space">${c.visit.ipd_main.ipdbuilding.building_name}</span>	
+</div>
+<div class="row">
+	<b>สิทธิการรักษา</b><span class="answer-space">${c.visit.privilege.name}</span>
+	<b>เลขที่หนังสือส่งตัว/Claim Code/อนุมัติสิทธิ</b><span class="answer-space">${c.visit.claim_code}</span>
+</div>
+
+<div class="row">
+	<b>เลขที่บัตร</b><span class="answer-space">${c.visit.prcard_id}</span>
+	<b>โรงพยาบาลหลัก</b><span class="answer-space">${c.visit.refer_hosp}</span>
+	<b>แพทย์ผู้รักษา</b><span class="answer-space">${c.visit.doctor.fullname if c.visit.doctor else ''}</span>	
+</div>
+
+<div class="row">
+	<b>รับไว้วันที่</b><span class="answer-space">${model.DateUtil.toShortFormatDate(c.visit.admit_main.ad_date)}</span>
+	<b>เวลา</b><span class="answer-space">${c.visit.admit_main.add_time if c.visit.admit_main.add_time else ''}</span>
+	<b>จำหน่ายวันที่</b><span class="answer-space">${model.DateUtil.toShortFormatDate(c.visit.ipd_main.dc_date)}</span>
+	<b>เวลา</b><span class="answer-space">${c.visit.ipd_main.dc_time if c.visit.ipd_main.dc_time else ''}</span>
+</div>
+%for hv in c.visit.home_visits:
+%if hv.delete==False:
+<div class="row">
+	<b>วันที่ลากลับบ้าน</b><span class="answer-space">${model.DateUtil.toShortFormatDate(hv.hv_date) if hv else ''}</span>
+	<b>เวลา</b><span class="answer-space">${hv.hv_date_time.strftime('%H:%M:%S') if hv and hv.hv_date_time else ''}</span>
+	<b>วันที่กลับมา</b><span class="answer-space">${model.DateUtil.toShortFormatDate(hv.hv_back_date) if hv and hv.hv_back_date else ''}</span>
+	<b>เวลา</b><span class="answer-space">${hv.hv_back_data_time.strftime('%H:%M:%S') if hv and hv.hv_back_data_time else ''}</span>
+</div>
+%endif
+%endfor
+<div class="row">
+	<b>จำนวนรวมวันลากลับบ้าน</b><span class="answer-space">${c.visit_days}</span><b>วัน</b> 
+	<b>จำนวนวันนอน</b><span class="answer-space">${c.admit_days - c.visit_days}</span><b>วัน</b>
+</div>
+<div class="row">
+	<b>สถานภาพการจำหน่าย</b>
+	${c.visit.ipd_main.dc_reason_detail}
+	<br />
+	<b>ประเภทการจำหน่าย</b>
+	${c.visit.ipd_main.discharge_type}
+</div>
+<div class="row">
+	<b>การวินิจฉัยโรค(Diagnostics)</b>
+</div>
+% for i in range(0, len(c.diags)): 
+<div class="row">
+	<div class="indent">
+		<b>${u'วินิจฉัยโรคหลัก' if i==0 else u'วินิจฉัยโรครอง'}</b><span class="answer-space">${c.diags[i]['code']}</span>
+	</div>
+</div>
+% endfor
+
+<div class="row">
+<b>รหัสหัตถการ</b> 
+% for i in range(1, 7):
+   	% if i-1 < len(c.activities):
+   		${i}<span class="answer-space">${c.activities[i-1].item_code}</span>
+   	% else:
+   		${i}<span class="answer-space">&nbsp;</span>
+   	% endif 
+% endfor
+</div>
+
+<div class="row" style="font-weight:bold;text-decoration:underline;">
+สรุปค่ารักษาพยาบาล
+</div>
+<table width="100%" border="0">
+  <tr>
+    <td colspan="3"><b>รายการค่าบริการทางการแพทย์</b></td>
+    <td style="text-align:center"><b>เบิกได้</b></td>
+    <td style="text-align:center"><b>เบิกไม่ได้</b></td>
+  </tr>
+  <tr>
+  	<td>ค่ายาและสารอาหารทางเส้นเลือดที่ใช้ในโรงพยาบาล</td>
+  	<td><b>ยาในบัญชี</b><span class="answer-space" style="min-width:0px">${number_format(c.tothospmiex, 2)}</span></td>
+  	<td><b>ยานอกบัญชี</b><span class="answer-space" style="min-width:0px">${number_format(c.tothospmoex, 2)}</span></td>
+  	<td style="text-align:right"><span class="answer-space" >${number_format(c.tothospmisub + c.tothospmosub, 2)}</span></td>
+  	<td style="text-align:right"><span class="answer-space" >${number_format(c.tothospmiex + c.tothospmoex - c.tothospmisub - c.tothospmosub, 2)}</span></td>
+  </tr>
+  <tr>
+  	<td>ค่ายาที่นำไปใช้ต่อที่บ้าน</td>
+  	<td><b>ยาในบัญชี</b><span class="answer-space" style="min-width:0px">${number_format(c.tothomemiex,2)}</span></td>
+  	<td><b>ยานอกบัญชี</b><span class="answer-space" style="min-width:0px">${number_format(c.tothomemoex,2)}</span></td>
+  	<td style="text-align:right"><span class="answer-space" >${number_format(c.tothomemisub + c.tothomemosub,2)}</span></td>
+  	<td style="text-align:right"><span class="answer-space" >${number_format(c.tothomemiex + c.tothomemoex - c.tothomemisub - c.tothomemosub,2)}</span></td>
+  </tr>
+  %for i in c.otherItems:
+  <tr>
+  	<td colspan="3">${i['group_name']}</td>
+  	<td style="text-align:right"><span class="answer-space" >${number_format(i['subsidy'],2)}</span></td>
+  	<td style="text-align:right"><span class="answer-space" >${number_format(i['amount'] - i['subsidy'],2)}</span></td>
+  </tr>
+  %endfor
+</table>
+<div class="row">
+	<b>รวมทั้งหมด</b><span class="answer-space">${number_format(c.totexp,2)}</span>
+	<b>ส่วนลด</b><span class="answer-space">${number_format(c.totdiscount,2)}</span>
+	<b>ชำระ</b><span class="answer-space">${number_format(c.totreceive,2)}</span>
+	<b>สงเคราะห์</b><span class="answer-space">${number_format(c.totsupport,2)}</span>
+</div>
+<div class="row">
+	<b>จำนวนเงินที่เรียกเก็บจากสิทธิ</b><span class="answer-space">${number_format(c.netexp,2)}</span><b>บาท</b> (<span class="answer-space">${c.netexp_str}</span>)
+</div>
+<div class="row">
+	<div class="half">
+		<b>ตรวจพิจารณาค่ารักษาพยาบาลแล้ว</b><br />
+        <p><span class="answer-space" style="width:150px;"></span></p>
+        <b>เจ้าหน้าที่การเงิน</b>
+	</div>
+	<div class="half">
+		<b>อนุมัติ</b><br />
+        <p><span class="answer-space" style="width:150px;"></span></p>
+        <p>(<span class="answer-space" style="width:150px;"></span>)</p>
+	</div>
+</div>
+</body>
+</html>

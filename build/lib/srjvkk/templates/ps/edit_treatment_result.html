@@ -1,0 +1,59 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/ps/edit-treatment-result.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+            </div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="ar_id" name="ar_id" value="${c.ar_id}">
+            	<input type="hidden" id="plans" name="plans" />
+            	<input type="hidden" id="del_plans" name="del_plans" />
+            	<input type="hidden" id="time" name="time">
+            	<label>ผลการบำบัด</label><br><br>
+            	<span class="indent"><input type="radio" name="result" value="1" onclick="checkComplete(this.value)">ครบโปรแกรม</span><br> 
+				<span class="indent"><input type="radio" name="result" value="0" onclick="checkComplete(this.value)">ไม่ครบโปรแกรม</span><br>
+				<span class="indent"><label class="indent">สาเหตุ</label></span><br>
+				% for ca in c.cancels:
+					<span class="indent"><span class="indent"><span class="indent">
+					<input type="radio" name="cancel" value="${ca.id}" disabled="disabled">${ca.description}</span></span></span><br>
+				% endfor
+				
+				<span class="indent"><span class="indent"><span class="indent">
+					หมายเหตุ: <input type="text" id="cancel_remark" name="cancel_remark" style="width:300px" >
+				</span></span></span><br />
+				<span class="indent"><label>เป้าหมายการเข้ารับการบำบัดครั้งนี้</label><input type="radio" name="goal" value="1">ลดปริมาณ<input type="radio" name="goal" value="2">เลิกใช้</span><br>
+				<span class="indent"><label>ผลการบำบัด</label><span class="indent">มีความมุ่งมั่น/ตั้งใจต่อการบรรลุเป้าหมายในระดับ</span><input type="text" name="concentrate">%</span><br />
+				<div style="display:none">
+				<label>การติดตามผลหลังการบำบัดรักษา</label><br />
+            	<div class="indent" id="plan_div">
+	            	เดือน: <input type="text" id="text-month"> 
+	            	พ.ศ.: <input type="text" id="text-year"> 
+	            	<input type="button" id="btnAddPlan" value="เพิ่ม">
+            		<div id="plan-table"></div>
+            	</div>
+            	</div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

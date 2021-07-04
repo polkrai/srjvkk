@@ -1,0 +1,197 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>บันทึกการนำส่งเงินประจำวัน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+<!--
+.border-all {
+	border: 1px solid #000000;
+}
+.border-left-right {
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.border-right {
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-right-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.border-top {
+	border-top-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.border-bottom {
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-bottom-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.border-top-right {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.border-top-bottom-right {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.border-bottom-right {
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.style1 {
+	font-family: Tahoma;
+	font-size: 24px;
+	font-weight: bold;
+}
+.border-top-bottom-left {
+	border-top-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: none;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #000000;
+	border-right-color: #000000;
+	border-bottom-color: #000000;
+	border-left-color: #000000;
+}
+.style2 {
+	font-family: Tahoma;
+	font-size: 18px;
+	font-weight: bold;
+}
+-->
+    </style>
+</head>
+<body onload="window.print()">
+<div align="center">
+  <p><span class="style1">โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์</span><br>
+  <span class="style2">บันทึกการนำส่งเงินประจำวัน</span></p>
+</div>
+<table width="100%" border="0">
+      <tr>
+        <td colspan="4"><div align="left"><strong>นำส่งเงินประจำวันที่</strong> ${c.send_money.send_date.day} <strong>เดือน</strong> ${c.send_month} <strong>พ.ศ.</strong> ${c.send_money.send_date.year + 543} <strong>เวลา </strong>${c.send_money.send_date.strftime('%H.%M')}</div></td>
+      </tr>
+      <tr>
+        <td width="22%"><span style="text-align:right"><strong>เลขที่ใบเสร็จเริ่มต้น</strong>: </span></td>
+        <td width="27%"><span style="text-align:right">${c.send_money.start_receipt}</span></td>
+        <td width="23%"><span style="text-align:right"><strong>เลขที่ใบเสร็จสุดท้าย</strong>: </span></td>
+        <td width="28%"><span style="text-align:right">${c.send_money.end_receipt}</span></td>
+      </tr>
+      <tr>
+        <td><strong>เครื่องเก็บเงิน</strong></td>
+        <td>${c.send_money.station.name}</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+<table width="100%" cellspacing="0" cellpadding="5">
+    <tr>
+      <td colspan="2" bordercolor="#000000" class="border-all"><div align="center"><strong>รายการ</strong></div></td>
+      <td width="150" bordercolor="#000000" class="border-top-bottom-right"><div align="center"><strong>จำนวนเงิน (บาท)<br>
+      </strong></div></td>
+  </tr>
+    % for i in range(20 - len(c.extra_items)):
+      <tr>
+		  <td colspan="2" class="border-left-right">
+		  	%if len(c.send_items) > i:
+		  		${c.send_items[i].group.name} 
+			%else:
+				&nbsp;
+			%endif		  </td>
+		  <td class="border-right"><div align="right">
+		  	${number_format(c.send_items[i].amount, 2) if len(c.send_items) > i else '&nbsp;'}
+		  </div></td>
+	  </tr>
+    % endfor
+	% for item in c.extra_items:
+        <tr>
+			<td colspan="2" class="border-left-right">
+	            ${item['item']}            </td>
+			<td class="border-right"><div align="right">
+            	${number_format(item['amount'], 2)}
+            </div></td>
+		</tr>        
+    % endfor    
+		<tr>
+		  <td width="211" class="border-top-bottom-left"><strong>จำนวนเงิน(ตัวอักษร)</strong></td>
+		  <td width="448" class="border-top-bottom-right"><div style="text-align:center">${'(' + c.send_str + ')'}</div></td>
+		  <td class="border-top-bottom-right"><div align="right">${number_format(c.send_money.send_amount, 2)}</div></td>
+	  </tr>
+</table>
+<table width="100%" border="0" cellpadding="10">
+      <tr>
+        <td width="50%">ได้รับเงินไว้เป็นการถูกต้องแล้ว</td>
+        <td width="50%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td><div align="center">ลายมือชื่อ..............................................ผู้ส่ง<br>
+          ${c.send_by.name} ${c.send_by.lastname}<br>
+          วันที่ ${c.send_money.send_date.day} เดือน ${c.send_month} พ.ศ. ${c.send_money.send_date.year + 543}<br>
+        </div></td>
+        <td><div align="center">ลายมือชื่อ..............................................ผู้รับ<br>
+          (............................................................)<br>
+          วันที่...... เดือน......................... พ.ศ. ........<br>
+        </div></td>
+      </tr>
+    </table>
+<p>&nbsp;</p>
+</body>
+</html>

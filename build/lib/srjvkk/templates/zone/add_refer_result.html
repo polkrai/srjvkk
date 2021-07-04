@@ -1,0 +1,53 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/zone/add-refer-result.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+            </div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="refer_id" name="refer_id" value="${c.refer_id}">
+            	<input type="hidden" id="id" name="id" value="${c.id}">
+            	<div>ครั้งที่<input type="text" name="no" value="${c.result.no if c.result else c.no}"></input></div>
+            	<div>ว.ด.ป.ที่เครือข่ายติดตามเยี่ยม
+            	<input class="textbox" type="text" id="visit_date" name="visit_date" value="${c.du.toShortFormatDate(c.result.visit_date) if c.result else ''}" readonly="readonly" />
+           		<button type="button" id="btnVisitDate" title="Show Calendar">
+           			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+           		</button>
+				<div id="conVisitDate" class="container">
+				    <div class="hd">เลือกวันที่</div>
+				    <div class="bd">
+				        <div id="calVisitDate" class="calendar"></div>
+				    </div>
+				</div>
+            	</div>
+            	<div>คะแนน 9Q<input type="text" name="score_9q" value="${c.result.score_9q if c.result and c.result.score_9q else ''}"></input></div>
+            	<div>คะแนน 8Q<input type="text" name="score_8q" value="${c.result.score_8q if c.result and c.result.score_8q else ''}"></input></div>
+				<div><span><input type="radio" name="lack" value="1" ${'"checked"' if c.result and c.result.lack else ''}><span class="indent">ขาดยา</span></input></span><span class="indent"><input type="radio" name="lack" value="0" ${'"checked"' if c.result and c.result.lack == False else ''}><span class="indent">ไม่ขาดยา</span></input></span></div>
+				<div>อาการ/ผลข้างเคียงจากยา<input type="text" name="drug_effect" value="${c.result.drug_effect if c.result else ''}"></input></div>
+				<div>ปัญหาอื่นๆ<input type="text" name="problem" value="${c.result.problem if c.result else ''}"></input></div>
+				<div>การช่วยเหลือ<input type="text" name="help" value="${c.result.problem if c.result else ''}"></input></div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

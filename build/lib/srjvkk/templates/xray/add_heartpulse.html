@@ -1,0 +1,42 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/ps/add-assessment.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+            </div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="">
+            	<input type="hidden" id="vn_id" name="vn_id" value="">
+            	<div>เลขที่คลื่นหัวใจ<input type="text"></input></div>
+            	<div>เลขที่ทั่วไป<input type="text"></input></div>
+            	<div>เลขที่ภายใน<input type="text"></input></div>
+            	<div>ครั้งที่<input type="text"></input></div>
+            	<div>อาการและการตรวจอย่างย่อ</div>
+            	<div><textarea></textarea></div>
+            	<div>การวินิจฉัย</div>
+            	<div><textarea></textarea></div>
+            	<div>ผลการตรวจ</div>
+            	<div><textarea></textarea></div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>
