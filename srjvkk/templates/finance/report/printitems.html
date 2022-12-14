@@ -1,0 +1,127 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk import model %>
+<% from srjvkk.lib.base import number_format %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>รายการค่าใช้จ่าย</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- <link rel="stylesheet" type="text/css" href="/css/page.css" /> -->
+	<link rel="stylesheet" type="text/css" href="/css/font_style.css" />
+
+    <style type="text/css">
+<!--
+body {
+	font-family: AngsanaUPC;
+	font-size: 20px;
+	margin: 0;
+	padding: 0;
+	background-color: white;
+}
+
+.row {
+	margin: 5px;
+}
+
+.right {
+	text-align: right;
+}
+
+.bl {
+	border-left: black solid thin;
+}
+.bt {
+	border-top: black solid thin;
+}
+.bb {
+	border-bottom: black solid thin;
+}
+.br {
+	border-right: black solid thin;
+}
+-->
+    </style>
+</head>
+<body onload="window.print();">
+	<div style="text-align:center;">
+		<strong>โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์ จ.ขอนแก่น</strong>
+	</div>
+	<div class="row">
+		ชื่อผู้ป่วย<span class="answer-space">${c.visit.patient.name}</span>
+		HN<span class="answer-space">${c.visit.patient.hn}</span>
+		บัตรประจำตัวประชาชน<span class="answer-space">${c.visit.patient.pa_people_number}</span><br />
+		วัน/เดือน/ปี<span class="answer-space">${model.DateUtil.toShortFormatDate(c.visit.time_add)}</span>		
+	</div>
+	
+	<div class="row">
+	<table cellspacing="0" cellpadding="5">
+		<thead>
+			<tr>
+				<th class="bl bt bb">รายการ</th>
+				<th class="bl bt bb">จำนวน(หน่วย)</th>
+				<th class="bl bt bb">ราคาต่อหน่วย</th>
+				<th class="bl bt bb">จำนวนเงินเบิกได้</th>
+				<th class="bl bt bb">จำนวนเงินเบิกไม่ได้</th>
+				<th class="bl bt bb br">จำนวนเงินสุทธิ</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% 
+				totalsubsidy = 0
+				totalpay = 0
+				totalprice = 0
+				group_id = -1
+			 %>
+			 %for o in c.items:
+			<% 
+				totalsubsidy += o.subsidy_amount
+				totalpay += o.pay_amount
+				totalprice += o.total_amount
+			%>
+				%if o.group_id == group_id:
+			<tr>
+				<td class="bl">${o.name} ${'('+o.item_code+')' if o.item_code else ''}</td>
+				<td class="right bl">${number_format(o.qty, 0)}</td>
+				<td class="right bl">${number_format(o.price, 2)}</td>
+				<td class="right bl">${number_format(o.subsidy_amount, 2)}</td>
+				<td class="right bl">${number_format(o.pay_amount, 2)}</td>
+				<td class="right bl br">${number_format(o.total_amount, 2)}</td>
+			</tr>
+				%else:
+				<%
+					group_id = o.group_id 
+				%>
+			 <tr>
+				<td class="bl bt"><b>${o.group_name}</b></td>
+				<td class="bl bt">&nbsp;</td>
+				<td class="bl bt">&nbsp;</td>
+				<td class="bl bt">&nbsp;</td>
+				<td class="bl bt">&nbsp;</td>
+				<td class="bl bt br">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="bl bt">${o.name} ${'('+o.item_code+')' if o.item_code else ''}</td>
+				<td class="right bt bl">${number_format(o.qty, 0)}</td>
+				<td class="right bt bl">${number_format(o.price, 2)}</td>
+				<td class="right bt bl">${number_format(o.subsidy_amount, 2)}</td>
+				<td class="right bt bl">${number_format(o.pay_amount, 2)}</td>
+				<td class="right bt bl br">${number_format(o.total_amount, 2)}</td>
+			</tr>
+				%endif
+			%endfor
+			<tr>
+				<td colspan="3" class="bl bt bb">รวม</td>
+				<td class="right bl bt bb">${number_format(totalsubsidy, 2)}</td>
+				<td class="right bl bt bb">${number_format(totalpay, 2)}</td>
+				<td class="right bl bt bb br">${number_format(totalprice, 2)}</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<div class="row" style="margin-top: 60px;margin-right: 50px;">
+		<div class="right">ลงชื่อ<span>..........................................</span>ผู้ป่วย/ผู้รับยาแทน</div>
+		<div class="right" style="margin-right:90px">(<span>............................................</span>)</div>
+	</div>
+</body>
+</html>

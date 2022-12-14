@@ -1,0 +1,149 @@
+#
+# srjvkk - Pylons development environment configuration
+#
+# The %(here)s variable will be replaced with the parent directory of this file
+#
+[DEFAULT]
+debug = true
+# Uncomment and replace with the address which should receive any error reports
+#email_to = you@yourdomain.com
+smtp_server = localhost
+error_email_from = paste@localhost
+
+[server:main]
+use = egg:Paste#http
+host = 0.0.0.0
+port = 5000
+
+[app:main]
+use = egg:srjvkk
+full_stack = true
+cache_dir = /var/www/html/python-cache
+##cache_dir = %(here)s/data
+beaker.session.key = srjvkk
+beaker.session.secret = somesecret
+
+#sqlalchemy.url = postgres://jvkk:1234@10.129.104.9/jvkk
+#sqlalchemy.url = postgres://jvkk:1234@192.168.44.16/jvkk_2
+sqlalchemy.url = postgres://shiftright:1q2w3e4r@localhost:5432/jvkk_2?connect_timeout=45
+#sqlalchemy.url = postgres://shiftright:1q2w3e4r@localhost/jvkk_2?connect_timeout=10&application_name=srjvkk
+#sqlalchemy.url = sqlite:///%(here)s/onlinecare-dev.db
+#qlalchemy.url = mysql://root:1q2w3e4r@10.0.0.8/onlinecare
+#sqlalchemy.application_name = srjvkk
+#sqlalchemy.assert_unicode = true
+sqlalchemy.convert_unicode = true
+#sqlalchemy.encoding = UTF8
+#sqlalchemy.echo = true
+#sqlalchemy.assert_unicode = true
+#deploy.populate_data = true
+#sqlalchemy.strategy=threadlocal
+#sqlalchemy.max_overflow = 10
+#sqlalchemy.pool_size = 2
+#sqlalchemy.pool_timeout = 45
+sqlalchemy.max_overflow = 10
+sqlalchemy.pool_size = 2
+sqlalchemy.pool_timeout = 30
+
+# If you'd like to fine-tune the individual locations of the cache data dirs
+# for the Cache data, or the Session saves, un-comment the desired settings
+# here:
+#beaker.cache.data_dir = %(here)s/data/cache
+#beaker.session.data_dir = %(here)s/data/sessions
+
+# SR constants
+sr.compid.social=14
+sr.compid.finance=13
+sr.compid.psyco=19
+sr.compid.zone=59
+sr.compid.ps=58
+sr.compid.xray=60
+sr.modid.social_bg=1
+sr.modid.social_sc=2
+
+sr.itemgroup.medin = 1
+sr.itemgroup.medout = 2
+sr.itemgroup.psycotest = 25
+sr.itemgroup.psycocure = 13
+sr.itemgroup.psycoother = 30
+sr.itemgroup.psysmc = 16
+sr.itemgroup.lab = 4
+sr.itemgroup.eeg = 25
+sr.itemgroup.free = 31
+
+sr.item.servicecharge = 3454
+sr.item.frservicecharge = 2966
+sr.item.deposit = 9
+sr.item.ipdservicecharge = 3455
+sr.item.normalroom = 144
+sr.item.specialfood = 3247
+#sr.item.cheapspecialroom = 3245
+sr.item.cheapspecialroom = 146
+sr.item.cheapspecialroomthree = 147
+sr.item.cheapspecialroomsix = 3246
+sr.item.specialroom = 146
+#sr.item.specialroom = 3246
+sr.item.covidroom = 3728
+sr.item.ipdercharge = 2787
+sr.item.otcharge = 3453
+sr.item.eeg = 2612
+sr.item.ekg = 2611
+sr.item.xray = 2608
+sr.item.ps = 2661
+
+sr.unit.default = 2
+
+sr.ots = 06.15
+sr.ote = 16.00
+sr.weekends = 5,6
+
+jvkk.login.url=/nano
+jvkk.schema=jvkk_new
+jvkk.system_schema=jvkk
+jvkk.medrec_schema=medrec
+jvkk.social_schema=social
+jvkk.finance_schema=finance
+jvkk.psyco_schema=psyco
+jvkk.med_schema=med
+jvkk.ipd_schema=ipd
+jvkk.admit_schema=admit
+jvkk.frontmed_schema=frontmed
+jvkk.drug_schema=drug
+jvkk.zone_schema=zone
+jvkk.ps_schema=ps
+jvkk.xray_schema=xray
+jvkk.public_schema=public
+jvkk.login=yes
+
+# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
+# Debug mode will enable the interactive debugging tool, allowing ANYONE to
+# execute malicious code after an exception is raised.
+set debug = false
+
+# Logging configuration
+[loggers]
+keys = root, srjvkk
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_srjvkk]
+level = DEBUG
+handlers =
+qualname = srjvkk
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S

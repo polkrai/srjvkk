@@ -1,0 +1,92 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>การเงิน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-beta-min.js" ></script>
+    <script type="text/javascript" src="/js/finance/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/finance.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+        <div id="logo_div">
+            <img src="/img/logo7_2.png" />
+        </div>
+    </div>
+    <div id="main_bd">
+        <div id="left_pane">
+            <div class="top_info"><div id="top_info_text">JVKK Information System</div></div>
+            <div id="left_info_pane">
+                <form method="post" action="/srutil/logout">
+                    <b>ผู้ใช้: </b>${c.user.name} ${c.user.lastname}<br>
+                    <input id="logout_button" type="submit" name="logout" value="Log out"></input>
+                </form>
+            </div>
+            <div class="top_info"><div id="top_info_text">รายชื่อผู้ป่วยรอรับบริการ</div></div>
+            <div id="left_queue_pane">
+                
+            </div>
+            <div class="top_info"><div id="top_info_text">รายชื่อผู้ป่วยรับบริการแล้ว</div></div>
+            <div id="left_queue_done_pane">
+                left_queue_done_pane
+            </div>
+        </div>
+        <div id="important_info_pane">
+            <div id="patient_picture_pane">
+                <img id="patient_picture" src="/noname.png" width="100px" height="100px" />
+                <span id="hn_span">HN:</span>
+            </div>
+            
+            <div id="patient_info"><b>ข้อมูลสำคัญ</b>
+            </div>
+        </div>
+        <div id="common_menu_pane">
+            <img id="patient_info_menu" src="/img/topmenu/top_menu1_normal.png" width="150px" height="40px" />
+            <img id="treatment_info_menu" src="/img/topmenu/top_menu2_normal.png" width="150px" height="40px" />
+            <img id="lab_info_menu" src="/img/topmenu/top_menu3_normal.png" width="150px" height="40px" />
+            <img id="psyco_info_menu" src="/img/topmenu/top_menu4_normal.png" width="150px" height="40px" />
+        </div>
+        <div id="modules_pane">
+        </div>
+        <div id="workspace_pane">
+            <div id="demo" class="yui-navset"> 
+                <ul class="yui-nav"> 
+                    <li class="selected"><a href="#tab1"><em>ชำระเงิน</em></a></li> 
+                    <li><a href="#tab2"><em>Tab Two Label</em></a></li> 
+                    <li><a href="#tab3"><em>Tab Three Label</em></a></li> 
+                </ul>             
+                <div class="yui-content"> 
+                    <div id="visit_charge"></div>
+                    <div><p>Tab Two Content</p></div> 
+                    <div><p>Tab Three Content</p></div> 
+                </div> 
+            </div>
+            
+            <div id="paycharge_pane">
+                <input type="button" id="btn_paycharge" value="ชำระรายการที่เลือก"></input>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+                โปรแกรมโรงพยาบาลจิตเวชขอนแก่นราชนครินทร์	<br />
+        Powered by <a href='http://www.nanosofttech.com/' target='blank'>NanoSoftTech</a> | 
+        <a href='http://www.neural.co.th/' target='blank'>NeuralTechnology</a> | 
+        <a href='http://www.shiftright.co.th' target='blank'>ShiftRight</a> | 
+        <a href='http://www.miracleinspire.com/' target='blank'>MiracleInspire</a> 	&nbsp;
+        &copy; 2008
+    </div>
+    <div id="dialog1">
+        <div class="hd">ชำระเงิน</div>
+        <div class="bd">
+                <form method="POST" action="/finance/submit_payment">
+                        <input type="hidden" id="vn_id_dialog" name="vn_id_dialog" />
+                        <input type="hidden" id="items_dialog" name="items_dialog" />
+                        <label for="totalamount">จำนวนเงินทั้งหมด:</label><input type="textbox" id="totalamount" name="totalamount" readonly="readonly"/>
+                        <label for="paidamount">รับเงิน:</label><input type="textbox" id="paidamount" name="totalamount" onChange="paidAmountChanged()" />
+                        <label for="changeamount">เงินทอน:</label><input type="textbox" id="changeamount" name="totalamount"/>
+                </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/ps/edit-assessment-result.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+        	<div style="height: 40px;"></div>
+            <div class="toolbar_pane" id="toolbar_pane" style="top:0;">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+            </div>
+            <div id="form-data">
+            	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}">
+            	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}">
+            	<input type="hidden" id="pa_as_id" name="pa_as_id" value="${c.pa_as_id}">
+            	<input type="hidden" id="time" name="time">
+            	<label>ผลการประเมินก่่อนเข้ารับบริการจิตสังคมบำบัด</label>
+            	<div class="indent">
+            		<input type="radio" name="is_ready" value="1" checked="checked" onclick="ready()"><span class="indent">พร้อมเข้ารับการบำบัด</span>
+            		<!-- 
+            		<span class="indent">นัดหมายเข้ารับการบำบัดวันที่</span>
+            		<input class="textbox" type="text" id="treatment_date" name="treatment_date" value="" readonly="readonly" />
+            		<button type="button" id="btnTreatmentDate" title="Show Calendar">
+            			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+            		</button>
+					<div id="conTreatmentDate" class="container">
+					    <div class="hd">เลือกวันที่</div>
+					    <div class="bd">
+					        <div id="calTreatmentDate" class="calendar"></div>
+					    </div>
+					</div>
+					เวลา <span id="treatmentAppoint"></span><br>
+					 -->
+            		<input type="radio" name="is_ready" value="0" onclick="notReady()"><span class="indent">ไม่พร้อมเข้ารับการบำบัด</span>
+            		<!-- <span class="indent">นัดประเมินใหม่วันที่</span>
+            		<input class="textbox" type="text" id="assessment_date" name="assessment_date" value="" readonly="readonly" />
+            		<button type="button" id="btnAssessmentDate" title="Show Calendar">
+            			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+            		</button>
+					<div id="conAssessmentDate" class="container">
+					    <div class="hd">เลือกวันที่</div>
+					    <div class="bd">
+					        <div id="calAssessmentDate" class="calendar"></div>
+					    </div>
+					</div>
+					เวลา <span id="assessmentAppoint"></span><br>
+					 -->
+            	</div>
+				<div id="detail">
+				<label>ประเภทของการบำบัด</label><br><br>
+				<% checked=True %>
+				% for t in c.types:
+					<span class="indent"><input 
+					%if checked:
+						checked="checked"
+					%endif
+					type="radio" name="type" value="${t.id}">${t.description}</span>
+					<%
+						if checked:
+							checked = False
+					%>
+				% endfor
+				<br><br>
+				<label>รูปแบบของการบำบัด</label><br><br>
+				<% checked=True %>
+				% for m in c.methods:
+					<span class="indent"><input 
+					%if checked:
+						checked="checked"
+					%endif
+					type="radio" name="method" value="${m.id}">${m.description}</span><br>
+					<%
+						if checked:
+							checked = False
+					%>
+				% endfor
+				<br><br>
+				<label>จำนวนครั้งที่เข้ารับการบำบัดตามโปรแกรมการบำบัด</label><br><br>
+				<% checked=True %>
+				% for n in c.numbers:
+					<span class="indent"><input 
+					%if checked:
+						checked="checked"
+					%endif
+					type="radio" name="number" value="${n.id}">${n.number} ครั้ง</span>
+					<%
+						if checked:
+							checked = False
+					%>
+				% endfor
+				<br><br>
+				</div>
+				<label for="result">ผลการประเมิน</label><br />
+				<textarea name="result" rows="60" cols="10" style="width: auto;"></textarea><br />
+				<label for="conclusion">สรุปความเห็นจากการประเมิน</label><br />
+				<textarea name="conclusion" rows="60" cols="10" style="width: auto;"></textarea><br />
+				<!-- 
+				<span class="indent">วันนัดหมาย</span>
+            		<input class="textbox" type="text" id="appoint_date" name="appoint_date" value="" readonly="readonly" />
+            		<button type="button" id="btnAppointDate" title="Show Calendar">
+            			<img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" >
+            		</button>
+					<div id="conAppointDate" class="container">
+					    <div class="hd">เลือกวันที่</div>
+					    <div class="bd">
+					        <div id="calAppointDate" class="calendar"></div>
+					    </div>
+					</div>
+				-->
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

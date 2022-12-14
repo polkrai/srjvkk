@@ -1,0 +1,72 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>${session['sr_component'].com_name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="/css/page.css" >
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+            <div class="toolbar_pane">
+                <a href="${h.url_for('/psychosocial/assessment')}?pa_id=${c.pa_id}&vn_id=${c.vn_id}">กลับ</a>
+            </div>
+            <div id="form-data">
+            	<label>ประวัติการใช้สารเสพติด</label>
+				<div class="indent"><label for="drug_type">ประเภทสารเสพติดที่ใช้</label></div>
+				<div class="indent">
+				
+				% for e in c.drugs:
+					<input 
+					%if e.id == c.pas.drug_id:
+						checked="checked"
+					%endif
+					type="radio" name="drug" value="${e.id}">${e.description}
+					<br />
+				% endfor
+				</div>
+				<div class="indent"><input type="text" id="drug_type" name="drug_type" value="${c.pas.drug_type}"></div>
+				<div class="indent"><label for="drug_period">ระยะเวลาที่ใช้</label></div>
+				<div class="indent"><input type="text" id="drug_period" name="drug_period" value="${c.pas.drug_period}"></div>
+				<div class="indent"><label for="drug_qty">ปริมาณที่ใช้ต่อครั้ง</label></div>
+				<div class="indent"><input type="text" id="drug_qty" name="drug_qty" value="${c.pas.drug_qty}"></div>
+				<div class="indent"><label for="drug_freq">ความถี่ของการใช้</label></div>
+				<div class="indent"><input type="text" id="drug_freq" name="drug_freq" value="${c.pas.drug_freq}"></div>
+				
+				<div class="indent">
+				% for a in c.assessments:
+					<input type="checkbox" name="assessments" value="${a.id}" 
+						%for tas in c.pas.assessments:
+							%if a.id == tas.assessment_id:
+								${'checked="checked"'}
+								<% break %>
+							%endif
+						%endfor
+					><span class="indent">${a.description}</span><br>
+				% endfor
+				</div>
+				<label>ลักษณะการเข้ารับการบำบัด</label>
+				<div class="indent">
+				
+				% for e in c.entrances:
+					<input 
+					%if e.id == c.pas.entrance_id:
+						checked="checked"
+					%endif
+					type="radio" name="entrance" value="${e.id}">${e.description}
+				% endfor
+				</div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <div id="dlg-delete"></div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format, model %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>ใบเสร็จรับเงิน</title>
+    <link rel="stylesheet" type="text/css" href="/css/font_style.css" >
+    <style type="text/css">
+    	/*
+        div {
+            
+            font-family:'THSarabunNew', sans-serif;
+            font-size:16px;
+            vertical-align:top;
+            font-weight: bold;
+			font-style: normal;
+        }
+    	*/
+    </style>
+</head>
+<body onload="window.print();window.close();" style="width:13.8cm; height:20.625cm;"> <!-- onload="window.print();window.close();" -->
+	<div style="position:absolute;top:3.6cm;width:6.6cm">${c.receipt.code}</div>
+    <div style="position:absolute;top:3.6cm;left:7.9cm;width:1cm">${c.receipt.receipt_date.day}</div>
+    <div style="position:absolute;top:3.6cm;left:9.9cm;width:2cm">${c.rec_month}</div>
+    <div style="position:absolute;top:3.6cm;left:12.8cm;width:2cm">${c.receipt.receipt_date.year + 543}</div>
+    
+    <!-- <div style="position:absolute;top:4.4cm;left:2.3cm;">${u'ผู้ป่วยใน' if c.receipt.visit.an else u'ผู้ป่วยนอก'}</div> -->
+    <div style="position:absolute;top:4.4cm;left:2.3cm;">${c.station.type}</div>
+    <div style="position:absolute;top:5.1cm;left:2.3cm;width:5.3cm">${c.receipt.patient.name}</div>
+    <div style="position:absolute;top:5.1cm;left:11.2cm;width:2cm">${c.receipt.patient.hn}</div>
+    
+    % for i in range(c.max_items - len(c.discounts)):
+    	<div style="position:absolute;top:${8.2 + (i * c.item_height)}cm;left:0.1cm;width:9.5cm">
+    		%if len(c.receipt_items) > i:
+    			%if c.station.type == model.Station.DENTAL and c.receipt_items[i]['qty'] > 0:
+		  			${number_format(c.receipt_items[i]['qty'], 0)} x 
+		  		%endif
+		  		${c.receipt_items[i]['item']} 
+			  	%if c.receipt_items[i]['code']:
+			  		(${c.receipt_items[i]['code']})
+			  	%endif
+			%else:
+				&nbsp;
+			%endif 
+        </div>
+        <div style="position:absolute;top:${8.2 + (i * c.item_height)}cm;left:10.5cm;width:3.1cm;text-align:right;">
+        	${number_format(c.receipt_items[i]['amount'], 2) if len(c.receipt_items) > i else '&nbsp;'}
+        </div>
+    % endfor
+    % for i in range(len(c.discounts)):
+    	<div style="position:absolute;top:${8.2 + ((c.max_items - len(c.discounts)) * c.item_height) + (i * c.item_height)}cm;left:0.1cm;width:9.5cm">
+        	${c.discounts[i]['item']}
+        </div>
+        <div style="position:absolute;top:${8.2 + ((c.max_items - len(c.discounts)) * c.item_height) + (i * c.item_height)}cm;left:10.5cm;width:3.1cm;text-align:right">
+        	${number_format(c.discounts[i]['amount'], 2)}
+        </div>
+    % endfor  
+    <div style="position:absolute;top:16.7cm;left:10.5cm;width:3.1cm;text-align:right">
+    	${number_format(c.total_amount, 2)}
+    </div>
+    <div style="position:absolute;top:17.5cm;left:3cm;width:9cm;text-align:center">
+    	${'(' + c.receive_str + ')'}
+    </div>
+    <div style="position:absolute;top:19.7cm;left:7.6cm;width:5cm;text-align:center">
+    	${c.receive_by.title if c.receive_by.title else ''}${c.receive_by.name} ${c.receive_by.lastname}
+    </div>
+    <div style="position:absolute;top:20.3cm;left:7.6cm;width:5cm;text-align:center">
+    	เจ้าหน้าที่การเงิน
+    </div>
+</body>
+</html>

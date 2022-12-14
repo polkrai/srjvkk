@@ -1,0 +1,173 @@
+# -*- coding: utf-8 -*-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>นิติจิตเวช</title>
+<style type="text/css">
+.tablecell {
+	border: thin solid #000000;
+}
+
+</style>
+</head>
+
+<body onload="window.print()">
+<h3 align="center">แบบฟอร์มการซักประวัติละเอียดผู้ป่วยนิติจิตเวช<br /></h3>
+<table width="100%" border="0" cellpadding="10">
+  <tr>
+    <td width="187" valign="top"><strong>ชื่อผู้ป่วย</strong></td>
+    <td colspan="2" valign="top">${c.niti.patient.name}</td>
+    <td width="137" valign="top"><strong></strong><strong>อายุ&nbsp;</strong>${c.niti.patient.age}<strong>&nbsp;ปี</strong></td>
+    <td width="74" valign="top"><strong>สถานภาพ</strong></td>
+    <td width="116" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top">&nbsp;</td>
+    <td width="134" valign="top"><strong>การศึกษา</strong></td>
+    <td width="201" valign="top">&nbsp;</td>
+    <td valign="top"><strong>อาชีพ</strong></td>
+    <td colspan="2" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>ภูมิลำเนา</strong></td>
+    <td valign="top">บ้านเลขที่ </td>
+    <td valign="top">หมู่ที่ ตำบล</td>
+    <td colspan="3" valign="top">อำเภอ</td>
+  </tr>
+  <tr>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">จังหวัด</td>
+    <td valign="top">&nbsp;</td>
+    <td colspan="3" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>คดี</strong></td>
+    <td colspan="5" valign="top">${c.niti.crime}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>รับไว้เมื่อวันที่</strong></td>
+    <td colspan="5" valign="top">${c.admit_date}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>ที่มาของข้อมูล</strong></td>
+    <td colspan="5" valign="top">${c.niti.info_provider}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>เหตุนำส่ง</strong></td>
+    <td colspan="5" valign="top">${c.niti.hospital_reason}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>เหตุเกิด</strong></td>
+    <td colspan="5" valign="top">${c.commit_date}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>มอบตัว</strong></td>
+    <td colspan="5" valign="top">${c.surrender_date}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>ส่งมาโรงพยาบาล</strong></td>
+    <td colspan="5" valign="top">${c.hospital_date}</td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><strong>ประวัติในอดีตของผู้ป่วย</strong></td>
+  </tr>
+  <tr>
+    <td valign="top"><span style="margin-left: 20px"><strong>- อุปนิสัยปกติ</strong></span></td>
+    <td colspan="5" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 50px">จากผู้ป่วย</span></td>
+    <td colspan="4" valign="top">${c.niti.personality}</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 50px">จากญาติ / ผู้นำส่ง</span></td>
+    <td colspan="4" valign="top">${c.niti.personality_from_family}</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 20px"><strong>- ประวัติการเจ็บป่วยทางกาย</strong></span></td>
+    <td colspan="4" valign="top">${c.niti.history_physical}</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 20px"><strong>- ประวัติการเจ็บป่วยทางจิต</strong></span></td>
+    <td colspan="4" valign="top">${c.niti.history_mental}</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 20px"><strong>- ประวัติการต้องโทษ</strong></span></td>
+    <td colspan="4" valign="top">${c.niti.history_crime}</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 20px"><strong>- สารเสพติด</strong></span></td>
+    <td colspan="4" valign="top">${c.niti.drug_usage}</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 20px"><strong>- อุบัติเหตุ</strong></span></td>
+    <td colspan="4" valign="top">${c.niti.history_accident}</td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top"><span style="margin-left: 20px"><strong>- ประสบการณ์ทางเพศ</strong></span></td>
+    <td colspan="4" valign="top">${c.niti.sex_experience}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>กรรมพันธุ์</strong></td>
+    <td colspan="5" valign="top">${c.niti.heredity}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>ประวัติครอบครัว</strong></td>
+    <td colspan="5" valign="top">${c.niti.history_family}</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>วิเคราะห์</strong></td>
+    <td colspan="5" valign="top">${c.niti.social_analysis_text}</td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><strong>การวินิจฉัยทางสังคม</strong></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolor="#000000">
+      <tr>
+        <td width="10%"><div align="center"><strong>รหัส</strong></div></td>
+        <td width="45%"><div align="center"><strong>คำอธิบาย</strong></div></td>
+        <td width="45%"><div align="center"><strong>เพิ่มเติม</strong></div></td>
+      </tr>
+      % for p in c.niti.problems:
+  <tr>
+    <td>${p.problem.code}</td>
+    <td>${p.problem.description}</td>
+    <td>${p.more_problem_info}</td>
+  </tr>
+      % endfor
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><strong>การให้ความช่วยเหลือ</strong></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top"><table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolor="#000000">
+      <tr>
+        <td width="10%"><div align="center"><strong>รหัส</strong></div></td>
+        <td width="45%"><div align="center"><strong>คำอธิบาย</strong></div></td>
+        <td width="45%"><div align="center"><strong>เพิ่มเติม</strong></div></td>
+      </tr>
+      % for p in c.niti.helps:
+  <tr>
+    <td>${p.help.code}</td>
+    <td>${p.help.description}</td>
+    <td>${p.more_help_info}</td>
+  </tr>
+      % endfor
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="6" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top">&nbsp;</td>
+    <td colspan="5" valign="top"><div align="center">${c.niti_user.name if c.niti_user else ''} ${c.niti_user.lastname if c.niti_user else ''}<br />
+      นักสังคมสงเคราะห์ / พยาบาลวิชาชีพ / พยาบาลเทคนิค<br />
+    ${c.niti_date}</div></td>
+  </tr>
+</table>
+</body>
+
+</html>

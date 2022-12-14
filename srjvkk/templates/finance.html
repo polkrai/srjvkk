@@ -1,0 +1,192 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>การเงิน</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/finance.css" >
+    <link rel="stylesheet" type="text/css" href="/yui/grids/grids-min.css" >
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js"></script>
+    <!-- <script type="text/javascript" src="/js/jquery/jquery-1.12.4.min.js"></script> -->
+    <script type="text/javascript" src="${h.url_for('/js/finance/main.js')}"></script>
+</head>
+<body class="yui-skin-sam" style="text-align:left; overflow: hidden;">
+    <div id="header_pane">
+        <div id="logo_div">
+            <img src="/img/logo7_2.png" />
+        </div>
+    </div>
+    <div id="main_bd">
+        <div id="left_pane">
+            <div class="top_info"><div id="top_info_text">JVKK Information System</div></div>
+            %if c.station:
+            <div><label style="min-width:100px;margin:0px;font-weight:bold">เครื่องเก็บเงิน:</label> ${c.station.name}</div>
+            <div><label style="min-width:100px;margin:0px;font-weight:bold">ประเภท:</label> ${c.station.type}</div>
+            %endif
+            <div id="left_info_pane">
+                <form method="post" action="${h.url_for('/srutil/logout')}">
+                    <b>ผู้ใช้: </b>${c.user.name} ${c.user.lastname}<br>
+                    <input id="logout_button" type="submit" name="logout" value="Log out"></input>
+                </form>
+            </div>
+            <div class="top_info"><div id="top_info_text">รายชื่อผู้ป่วยรอรับบริการ</div></div>
+            <div id="button_queue_pane">
+                <input type="button" id="btnCallQueue" value="เรียกคิว" />
+                <input type="button" id="btnSendQueue" value="ส่งต่อ" />
+                <input type="button" id="btnSendBack" value="ส่งกลับ" />
+                <span id="span-com3" style="display: none"><input id="btnCom3" type="button"></span><br>
+                
+	            <input id="txtSearchQ" name="txtSearchQ" type="text" style="float:left;margin: 3px;">
+	        	<input id="btnSearchQ" name="btnSearchQ" type="button">
+	        	
+            </div>
+            
+            <div id="left_queue_pane">
+                
+            </div>
+            <div class="top_info"><div id="top_info_text">รายชื่อผู้ป่วยรับบริการแล้ว</div></div>
+            <div id="left_queue_done_pane">
+                left_queue_done_pane
+            </div>
+        </div>
+        <div id="important_info_pane" class="yui-gc">            
+            <div class="yui-u first">
+	            <div id="patient_picture_pane">
+	                <img id="patient_picture" src="/img/noname.png" width="100px" height="100px" />
+	            </div>
+	            <div id="patient_info">
+	            </div>
+	        </div>
+            <div id="more_info" class="yui-u">
+            	<span id="hn_span"></span><br>
+            	<span id="vn_span"></span><br>
+               	<span id="an_span"></span><br>
+            	<span id="privilege_span"></span><br>
+            	<span id="txt-pay-amount" style="color: red;">0.00</span><br>
+            	<span id="queue_span"></span>
+            </div>
+        </div>
+        <div id="common_menu_pane">
+        	<input id="btn-search" type="button" value="ค้นหา">
+            <input id="btn-patient-info" type="button" value="ข้อมูลทั่วไป">
+            <input id="btn-filter" type="button" value="คัดกรอง">
+        	<input id="btn-treatment-info" type="button" value="ประวัติการรักษา">
+        	
+        </div>
+        <div id="modules_pane">
+        </div>
+        <div id="workspace_pane" class="yui-navset">
+        	<input type="hidden" id="com_id" name="com_id" value="${c.com_id}" />
+        	<input type="hidden" id="id_sess" name="id_sess" value="${session['sr_session_id']}" />
+        	<input type="hidden" id="station_id" name="station_id" value="${c.station.id if c.station else -1}" />
+        	<input type="hidden" id="station_type" name="station_type" value="${c.station.type if c.station else 'unknown'}" />
+			<ul class="yui-nav"> 
+                <li class="selected"><a href="#payment"><em>ชำระเงิน</em></a></li> 
+                <li><a href="#paymenthistory"><em>ประวัติการชำระเงิน</em></a></li>
+                <li><a href="#sendmoney"><em>นำส่งเงิน</em></a></li>
+                <li><a href="#confirm"><em>ตรวจสอบสิทธิ์</em></a></li>
+                <li><a href="#ipd"><em>สรุปค่าใช้จ่ายผู้ป่วยใน</em></a></li>
+				<li><a href="#lab"><em>สรุปค่าใช้จ่าย Lab</em></a></li>
+				<li><a href="#restore"><em>สรุปค่าใช้จ่ายเวชกรรมฟื้นฟู</em></a></li>
+				<li><a href="#item"><em>เบิกจ่ายตรง</em></a></li>
+                <li><a href="#report"><em>รายงาน</em></a></li>
+                <li><a href="#visits"><em>รายชื่อผู้ป่วยที่ไม่มีค่าบริการ</em></a></li>
+                <li><a href="#master"><em>ข้อมูลพื้นฐาน</em></a></li>  
+            </ul>             
+            <div class="yui-content"> 
+                <div id="paycharge_page">
+                		<iframe name="frmpayment" id="frame-payment" src="${h.url_for('/finance/payment_page?pa_id=-1')}&id_sess=${session['sr_session_id']}" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                
+                <div id="payment_history_page">
+                    <iframe name="frmhistory" id="frame-payment-history" src="${h.url_for('/finance/payment_history_page?pa_id=-1')}" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div>
+                		<iframe name="frmsendmoney" id="frmsendmoney" src="${h.url_for('/finance/send_money_page?station_id=')}${c.station.id if c.station else -1}" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div id="confirm_page">
+                		<iframe id="frmconfirm" name="frmconfirm" src="${h.url_for('/finance/confirm_priv_page')}?pa_id=-1" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div id="ipdsummary_page">
+                		<iframe id="frmipdsummary" name="frmipdsummary" src="${h.url_for('/financereport/ipdsummary_page')}?pa_id=-1" class="iframe-page" frameborder="0"></iframe>
+                </div>
+				<div id="lab_page">
+                		<iframe id="frmlab" name="frmlab" src="${h.url_for('/finance/lab_page')}?pa_id=-1" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div id="restore_page">
+                		<iframe id="frmrestore" name="frmrestore" src="${h.url_for('/finance/restore_page')}?pa_id=-1" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div id="item_page">
+                		<iframe id="frmitem" name="frmitem" src="${h.url_for('/finance/item_page')}?pa_id=-1" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div id="report_page">
+                		<iframe id="frmreport" name="frmreport" src="${h.url_for('/financereport/report_main')}" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div id="master-data">
+                		<iframe id="frame-visits" src="${h.url_for('/finance/check_visit_orders')}" class="iframe-page" frameborder="0"></iframe>
+                </div>
+                <div id="master-data">
+                		<iframe id="frame-master-data" src="${h.url_for('/finance/setup_main')}" class="iframe-page" frameborder="0"></iframe>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div id="footer">
+                โปรแกรมโรงพยาบาลจิตเวชขอนแก่นราชนครินทร์	<br />
+        Powered by <a href='http://www.nanosofttech.com/' target='blank'>NanoSoftTech</a> | 
+        <a href='http://www.neural.co.th/' target='blank'>NeuralTechnology</a> | 
+        <a href='http://www.shiftright.co.th' target='blank'>ShiftRight</a> | 
+        <a href='http://www.miracleinspire.com/' target='blank'>MiracleInspire</a> 	&nbsp;
+        &copy; 2008
+    </div>
+    <div id="dlg-search">
+    	<div class="hd">ค้นหา</div>
+    	<div class="bd">
+    		<iframe id="frame-search" src="" width="100%" height="100%" frameborder="0"></iframe>
+    	</div>
+    </div>
+    <div id="dlg-patient-info">
+    	<div class="hd">ประวัติการทั่วไป</div>
+    	<div class="bd">
+    		<iframe id="frame-patient-info" src="" width="100%" height="100%" frameborder="0"></iframe>
+    	</div>
+    </div>    
+	</div>
+        <div id="dlg-filter">
+    	<div class="hd">คัดกรอง</div>
+    	<div class="bd">
+    		<iframe id="frame-filter" src="" width="100%" height="100%" frameborder="0"></iframe>
+    	</div>
+    </div>
+    <div id="dlg-treatment-info">
+    	<div class="hd">ประวัติการรักษา</div>
+    	<div class="bd">
+    		<iframe id="frame-treatment-info" src="" width="100%" height="100%" frameborder="0"></iframe>
+    	</div>
+    </div>
+    
+    <div id="dlgSendQueue">
+        <div class="hd">ส่งต่อ</div>
+        <div class="bd">
+            <form method="POST" action="${h.url_for('/srutil/transfer')}">
+                    <label>เลือกหน่วยงาน: </label><select id="select_com" onchange="getActions(this.options[this.selectedIndex].value)">
+                    	%for com in c.sendcoms:
+                            <option value="${com.id}">${com.com_name}</option>
+                        %endfor
+                    </select><br><br>
+                    <label>เลือกกิจกรรม: </label><select id="select_action">
+                    </select>
+            </form>
+        </div>
+    </div>
+    <div id="dlg-send-queue">
+        <div class="hd">ส่งต่อ</div>
+        <div class="bd">
+            <form method="POST" action="${h.url_for('/srutil/transfer')}">
+                    <label>เลือกกิจกรรม: </label><select id="select_allowed_action"></select>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

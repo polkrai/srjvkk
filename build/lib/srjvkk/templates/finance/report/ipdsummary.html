@@ -1,0 +1,62 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>การเงิน</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/finance/ipdsummary.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/yui/grids/grids-min.css"> 
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+</head>
+<body class="yui-skin-sam" style="text-align: left">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="" method="post">
+        	<input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}" />
+          	<input type="hidden" id="vn_id" name="vn_id" value="${c.vn_id}" />
+        </form>
+        <div id="toolbar_pane" class="toolbar_pane">
+        	<input type="button" id="btnPrint" value="พิมพ์"></input>
+        	<input type="button" id="btnPrintExpense" value="พิมพ์ใบแนบ"></input>
+        </div>
+        <div style="height:40px"></div>
+        <div id="data">
+        	<p style="font-size:18px;font-weight:bold">ประวัติการ admit</p>
+            <div id="admit-table" style="margin:5px"></div>
+            <div class="yui-g">
+				<div class="yui-u first">
+					<p style="font-size:18px;font-weight:bold">Diagnostics</p>
+					<div id="diag-table" style="margin:5px"></div>
+				</div>
+				<div class="yui-u">
+					<p style="font-size:18px;font-weight:bold">วันที่ลากลับบ้าน</p>
+					<div id="homevisit-table" style="margin:5px"></div>
+					<strong><label style="min-width: 100px; max-width: 100px;">รวมวันลากลับบ้าน</label><label id="totalhomevisit" style="color: red;text-align: right">0</label><label>วัน</label></strong>
+				</div>
+			</div>
+            <p style="font-size:18px;font-weight:bold">สรุปค่าใช้จ่าย</p>
+            <label style="min-width: 250px; max-width: 250px;">ค่ายาในบัญชีนำไปใช้ต่อที่บ้าน</label><label id="homemedin" style="color: red;text-align: right">0.00</label><label>บาท</label><br><br>
+            <label style="min-width: 250px; max-width: 250px;">ค่ายานอกบัญชีนำไปใช้ต่อที่บ้าน</label><label id="homemedout" style="color: red;text-align: right">0.00</label><label>บาท</label><br><br>
+            <label style="min-width: 250px; max-width: 250px;">ค่ายาในบัญชีใช้ในโรงพยาบาล</label><label id="hospmedin" style="color: red;text-align: right">0.00</label><label>บาท</label><br><br>
+            <label style="min-width: 250px; max-width: 250px;">ค่ายานอกบัญชีใช้ในโรงพยาบาล</label><label id="hospmedout" style="color: red;text-align: right">0.00</label><label>บาท</label><br><br>
+            <strong><label style="min-width: 250px; max-width: 250px;">รวมค่ายา</label><label id="totalmed" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+            <div id="expense-table" style="margin:5px"></div>
+            <strong><label style="min-width: 250px; max-width: 250px;">รวมค่ารักษาพยาบาลอื่นๆ</label><label id="totalother" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+            <strong><label style="min-width: 250px; max-width: 250px;">รวมทั้งหมด</label><label id="total" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+            <p style="font-size:18px;font-weight:bold">หักชำระ</p>
+            <div id="receipt-table" style="margin:5px"></div>
+            <strong><label style="min-width: 250px; max-width: 250px;">ชำระ</label><label id="totalreceive" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+            <strong><label style="min-width: 250px; max-width: 250px;">ส่วนลด</label><label id="totaldiscount" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+            <strong><label style="min-width: 250px; max-width: 250px;">สงเคราะห์</label><label id="totalsupport" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+            <strong><label style="min-width: 250px; max-width: 250px;">รวมหักชำระ</label><label id="totalreceipt" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+            <strong><label style="min-width: 250px; max-width: 250px;">คงค้าง</label><label id="remain" style="color: red;text-align: right">0.00</label><label>บาท</label></strong><br><br>
+        </div>   
+    </div>
+    <div id="footer">
+    </div>
+</body>
+</html>

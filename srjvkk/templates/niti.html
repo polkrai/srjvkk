@@ -1,0 +1,151 @@
+﻿# -*- coding: utf-8 -*- 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html style="background-color:#edf5ff">
+<head>
+    <title>สังคมสงเคราะห์</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="/yui/yuiloader/yuiloader-min.js" ></script>
+    <script type="text/javascript" src="${h.url_for('/js/social/niti.js')}"></script>
+    <link rel="stylesheet" type="text/css" href="/css/background.css" >
+    <style>
+        #conCommitDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conCommitDate .bd {padding:0;}
+        #calCommitDate {border:none;padding:1em}
+
+        #conSurrenderDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conSurrenderDate .bd {padding:0;}
+        #calSurrenderDate {border:none;padding:1em}
+        
+        #conHospitalDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conHospitalDate .bd {padding:0;}
+        #calHospitalDate {border:none;padding:1em}
+        
+        #conAdmitDate .bd:after {content:".";display:block;clear:left;height:0;visibility:hidden;}
+        #conAdmitDate .bd {padding:0;}
+        #calAdmitDate {border:none;padding:1em}
+
+    </style>
+</head>
+<body class="yui-skin-sam">
+    <div id="header_pane">
+
+    </div>
+    <div id="main_bd" class="yui-content">
+        <form id="form" name="form" action="${h.url_for('/social/save_niti')}" method="post">
+            <div id="toolbar_pane" class="toolbar_pane">
+                <input type="button" id="btnAdd" value="เพิ่ม">
+                <input type="button" id="btnEdit" value="แก้ไข">
+                <input type="button" id="btnSave" value="บันทึก">   
+                <input type="button" id="btnCancel" value="ยกเลิก">
+                <input type="button" id="btnPrint" value="พิมพ์">
+                
+            </div>
+            <div style="height:40px"></div>
+                             
+            <div id="data">                
+                <input type="hidden" id="qcalled" name="qcalled" value="${c.qcalled}" >
+                <input type="hidden" id="niti_id" name="niti_id" value="${c.niti.id}">
+                <input type="hidden" id="pa_id" name="pa_id" value="${c.pa_id}" >
+                <input type="hidden" id="problems" name="problems">
+                <input type="hidden" id="del_problems" name="del_problems">
+                <input type="hidden" id="helps" name="helps">
+                <input type="hidden" id="del_helps" name="del_helps">
+                <input type="hidden" id="del-nitis" name="del-nitis">
+                <div id="niti_crime_table"></div><br>
+                <label>คดี</label><input class="textbox" name="crime" type="text" id="crime" value="" ><br><br>
+				<label>รับไว้เมื่อวันที่</label><input class="textbox" type="text" id="admit_date" name="admit_date" value="" /><button type="button" id="btnAdmitDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+<div id="conAdmitDate">
+    <div class="hd">เลือกวันที่</div>
+    <div class="bd">
+        <div id="calAdmitDate"></div>
+    </div>
+</div><br><br>
+                <label>ที่มาของข้อมูล</label><textarea class="textarea" type="text" id="info_provider" name="info_provider">${c.niti.info_provider}</textarea><br><br>
+                <label>เหตุนำส่ง</label><textarea class="textarea" type="text" id="hospital_reason" name="hospital_reason">${c.niti.hospital_reason}</textarea><br><br>
+				<label>วันที่เกิดเหตุ</label><input class="textbox" type="text" id="commit_date" name="commit_date" value="" /><button type="button" id="btnCommitDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+<div id="conCommitDate">
+    <div class="hd">เลือกวันที่</div>
+    <div class="bd">
+        <div id="calCommitDate"></div>
+    </div>
+</div><br><br>
+                <label>วันที่มอบตัว</label><input class="textbox" type="text" id="surrender_date" name="surrender_date" value="" /><button type="button" id="btnSurrenderDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+<div id="conSurrenderDate">
+    <div class="hd">เลือกวันที่</div>
+    <div class="bd">
+        <div id="calSurrenderDate"></div>
+    </div>
+</div><br><br>
+                <label>วันที่ส่งมาโรงพยาบาล</label><input class="textbox" type="text" id="hospital_date" name="hospital_date" value="" /><button type="button" id="btnHospitalDate" title="Show Calendar"><img src="/img/calbtn.gif" width="18" height="18" alt="Calendar" ></button>
+<div id="conHospitalDate">
+    <div class="hd">เลือกวันที่</div>
+    <div class="bd">
+        <div id="calHospitalDate"></div>
+    </div>
+</div><br><br>
+                <label>ประวัติในอดีตของผู้ป่วย</label><br><br>
+                <label>-อุปนิสัยปกติจากผู้ป่วย:</label><textarea class="textarea" id="personality" name="personality">${c.niti.personality}</textarea><br>
+                <label>-อุปนิสัยจากญาติ/ผู้นำส่ง:</label><textarea class="textarea" id="personality_from_family" name="personality_from_family">${c.niti.personality_from_family}</textarea><br>
+                <label>-ประวัติการเจ็บป่วยทางกาย:</label><textarea class="textarea" id="history_physical" name="history_physical"></textarea><br>
+                <label>-ประวัติการเจ็บป่วยทางจิต:</label><textarea class="textarea" id="history_mental" name="history_mental"></textarea><br>
+                <label>-ประวัติการต้องโทษ:</label><textarea class="textarea" id="history_crime" name="history_crime"></textarea><br>
+                <label>-สารเสพติด:</label><textarea class="textarea" id="drug_usage" name="drug_usage">${c.niti.drug_usage}</textarea><br>
+                <label>-อุบัติเหตุ:</label><textarea class="textarea" id="history_accident" name="history_accident">${c.niti.history_accident}</textarea><br>
+                <label>-ประสบการณ์ทางเพศ:</label><textarea class="textarea" id="sex_experience" name="sex_experience">${c.niti.history_accident}</textarea><br>
+                <label>-กรรมพันธุ์:</label><textarea class="textarea" id="heredity" name="heredity"></textarea><br>
+                <label>-ประวัติครอบครัว:</label><textarea class="textarea" id="history_family" name="history_family"></textarea><br>
+                <label>วิเคราะห์:</label><textarea class="textarea" id="social_analysis_text" name="social_analysis_text"></textarea><br>
+                
+                <div style="float:left;width:100%">
+                    <label>การวินิจฉัยทางสังคม:</label><br><br>
+                    <div style="margin: 5px">
+						<input onkeypress="checkEnter(event, 'prob')" type="text" id="txtAddProb" style="position:static;width:200px;vertical-align:middle;">
+						<input id="btnAddProb" type="button" value="เพิ่ม" >
+	                	<div id="ctProb" style="width:200px;left:0px;">
+                	</div>
+
+                    <div id="social_problem" style="margin: 5px;"></div>
+                </div>
+                
+                <div style="float:left;width:100%">
+                    <label>การให้ความช่วยเหลือ:</label><br><br>
+                    <div style="margin: 5px">
+						<input onkeypress="checkEnter(event, 'help')" type="text" id="txtAddHelp" style="position:static;width:200px;vertical-align:middle;">
+						<input id="btnAddHelp" type="button" value="เพิ่ม" >
+	                	<div id="ctHelp" style="width:200px;left:0px;">
+                	</div>
+                    <div id="social_help" style="margin: 5px;">                                
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="footer">
+    </div>
+    <iframe id="frmprint" name="frmprint" height="0" frameborder="0"></iframe>
+    <!--  <div id="lookupSocialProblem" style="float:left">
+        <div class="hd">ปัญหาสังคม</div>
+        <div class="bd">
+            <label>เลือกปัญหา: </label><select id="select_problem">
+                %for p in c.problems:
+                    <option id="${p['id']}" value="${p['code']}">${p['description']}</option>
+                %endfor
+            </select>
+        </div>
+    </div>
+    <div id="lookupSocialHelp" style="float:left">
+    <div class="hd">ความช่วยเหลือ</div>
+        <div class="bd">
+        <label>เลือกความช่วยเหลือ: </label><select id="select_help">
+                %for p in c.helps:
+                    <option id="${p['id']}" value="${p['code']}">${p['description']}</option>
+                %endfor
+            </select>
+
+        </div>
+    </div>
+    -->
+    <div id="container"></div>
+</body>
+</html>

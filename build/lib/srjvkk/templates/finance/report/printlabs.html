@@ -1,0 +1,88 @@
+﻿# -*- coding: utf-8 -*- 
+<% from srjvkk.lib.base import number_format %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>รายการตรวจ lab</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+<!--
+div {
+
+	font-family:Tahoma;
+	font-size:16px;
+	vertical-align:top;
+}
+
+div.bl {
+	border-left: black solid thin;
+}
+div.bt {
+	border-top: black solid thin;
+}
+div.bb {
+	border-bottom: black solid thin;
+}
+div.br {
+	border-right: black solid thin;
+}
+-->
+    </style>
+</head>
+<body style="width:13.8cm; height:20.625cm;">
+	<div style="text-align:center;">
+		<strong>รายการตรวจ lab<br>
+		โรงพยาบาลจิตเวชขอนแก่นราชนครินทร์ จ.ขอนแก่น</strong>
+	</div>
+	<div style="position:absolute;top:1.6cm;width:2.5cm;font-weight:bold;">เลขที่ visit</div>
+	<div style="position:absolute;top:1.6cm;width:4cm;left:2.5cm">${c.visit.vn}</div>
+	<div style="position:absolute;top:1.6cm;width:3cm;left:7cm;font-weight:bold;">วันที่รับบริการ</div>
+    <div style="position:absolute;top:1.6cm;left:10cm;width:5cm">${c.visit.time_add.strftime('%d/%m/%Y')}</div>
+    
+	<div style="position:absolute;top:2.4cm;width:3cm;font-weight:bold;">ประเภทผู้ป่วย</div>
+    <div style="position:absolute;top:2.4cm;left:3.3cm;">${u'ผู้ป่วยใน' if c.visit.an else u'ผู้ป่วยนอก'}</div>
+	<div style="position:absolute;top:2.4cm;left:7cm;width:1cm;font-weight:bold;">HN</div>
+	<div style="position:absolute;top:2.4cm;left:10cm;width:2.5cm">${c.visit.patient.hn}</div>
+    <div style="position:absolute;top:3.1cm;width:2cm;font-weight:bold;">ชื่อ-สกุล</div>
+	<div style="position:absolute;top:3.1cm;left:2.3cm;width:10cm">${c.visit.patient.name}</div>
+    
+	<div style="position:absolute;top:4cm;left:0;width:9cm;text-align:center;" class="bl bt bb">รายการ</div>
+	<div style="position:absolute;top:4cm;left:9cm;width:2.5cm;text-align:center;" class="bl bt bb">จำนวน</div>
+	<div style="position:absolute;top:4cm;left:11.5cm;width:2.5cm;text-align:center;" class="bl bt bb br">ราคา</div>
+	<div style="position:absolute;top:4.55cm;left:0;width:9cm;height:13cm;text-align:center;" class="bl bb"></div>
+	<div style="position:absolute;top:4.55cm;left:9cm;width:2.5cm;height:13cm;text-align:center;" class="bl bb"></div>
+	<div style="position:absolute;top:4.55cm;left:11.5cm;width:2.5cm;height:13cm;text-align:center;" class="bl bb br"></div>
+	<%
+		sum_total=0
+	%>
+    % for i in range(c.max_items):
+    	<div style="position:absolute;top:${4.75 + (i * c.item_height)}cm;left:0.1cm;width:8.9cm;height:${c.item_height}cm;overflow:hidden;">
+    		%if len(c.items) > i:
+		  		%if c.items[i]['item_code']:
+					<% sum_total += c.items[i]['total'] %>
+			  		(${c.items[i]['item_code']})
+			  	%endif
+				${c.items[i]['name']} 
+			%else:
+				&nbsp;
+			%endif 
+        </div>
+        <div style="position:absolute;top:${4.75 + (i * c.item_height)}cm;left:9cm;width:2.5cm;text-align:right;">
+        	${number_format(c.items[i]['qty'], 2) if len(c.items) > i else '&nbsp;'}
+        </div>
+		<div style="position:absolute;top:${4.75 + (i * c.item_height)}cm;left:11.5cm;width:2.5cm;text-align:right;">
+        	${number_format(c.items[i]['total'], 2) if len(c.items) > i else '&nbsp;'}
+        </div>
+    % endfor
+
+	<div style="position:absolute;top:17.55cm;left:0;width:11.5cm;text-align:right;">รวม</div>
+	<div style="position:absolute;top:17.55cm;left:11.5cm;width:2.5cm;text-align:right;" class="bl bb br">${number_format(sum_total, 2)}</div>
+	<div style="position:absolute;top:19.7cm;left:2.6cm;width:5cm;text-align:center">
+    	${c.user.fullname}
+    </div>
+    <div style="position:absolute;top:20.3cm;left:2.6cm;width:5cm;text-align:center">
+    	เจ้าหน้าที่การเงิน
+    </div>
+</body>
+</html>
